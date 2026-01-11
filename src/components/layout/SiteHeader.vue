@@ -2,9 +2,9 @@
   <header>
     <div class="container">
       <div class="headerUp">
-        <RouterLink to="/">
-          <div class="logo"></div>
-        </RouterLink>
+        <RouterLink to="/" class="logo"
+          :style="{ backgroundImage: `url(${BASE}image/Logo.png)` }"
+        ></RouterLink>
         <div class="searchBox webSearch">
           <input type="text" placeholder="我想要買..." />
           <button type="submit" id="searchButton" class="searchButton">
@@ -118,7 +118,6 @@ header .container{
 header .logo{
     width: 136px;
     height: 28px;
-    background: url("/image/Logo.png") center no-repeat;
     background-size: cover;
 }
 header .headButton{
