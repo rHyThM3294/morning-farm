@@ -23,7 +23,7 @@
         top: -15vh;
     }
     .partition img{
-        transform: scaleX(1.5);
+        transform: scaleX(2.5);
     }
 }
 </style>
