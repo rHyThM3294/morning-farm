@@ -146,15 +146,7 @@ html{
     justify-content: center;
     align-items: center;
 }
-.partition{
-    position: relative;
-    width: 100%;
-    top: -12vh;
-}
-.partition img{
-    transform: scale(0.7) translate(-40%);
-    text-align: center;
-}
+
 .category{
     width: 100%;
     position: relative;
@@ -249,15 +241,7 @@ html{
         font-size: 16px;
         font-weight: 400;
     }
-    .partition{
-        position: relative;
-        width: 100%;
-        height: 175px;
-        top: -15vh;
-    }
-    .partition img{
-        transform: scaleX(1.5);
-    }
+    
     .category .container{
         max-width: 720px;
     }
