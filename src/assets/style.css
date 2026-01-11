@@ -40,15 +40,13 @@ html,body,header,menu,nav,main,div,span,article,aside,p,a,footer,ul,ol,li,table,
     --radiusNormal: 8px;
     /* 陰影 */
 }
-/* 隱藏 Chrome, Safari, Opera 瀏覽器的上下按鈕 */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none; /* 移除外觀 */
-    margin: 0; /* 雖然通常不需要，但保險起見將 margin 設為 0 */
+    -webkit-appearance: none; 
+    margin: 0;
 }
-/* 隱藏 Firefox 瀏覽器的上下按鈕 */
 input[type="number"] {
-    -moz-appearance: textfield; /* 將其視為一般文字欄位 */
+    -moz-appearance: textfield;
 }
 h1:lang(zh-Hant-TW) {
     font-size: 48px;
@@ -148,219 +146,159 @@ html{
     justify-content: center;
     align-items: center;
 }
-
-
-
-/* 分隔線 */
-.partition {
+.partition{
     position: relative;
     width: 100%;
     top: -12vh;
 }
-
-.partition img {
+.partition img{
     transform: scale(0.7) translate(-40%);
     text-align: center;
 }
-
-/* 地圖、季節、排行榜、小學堂 */
-.category {
+.category{
     width: 100%;
     position: relative;
 }
-
-.category .container {
+.category .container{
     width: 90%;
     justify-content: space-around;
 }
-
-.category .categoryItem {
+.category .categoryItem{
     color: var(--black);
     text-align: center;
 }
-
-.category .categoryItem i {
+.category .categoryItem i{
     transition: var(--transitionNormal);
     font-size: 2em;
 }
-
 .category .categoryItem p {
     transition: var(--transitionNormal);
 }
 
-.category .categoryItem .inWeb {
+.category .categoryItem .inWeb{
     display: none;
 }
-
-/* 種類 */
-
-
-/* 愛心放大縮小動畫 */
 .heart.animate{
     animation: pop 0.3s ease;
 }
-
 @keyframes pop{
-    0% {
+    0%{
         transform: scale(1);
     }
-
-    50% {
+    50%{
         transform: scale(1.4);
     }
-
-    100% {
+    100%{
         transform: scale(1);
     }
 }
-
-
-
-
-
-
-
-
 @media screen and (min-width:768px){
-    h1:lang(zh-Hant-TW) {
+    h1:lang(zh-Hant-TW){
         font-size: 72px;
         font-weight: 900;
     }
-
-    h2:lang(zh-Hant-TW) {
+    h2:lang(zh-Hant-TW){
         font-size: 48px;
         font-weight: 800;
     }
-
-    h3:lang(zh-Hant-TW) {
+    h3:lang(zh-Hant-TW){
         font-size: 40px;
         font-weight: 700;
     }
-
-    h4:lang(zh-Hant-TW) {
+    h4:lang(zh-Hant-TW){
         font-size: 36px;
         font-weight: 600;
     }
-
-    h5:lang(zh-Hant-TW) {
+    h5:lang(zh-Hant-TW){
         font-size: 32px;
         font-weight: 600;
     }
-
-    h6:lang(zh-Hant-TW) {
+    h6:lang(zh-Hant-TW){
         font-size: 24px;
         font-weight: 500;
     }
-
-    p:lang(zh-Hant-TW) {
+    p:lang(zh-Hant-TW){
         font-size: 16px;
         font-weight: 400;
     }
-
-    h1:lang(en) {
+    h1:lang(en){
         font-size: 58px;
         font-weight: 900;
     }
-
-    h2:lang(en) {
+    h2:lang(en){
         font-size: 44px;
         font-weight: 800;
     }
-
-    h3:lang(en) {
+    h3:lang(en){
         font-size: 36px;
         font-weight: 700;
     }
-
-    h4:lang(en) {
+    h4:lang(en){
         font-size: 32px;
         font-weight: 600;
     }
-
-    h5:lang(en) {
+    h5:lang(en){
         font-size: 28px;
         font-weight: 600;
     }
-
-    h6:lang(en) {
+    h6:lang(en){
         font-size: 20px;
         font-weight: 500;
     }
-
-    p:lang(en) {
+    p:lang(en){
         font-size: 16px;
         font-weight: 400;
     }
-    /* 分隔線 */
-    .partition {
+    .partition{
         position: relative;
         width: 100%;
         height: 175px;
         top: -15vh;
     }
-
-    .partition img {
+    .partition img{
         transform: scaleX(1.5);
     }
-
-    /* 地圖、季節、排行榜、小學堂 */
-    /* .category{} */
-    .category .container {
+    .category .container{
         max-width: 720px;
     }
-
-    /* .category .categoryItem{} */
-    .category .map:hover i {
+    .category .map:hover i{
         color: var(--addColor);
     }
-
-    .category .map:hover p {
+    .category .map:hover p{
         color: var(--addColor);
     }
-
-    .category .season:hover i {
+    .category .season:hover i{
         color: var(--secondColor);
     }
-
-    .category .season:hover p {
+    .category .season:hover p{
         color: var(--secondColor);
     }
-
-    .category .ranking:hover i {
+    .category .ranking:hover i{
         color: var(--secondColor);
     }
-
-    .category .ranking:hover p {
+    .category .ranking:hover p{
         color: var(--secondColor);
     }
-
-    .category .knowledge:hover i {
+    .category .knowledge:hover i{
         color: var(--mainColor);
     }
-
-    .category .knowledge:hover p {
+    .category .knowledge:hover p{
         color: var(--mainColor);
     }
-
-    /* .category .categoryItem i{} */
-    .category .categoryItem .inMobile {
+    .category .categoryItem .inMobile{
         display: none;
     }
-
-    .category .categoryItem .inWeb {
+    .category .categoryItem .inWeb{
         display: inline-block;
     }
-
-    /* 本週新鮮現採weekFresh */
-    section.weekFresh .commodity {
+    section.weekFresh .commodity{
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
         max-width: 1440px;
     }
-
-    section.weekFresh .fa-angle-left {
+    section.weekFresh .fa-angle-left{
         color: var(--mainColor);
         position: absolute;
         top: 50%;
@@ -370,8 +308,7 @@ html{
         color: var(--black);
         z-index: 2;
     }
-
-    section.weekFresh .fa-chevron-right {
+    section.weekFresh .fa-chevron-right{
         color: var(--mainColor);
         position: absolute;
         top: 50%;
@@ -381,23 +318,20 @@ html{
         color: var(--black);
         z-index: 2;
     }
-
-    section.weekFresh .commodity .container {
+    section.weekFresh .commodity .container{
         max-width: 920px;
         overflow-x: hidden;
         justify-content: left;
         align-items: center;
         flex-flow: row nowrap;
     }
-
-    section.weekFresh .commodityCard {
+    section.weekFresh .commodityCard{
         min-width: 296px;
         height: auto;
         display: flex;
         flex-flow: column nowrap;
     }
-
-    section.weekFresh .cardUp {
+    section.weekFresh .cardUp{
         width: 296px;
         height: 262px;
         border-radius: 32px 32px 0 0;
@@ -405,8 +339,7 @@ html{
         background-size: cover;
         overflow: hidden;
     }
-
-    section.weekFresh .cardUp p {
+    section.weekFresh .cardUp p{
         background-color: var(--secondColor);
         color: var(--backgroundColor);
         position: absolute;
@@ -415,8 +348,7 @@ html{
         right: 1em;
         border-radius: var(--radiusNormal);
     }
-
-    section.weekFresh .circlePicture {
+    section.weekFresh .circlePicture{
         border-radius: 50%;
         border: 1px solid var(--mainColor);
         text-align: center;
@@ -424,12 +356,10 @@ html{
         left: 0.4em;
         bottom: 0.4em;
     }
-
-    section.weekFresh .circlePicture img {
+    section.weekFresh .circlePicture img{
         scale: 1.1;
     }
-
-    section.weekFresh .cardBottom {
+    section.weekFresh .cardBottom{
         position: relative;
         padding: 0.5em;
         text-align: justify;
@@ -437,8 +367,7 @@ html{
         overflow: hidden;
         height: auto;
     }
-
-    section.weekFresh button.heart {
+    section.weekFresh button.heart{
         cursor: pointer;
         position: absolute;
         width: 42px;
@@ -449,35 +378,28 @@ html{
         transition: var(--transitionNormal);
         color: var(--secondColor);
         display: block;
-        /* background-color: transparent; */
         border: 0;
     }
-
-    section.weekFresh button.heart i {
+    section.weekFresh button.heart i{
         transform: translateY(-0.25em);
     }
-
-    section.weekFresh .cardBottom .cardTitle {
+    section.weekFresh .cardBottom .cardTitle{
         text-align: justify;
         position: relative;
         margin: 0;
     }
-
-    section.weekFresh .cardBottom .cardTitle h5 {
+    section.weekFresh .cardBottom .cardTitle h5{
         margin: 0 0 0.5em 0;
     }
-
-    section.weekFresh .cardBottom .name {
+    section.weekFresh .cardBottom .name{
         padding: 0;
         position: relative;
     }
-
-    section.weekFresh .cardBottom .unit {
+    section.weekFresh .cardBottom .unit{
         padding: 0.5em 0;
         position: relative;
     }
-
-    section.weekFresh .cardBottom .price {
+    section.weekFresh .cardBottom .price{
         padding: 0.5em 0;
         color: var(--secondColor);
         overflow: hidden;
@@ -485,8 +407,7 @@ html{
         margin: 0;
         text-align: left;
     }
-
-    section.weekFresh .cardBottom button.intoCart {
+    section.weekFresh .cardBottom button.intoCart{
         padding: 0.5em 2em;
         position: relative;
         color: var(--backgroundColor);
@@ -497,30 +418,23 @@ html{
         margin: auto 0;
         display: inline-block;
         transition: var(--transitionNormal);
-
         &:hover {
             color: var(--mainColor);
             background-color: var(--backgroundColor);
         }
     }
-
-    section.weekFresh button.lookMore {
+    section.weekFresh button.lookMore{
         cursor: pointer;
         padding: 0.8em 6em;
         margin-bottom: 6em;
         transition: var(--transitionNormal);
-
         &:hover {
             color: var(--mainColor);
             background-color: var(--backgroundColor);
-            /* border: 1px solid var(--mainColor); */
         }
     }
-
-    /* 本週超讚小農 */
     section.weekFarmer button.seeCommidity {
         transition: var(--transitionNormal);
-
         &:hover {
             background-color: var(--backgroundColor);
             color: var(--mainColor);
