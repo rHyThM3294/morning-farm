@@ -37,14 +37,12 @@
               <span class="iconWord">購物車</span>
             </a>
           </div>
-          <div class="bell">
-            <a href="">
-              <span class="iconChangeBell">
-                <i class="fa-regular fa-bell defultBell"></i>
-                <i class="fa-solid fa-bell hoverBell"></i>
-              </span>
-              <span class="iconWord">通知</span>
-            </a>
+          <div class="bell" @click="goAdmin">
+            <span class="iconChangeBell">
+              <i class="fa-regular fa-bell defultBell"></i>
+              <i class="fa-solid fa-bell hoverBell"></i>
+            </span>
+            <span class="iconWord">通知</span>
           </div>
         </div>
       </div>
@@ -70,6 +68,9 @@ const goCart = () => {
 }
 const goMember = () => {
   router.push({ name: "member" })
+}
+const goAdmin = () => {
+  router.push({ name: "adminLogin" })
 }
 watch(
   () => cart.itemTypesCount,
