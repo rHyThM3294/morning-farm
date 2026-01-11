@@ -34,6 +34,7 @@ const router = createRouter({
     { path: '/cart', name:'cart',component: () => import('@/views/customer/CartView.vue') },
     { path: '/member', name:'member',component: () => import("@/views/customer/MemberView.vue") },
     { path: '/admin/login', component: AdminLoginView },
+    { path: '/admin/login', name: 'adminLogin', component: AdminLoginView },
     { path: '/admin/dashboard', component: AdminDashboardView },
     { path: '/admin/add-commodity', component: AddCommodityDetail },
     { path: '/admin/check-order', component: CheckOrder },

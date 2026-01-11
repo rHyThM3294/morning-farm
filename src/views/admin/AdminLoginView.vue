@@ -13,7 +13,7 @@
         <label for="">密碼：</label>
         <input type="password" placeholder="密碼" />
       </div>
-      <button type="button" class="forgotPassword">忘記密碼?</button>
+      <button type="button" class="forgotPassword" @click="goHome">忘記密碼?</button>
       <button type="button" class="login" @click="login">登入</button>
     </div>
   </div>
@@ -29,6 +29,9 @@ const handleKey = (e) => {
   if (e.key.toLowerCase() === 'l') {
     router.push('/')   
   }
+}
+const goHome = () => {
+  router.push({ name: 'home' })
 }
 onMounted(() => {
   window.addEventListener('keydown', handleKey)
