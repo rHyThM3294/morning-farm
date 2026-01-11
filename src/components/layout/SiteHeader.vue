@@ -113,15 +113,14 @@ header .container{
     align-items: center;
     gap: 1em;
 }
-header .logoLink {
+header .logo{
   display: block;
-}
-header .logo {
   width: 136px;
   height: 28px;
   background: url("/image/Logo.png") center no-repeat;
   background-size: cover;
 }
+
 header .headButton{
     display: flex;
     font-size: 1.3em;
