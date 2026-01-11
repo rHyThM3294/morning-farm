@@ -101,7 +101,7 @@ export default {
         default:
           console.log("clicked:", submenu);
       }
-      if (!isDesktop.value) {
+      if (!isDesktop.value){
         isNavOpen.value = false;
         openMenu.value = null;
       }
@@ -123,7 +123,7 @@ export default {
       openMenu.value = null;
     };
     const handleOverlayClick = () => {
-      if (!isDesktop.value) {
+      if (!isDesktop.value){
         isNavOpen.value = false;
         openMenu.value = null;
       }
