@@ -3,7 +3,7 @@
     <div class="container">
       <div class="headerUp">
         <RouterLink to="/" class="logoLink">
-          <div class="logo"></div>
+          
         </RouterLink>
         <div class="searchBox webSearch">
           <input type="text" placeholder="我想要買..." />
