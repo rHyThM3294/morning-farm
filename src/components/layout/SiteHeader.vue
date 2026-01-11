@@ -2,7 +2,7 @@
   <header>
     <div class="container">
       <div class="headerUp">
-        <RouterLink to="/" class="logo">
+        <RouterLink to="/">
           <div class="logo"></div>
         </RouterLink>
         <div class="searchBox webSearch">
@@ -85,7 +85,7 @@ watch(
 )
 </script>
 <style scoped>
-/* header */
+  /* header */
 .webSearch {
     display: none;
 }
@@ -201,5 +201,63 @@ header .searchButton {
   0% { transform: scale(1); }
   40% { transform: scale(1.4); }
   100% { transform: scale(1); }
+}
+
+@media(width>=768px){
+  /* header */
+    .mobileSearch {
+        display: none;
+    }
+    .webSearch {
+        display: block;
+    }
+    header .headerUp{
+        width: 100%;
+        justify-content: space-between;
+        gap: 0;
+    }
+    header .logo{
+        width: 292px;
+        height: 60px;
+        transform: scale(75%);
+    }
+    header .headButton {
+        gap: 0;
+        padding: 0;
+        font-size: 1em;
+    }
+    .member {
+        min-width: 110px;
+    }
+    .cart {
+        min-width: 90px;
+    }
+    .bell {
+        min-width: 80px;
+    }
+    .member:hover .defultUser {
+        display: none;
+    }
+    .member:hover .hoverUser {
+        display: inline-block;
+    }
+    .cart:hover .defultCart {
+        display: none;
+    }
+    .cart:hover .hoverCart {
+        display: inline-block;
+    }
+    .bell:hover .defultBell {
+        display: none;
+    }
+    .bell:hover .hoverBell {
+        display: inline-block;
+    }
+    header .headButton .iconWord {
+        display: inline;
+    }
+    header .searchBox {
+        width: 25%;
+    }
 }
 </style>
