@@ -74,6 +74,29 @@ function goAllProducts(){
 }
 </script>
 <style scoped>
+  /* section banner */
+section.banner {
+    background: url("/image/bannerHero.png") top no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+section.banner .bannerWords {
+    color: var(--backgroundColor);
+    position: absolute;
+    top: 25%;
+    right: 1.5em;
+    writing-mode: vertical-rl;
+    /* 文字由上往下，從右到左 */
+    text-orientation: upright;
+    /* 每個字保持正立，不旋轉 */
+    line-height: 1em;
+}
+/* .bannerWords h3{} */
+.bannerWords h3.left {
+    margin: 1.2em 1.2em 0 0;
+}
 .thisWeekFresh{
   width: 90%;
   position: relative;
