@@ -105,6 +105,9 @@ export default {
         isNavOpen.value = false;
         openMenu.value = null;
       }
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
     };
     const handleResize = () => {
       const desktop = window.innerWidth >= 768;
