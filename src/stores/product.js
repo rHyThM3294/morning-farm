@@ -113,7 +113,7 @@ export const useProductStore = defineStore('product', () => {
     { title: "新社香菇", category: "season", series: "mushroom" },
     { title: "段木香菇", category: "season", series: "mushroom" },
     { title: "香菇乾", category: "process", series: "mushroom" },
-    { title: "臺農57號地瓜", category: "season", series: "sweet_potato" },
+    { title: "臺農地瓜", category: "season", series: "sweet_potato" },
     { title: "紫心地瓜", category: "season", series: "sweet_potato" },
     { title: "地瓜片", category: "process", series: "sweet_potato" },
     { title: "有機紅蘿蔔", category: "season", series: "carrot" },
