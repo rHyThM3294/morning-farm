@@ -21,21 +21,21 @@
           <i class="fa-solid fa-xmark"></i>
         </button>
         <div class="drawerMenu">
-          <button @click="switchTab('personal')">個人資料</button>
-          <button @click="switchTab('password')">修改密碼</button>
-          <button @click="switchTab('credit')">信用卡管理</button>
-          <button @click="switchTab('address')">收貨地址</button>
-          <button @click="switchTab('searchList')">訂單查詢</button>
-          <button @click="switchTab('favorite')">最愛清單</button>
+          <button :class="{ active: isActive('personal') }" @click="switchTab('personal')">個人資料</button>
+          <button :class="{ active: isActive('password') }" @click="switchTab('password')">修改密碼</button>
+          <button :class="{ active: isActive('credit') }" @click="switchTab('credit')">信用卡管理</button>
+          <button :class="{ active: isActive( 'address' ) }" @click="switchTab('address')">收貨地址</button>
+          <button :class="{ active: isActive('searchList') }" @click="switchTab('searchList')">訂單查詢</button>
+          <button :class="{ active: isActive('favorite') }" @click="switchTab('favorite')">最愛清單</button>
         </div>
       </aside>
       <aside class="desktopMenu">
-        <button @click="switchTab('personal')">個人資料</button>
-        <button @click="switchTab('password')">修改密碼</button>
-        <button @click="switchTab('credit')">信用卡管理</button>
-        <button @click="switchTab('address')">收貨地址</button>
-        <button @click="switchTab('searchList')">訂單查詢</button>
-        <button @click="switchTab('favorite')">最愛清單</button>
+        <button :class="{ active: isActive('personal') }" @click="switchTab('personal')">個人資料</button>
+        <button :class="{ active: isActive('password') }" @click="switchTab('password')">修改密碼</button>
+        <button :class="{ active: isActive('credit') }"   @click="switchTab('credit')">信用卡管理</button>
+        <button :class="{ active: isActive('address') }"  @click="switchTab('address')">收貨地址</button>
+        <button :class="{ active: isActive('searchList') }" @click="switchTab('searchList')">訂單查詢</button>
+        <button :class="{ active: isActive('favorite') }" @click="switchTab('favorite')">最愛清單</button>
       </aside>
       <section class="contentArea">
         <component
@@ -66,22 +66,8 @@ const orderDetailMode = ref(false);
 const selectedOrder = ref(null);
 gsap.registerPlugin(ScrollTrigger);
 const drawerOpen = ref(false);
-function switchTab(tab){
-  currentTab.value = tab;
-  orderDetailMode.value = false;
-  drawerOpen.value = false;
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-}
-function openOrderDetail(order){
-  selectedOrder.value = order; 
-  orderDetailMode.value = true;
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+function isActive(tab){
+  return currentTab.value === tab
 }
 const currentComponent = computed(() => {
   if (currentTab.value === "searchList" && orderDetailMode.value)
@@ -96,6 +82,23 @@ const currentComponent = computed(() => {
   };
   return map[currentTab.value];
 });
+function switchTab(tab){
+  currentTab.value = tab
+  orderDetailMode.value = false
+  drawerOpen.value = false
+
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  })
+}
+function openOrderDetail(order){
+  selectedOrder.value = order
+  orderDetailMode.value = true
+
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  })
+}
 const breadcrumb = computed(() => {
   const map = {
     personal: "個人資料",
@@ -116,6 +119,7 @@ const breadcrumb = computed(() => {
   width: 100%;
   margin: 10em auto 2em auto;
   max-width: 1200px;
+  min-height: 100vh;
 }
 .mobileHeader{
   display: flex;
@@ -177,6 +181,11 @@ const breadcrumb = computed(() => {
   padding: 1em;
   flex: 1;
 }
+.desktopMenu button.active,.drawerMenu button.active{
+  background-color: var(--addColor);
+  color: var(--mainColor);
+  font-weight: 600;
+}
 @media (width >= 768px){
   .mobileHeader{
     display: none;
@@ -192,7 +201,7 @@ const breadcrumb = computed(() => {
   }
   .desktopMenu{
     position: sticky;
-    top: 100px;
+    top: 120px;
     height: fit-content;
     display: flex;
     flex-direction: column;
