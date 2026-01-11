@@ -61,6 +61,7 @@
 import { ref, watch } from "vue"
 import { useRouter } from "vue-router"
 import { useCartStore } from "@/stores/cart"
+const BASE = import.meta.env.BASE_URL
 const router = useRouter()
 const cart = useCartStore()
 const isBumping = ref(false)
@@ -86,10 +87,10 @@ watch(
 </script>
 <style scoped>
   /* header */
-.webSearch {
+.webSearch{
     display: none;
 }
-header {
+header{
     width: 100%;
     height: auto;
     padding: 1em 0;
@@ -102,7 +103,7 @@ header {
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-header .headerUp {
+header .headerUp{
     width: 100%;
     display: flex;
     flex-flow: row nowrap;
@@ -131,42 +132,42 @@ header .headButton{
 header .headButton .iconWord{
     display: none;
 }
-header .headButton i {
+header .headButton i{
     font-size: 1.2em;
 }
-.member {
+.member{
     width: 1.5em;
     text-align: center;
     cursor: pointer;
 }
-.cart {
+.cart{
     width: 1.5em;
     text-align: center;
 }
-.bell {
+.bell{
     width: 1.5em;
     text-align: center;
 }
-.hoverUser {
+.hoverUser{
     display: none;
 }
-.hoverCart {
+.hoverCart{
     display: none;
 }
-.hoverBell {
+.hoverBell{
     display: none;
 }
-header .searchBox {
+header .searchBox{
     position: relative;
     width: 80%;
 }
-header .searchBox input {
+header .searchBox input{
     width: 90%;
     border: 1px solid var(--mainColor);
     border-radius: var(--radiusLarge);
     padding: 0.8em 0.4em;
 }
-header .searchButton {
+header .searchButton{
     position: absolute;
     transform: translateY(-50%);
     top: 50%;
@@ -203,11 +204,10 @@ header .searchButton {
 }
 
 @media(width>=768px){
-  /* header */
-    .mobileSearch {
+    .mobileSearch{
         display: none;
     }
-    .webSearch {
+    .webSearch{
         display: block;
     }
     header .headerUp{
@@ -220,42 +220,42 @@ header .searchButton {
         height: 60px;
         transform: scale(75%);
     }
-    header .headButton {
+    header .headButton{
         gap: 0;
         padding: 0;
         font-size: 1em;
     }
-    .member {
+    .member{
         min-width: 110px;
     }
-    .cart {
+    .cart{
         min-width: 90px;
     }
-    .bell {
+    .bell{
         min-width: 80px;
     }
-    .member:hover .defultUser {
+    .member:hover .defultUser{
         display: none;
     }
-    .member:hover .hoverUser {
+    .member:hover .hoverUser{
         display: inline-block;
     }
-    .cart:hover .defultCart {
+    .cart:hover .defultCart{
         display: none;
     }
-    .cart:hover .hoverCart {
+    .cart:hover .hoverCart{
         display: inline-block;
     }
-    .bell:hover .defultBell {
+    .bell:hover .defultBell{
         display: none;
     }
-    .bell:hover .hoverBell {
+    .bell:hover .hoverBell{
         display: inline-block;
     }
-    header .headButton .iconWord {
+    header .headButton .iconWord{
         display: inline;
     }
-    header .searchBox {
+    header .searchBox{
         width: 25%;
     }
 }
