@@ -2,7 +2,9 @@
   <header>
     <div class="container">
       <div class="headerUp">
-        <RouterLink to="/" class="logo"></RouterLink>
+        <RouterLink to="/" class="logo">
+          <div class="logo"></div>
+        </RouterLink>
         <div class="searchBox webSearch">
           <input type="text" placeholder="我想要買..." />
           <button type="submit" id="searchButton" class="searchButton">
@@ -114,13 +116,11 @@ header .container{
     gap: 1em;
 }
 header .logo{
-  display: block;
-  width: 136px;
-  height: 28px;
-  background: url("/image/Logo.png") center no-repeat;
-  background-size: cover;
+    width: 136px;
+    height: 28px;
+    background: url("/image/Logo.png") center no-repeat;
+    background-size: cover;
 }
-
 header .headButton{
     display: flex;
     font-size: 1.3em;
