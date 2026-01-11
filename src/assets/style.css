@@ -41,7 +41,7 @@ html,body,header,menu,nav,main,div,span,article,aside,p,a,footer,ul,ol,li,table,
     /* 陰影 */
 }
 html,body{
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 }
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
