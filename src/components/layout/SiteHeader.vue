@@ -2,9 +2,9 @@
   <header>
     <div class="container">
       <div class="headerUp">
-        <a href="/index.html">
+        <RouterLink to="/" class="logo">
           <div class="logo"></div>
-        </a>
+        </RouterLink>
         <div class="searchBox webSearch">
           <input type="text" placeholder="我想要買..." />
           <button type="submit" id="searchButton" class="searchButton">
