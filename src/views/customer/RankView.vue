@@ -63,11 +63,13 @@ function handleSearch(keyword){
 </script>
 <style scoped>
 .rank-page{
+  width: 100%;
   text-align: center;
   padding-bottom: 4em;
+  overflow-x: hidden;
 }
 .container{
-  width: 100%;
+  width: 90%;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;

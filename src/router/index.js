@@ -18,7 +18,7 @@ const Commodity = () => import('@/components/adminBlock/Commodity.vue')
 const Withdraw = () => import('@/components/adminBlock/Withdraw.vue')
 const Finance = () =>import('@/components/adminBlock/Finance.vue')
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', name: 'home', component: HomeView, meta: { showLoading: true } },
     { path: '/products', name: 'products', component: ProductsView },

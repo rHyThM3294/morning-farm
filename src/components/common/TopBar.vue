@@ -52,14 +52,14 @@ function selectButton(value){
 <style scoped>
 .top{
   width: 100%;
-  padding: 8em 1em 1em 1em;
+  padding: 9em 0 1em 0;
   text-align: center;
   background-color: var(--backgroundColor, #f8f8f8);
   border-bottom: 1px solid #ddd;
 }
 .title{
   color: var(--secondColor);
-  margin: 1em 0;
+  margin: 0;
 }
 .action-bar{
   display: flex;
@@ -83,8 +83,7 @@ function selectButton(value){
   transition: var(--transitionNormal);
   width: 150px;
 }
-.main-btn:hover,
-.main-btn.active{
+.main-btn:hover,.main-btn.active{
   background: var(--mainColor);
   color: var(--white);
 }
