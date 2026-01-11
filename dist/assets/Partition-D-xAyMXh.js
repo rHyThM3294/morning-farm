@@ -1,1 +1,0 @@
-import{_ as s,c as e,b as n,o}from"./index-DczsYwvi.js";const r="/morning-farm/assets/banner-CLt_lpSZ.png",a={},c={class:"partition"};function _(i,t){return o(),e("div",c,[...t[0]||(t[0]=[n("img",{src:r,alt:"我只是分隔線"},null,-1)])])}const d=s(a,[["render",_],["__scopeId","data-v-73d8c5e5"]]);export{d as P};
