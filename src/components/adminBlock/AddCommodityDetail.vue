@@ -186,7 +186,7 @@ watch(
   },
   { immediate: true }
 );
-function resetForm() {
+function resetForm(){
   form.value = {
     productName: "",
     productTag: "",
@@ -222,7 +222,7 @@ async function submitForm(){
     description: form.value.description,
     farmerName,
   };
-  if (isEditMode.value) {
+  if (isEditMode.value){
     productStore.updateProduct(props.editingId, productData);
     toastStore.success("商品更新成功！");
     await nextTick();
@@ -238,7 +238,7 @@ async function submitForm(){
   await nextTick();
   emit("back");
 }
-function handleFileUpload(e) {
+function handleFileUpload(e){
   const files = Array.from(e.target.files);
   if (!files.length) return;
   if (previewImages.value.length + files.length > MAX_IMAGES) {
@@ -256,21 +256,21 @@ function handleFileUpload(e) {
   });
   e.target.value = "";
 }
-function removeImage(index) {
+function removeImage(index){
   previewImages.value.splice(index, 1);
   form.value.imageList.splice(index, 1);
 }
-function goBack() {
+function goBack(){
   emit("back");
 }
-function handleDeleteAndBack() {
+function handleDeleteAndBack(){
   const ok = window.confirm("確定要刪除這個商品嗎？此動作無法復原！");
   if (!ok) return;
   productStore.deleteProduct(props.editingId);
   toastStore.success("商品已刪除");
   emit("back");
 }
-function autoGenerateStory() {
+function autoGenerateStory(){
   const name = form.value.productName || "這項商品";
   const tag = form.value.productTag || "用心栽培";
   const unit = form.value.unit || "單位";
