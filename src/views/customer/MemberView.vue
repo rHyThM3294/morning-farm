@@ -21,21 +21,69 @@
           <i class="fa-solid fa-xmark"></i>
         </button>
         <div class="drawerMenu">
-          <button :class="{ active: isActive('personal') }" @click="switchTab('personal')">個人資料</button>
-          <button :class="{ active: isActive('password') }" @click="switchTab('password')">修改密碼</button>
-          <button :class="{ active: isActive('credit') }" @click="switchTab('credit')">信用卡管理</button>
-          <button :class="{ active: isActive( 'address' ) }" @click="switchTab('address')">收貨地址</button>
-          <button :class="{ active: isActive('searchList') }" @click="switchTab('searchList')">訂單查詢</button>
-          <button :class="{ active: isActive('favorite') }" @click="switchTab('favorite')">最愛清單</button>
+          <button 
+            :class="{ active: isActive('personal') }"
+            :disabled="isActive('personal')"
+            @click="switchTab('personal')"
+          >個人資料</button>
+          <button 
+            :class="{ active: isActive('password') }"
+            :disabled="isActive('password')"
+            @click="switchTab('password')"
+          >修改密碼</button>
+          <button 
+            :class="{ active: isActive('credit') }"
+            :disabled="isActive('credit')"
+            @click="switchTab('credit')"
+          >信用卡管理</button>
+          <button 
+            :class="{ active: isActive('address') }"
+            :disabled="isActive('address')"
+            @click="switchTab('address')"
+          >收貨地址</button>
+          <button 
+            :class="{ active: isActive('searchList') }"
+            :disabled="isActive('searchList')"
+            @click="switchTab('searchList')"
+          >訂單查詢</button>
+          <button 
+            :class="{ active: isActive('favorite') }"
+            :disabled="isActive('favorite')"
+            @click="switchTab('favorite')"
+          >最愛清單</button>
         </div>
       </aside>
       <aside class="desktopMenu">
-        <button :class="{ active: isActive('personal') }" @click="switchTab('personal')">個人資料</button>
-        <button :class="{ active: isActive('password') }" @click="switchTab('password')">修改密碼</button>
-        <button :class="{ active: isActive('credit') }"   @click="switchTab('credit')">信用卡管理</button>
-        <button :class="{ active: isActive('address') }"  @click="switchTab('address')">收貨地址</button>
-        <button :class="{ active: isActive('searchList') }" @click="switchTab('searchList')">訂單查詢</button>
-        <button :class="{ active: isActive('favorite') }" @click="switchTab('favorite')">最愛清單</button>
+        <button 
+          :class="{ active: isActive('personal') }"
+          :disabled="isActive('personal')"
+          @click="switchTab('personal')"
+        >個人資料</button>
+        <button 
+          :class="{ active: isActive('password') }"
+          :disabled="isActive('password')"
+          @click="switchTab('password')"
+        >修改密碼</button>
+        <button 
+          :class="{ active: isActive('credit') }"
+          :disabled="isActive('credit')"
+          @click="switchTab('credit')"
+        >信用卡管理</button>
+        <button 
+          :class="{ active: isActive('address') }"
+          :disabled="isActive('address')"
+          @click="switchTab('address')"
+        >收貨地址</button>
+        <button 
+          :class="{ active: isActive('searchList') }"
+          :disabled="isActive('searchList')"
+          @click="switchTab('searchList')"
+        >訂單查詢</button>
+        <button 
+          :class="{ active: isActive('favorite') }"
+          :disabled="isActive('favorite')"
+          @click="switchTab('favorite')"
+        >最愛清單</button>
       </aside>
       <section class="contentArea">
         <component
@@ -120,6 +168,7 @@ const breadcrumb = computed(() => {
   margin: 10em auto 2em auto;
   max-width: 1200px;
   min-height: 100vh;
+  overflow: visible;
 }
 .mobileHeader{
   display: flex;
@@ -181,9 +230,14 @@ const breadcrumb = computed(() => {
   padding: 1em;
   flex: 1;
 }
+.desktopMenu button:disabled,.drawerMenu button:disabled{
+  pointer-events: none;
+  opacity: 0.65;
+  cursor: default;
+}
 .desktopMenu button.active,.drawerMenu button.active{
   background-color: var(--addColor);
-  color: var(--mainColor);
+  color: var(--black);
   font-weight: 600;
 }
 @media (width >= 768px){
@@ -198,15 +252,19 @@ const breadcrumb = computed(() => {
     grid-template-columns: 220px 1fr;
     gap: 1.5em;
     padding: 1em;
+    /* 新增：確保容器有足夠高度 */
+    align-items: start; /* 重要：讓子元素從頂部對齊 */
   }
   .desktopMenu{
     position: sticky;
-    top: 120px;
+    top: 120px; /* 距離視窗頂部的距離 */
     height: fit-content;
     display: flex;
     flex-direction: column;
     gap: 0;
     margin: 5em 0 0 0;
+    /* 新增：確保在 grid 中正確定位 */
+    align-self: start;
   }
   .desktopMenu button{
     padding: 1em 1em;
@@ -218,6 +276,13 @@ const breadcrumb = computed(() => {
     &:hover{
       background-color: var(--addColor);
     }
+  }
+  
+  /* 新增：確保內容區域有足夠高度 */
+  .contentArea{
+    padding: 1em;
+    flex: 1;
+    min-height: 100vh; /* 確保有足夠的滾動空間 */
   }
 }
 </style>
