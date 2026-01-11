@@ -1,1 +1,0 @@
-import{N as s,k as u}from"./index-uehdW3nq.js";const f=s("favorite",()=>{const e=u([]);function i(t){const r=e.value.findIndex(o=>o.id===t.id);return r>-1?(e.value.splice(r,1),!1):(e.value.push(t),!0)}function n(t){return e.value.some(r=>r.id===t)}return{items:e,toggle:i,isFavorited:n}});export{f as u};
