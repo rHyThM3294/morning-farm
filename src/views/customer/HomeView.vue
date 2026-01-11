@@ -1,6 +1,6 @@
 <template>
   <div class="homeView">
-    <section class="banner">
+    <section class="banner" :style="bannerStyle">
       <div class="bannerWords">
         <h3 class="right">從田間到餐桌</h3>
         <h3 class="left">每一口都是用心</h3>
@@ -50,6 +50,15 @@ import Produce from '../../components/common/Produce.vue';
 import WeekFarmerIntroduction from '../../components/farmer/WeekFarmerIntroduction.vue';
 import Question from '../../components/product/question.vue';
 import AsideButton from '../../components/common/AsideButton.vue';
+
+const BASE = import.meta.env.BASE_URL || "/";
+const bannerStyle = computed(() => ({
+  backgroundImage: `url(${BASE}image/bannerHero.png)`,
+  backgroundPosition: "top",
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "cover"
+}));
+
 const router = useRouter()
 const productStore = useProductStore()
 const handleKey = (e) => {
@@ -76,7 +85,6 @@ function goAllProducts(){
 <style scoped>
   /* section banner */
 section.banner {
-    background: url("/image/bannerHero.png") top no-repeat;
     background-size: cover;
     width: 100%;
     height: 100vh;
