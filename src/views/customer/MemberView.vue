@@ -252,18 +252,16 @@ const breadcrumb = computed(() => {
     grid-template-columns: 220px 1fr;
     gap: 1.5em;
     padding: 1em;
-    /* 新增：確保容器有足夠高度 */
-    align-items: start; /* 重要：讓子元素從頂部對齊 */
+    align-items: start; 
   }
   .desktopMenu{
     position: sticky;
-    top: 120px; /* 距離視窗頂部的距離 */
+    top: 120px;
     height: fit-content;
     display: flex;
     flex-direction: column;
     gap: 0;
     margin: 5em 0 0 0;
-    /* 新增：確保在 grid 中正確定位 */
     align-self: start;
   }
   .desktopMenu button{
@@ -277,12 +275,10 @@ const breadcrumb = computed(() => {
       background-color: var(--addColor);
     }
   }
-  
-  /* 新增：確保內容區域有足夠高度 */
   .contentArea{
     padding: 1em;
     flex: 1;
-    min-height: 100vh; /* 確保有足夠的滾動空間 */
+    min-height: 100vh;
   }
 }
 </style>
