@@ -48,9 +48,9 @@ const startLoadingAnimation = () => {
   isExpanding.value = false
   clearAllTimeouts()
   lockScroll()
-  const MORPH_START = 1200
-  const GOOD_FADE_DURATION = 0
-  const MORNING_DELAY = 0
+  const MORPH_START = 1500
+  const GOOD_FADE_DURATION = 1000
+  const MORNING_DELAY = 1000
   const MORNING_SCALE_DURATION = 0.6
   timeouts.push(setTimeout(() => {
     if (!goodEl.value) return
@@ -79,7 +79,7 @@ const startLoadingAnimation = () => {
   }, 5000))
 }
 const skipHandler = (e) => {
-  if (e.key && e.key.toLowerCase() === 'k') {
+  if (e.key && e.key.toLowerCase() === 'k'){
     clearAllTimeouts()
     finishLoading()
   }
