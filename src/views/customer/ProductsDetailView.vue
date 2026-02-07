@@ -88,7 +88,7 @@
       <div class="farmerCard">
         <h4 class="farmerName">【{{ product.sellerName }}】</h4>
         <div class="farmerInfo">
-          <img class="avatar" :src="product.sellerAvatarUrl" :alt="product.sellerName" />
+          <img class="avatar" :src="resolvePublic(product.sellerAvatarUrl)" :alt="product.sellerName" />
           <p class="farmerDesc">{{ product.farmerDescription }}</p>
         </div>
         <button class="viewAllButton" @click="goFarmerAll">
@@ -163,7 +163,7 @@ const product = reactive({
       { label: "10 顆 / 箱", value: 10 },
       { label: "12 顆 / 箱", value: 12 },
     ],
-  sellerAvatarUrl: storeProduct.value?.sellerAvatarUrl ?? "/morning-farm/image/sandPear.png",
+  sellerAvatarUrl:  storeProduct.value?.sellerAvatarUrl ?? `${BASE}image/sandPear.png`,
   farmerDescription:
     storeProduct.value?.farmerDescription ??
     "堅持產地直送、友善耕作超過二十年。",
@@ -246,6 +246,23 @@ function goFarmerAll(){
     params: { id: product.sellerName },
   });
 }
+
+
+
+function resolvePublic(path) {
+  if (!path) return "";
+  // 已經是完整網址（http/https/data/blob）就原樣回傳
+  if (/^(https?:|data:|blob:)/.test(path)) return path;
+
+  const basePath = import.meta.env.BASE_URL || "/";
+  const clean = String(path).replace(/^\//, ""); // 去掉開頭 / 避免跑到 domain root
+
+  // ✅ new URL 的 base 一定要是完整 URL
+  const fullBase = new URL(basePath, window.location.origin);
+  return new URL(clean, fullBase).toString();
+}
+
+
 </script>
 <style scoped>
 .detailPage { width: min(1200px, 92%); margin: 0 auto; padding: 7.5em 1.5em 2em 1.5em; }
@@ -269,7 +286,7 @@ function goFarmerAll(){
 .tag[data-type="可自取"] { background: var(--mainColor); color: var(--white); }
 .seller { color: var(--secondColor); }
 .price { margin-left: auto; font-weight: 700; color: var(--secondColor); }
-.label { font-weight: 700; color: var(--firstColor); margin-right: 0.5em; }
+.label { font-weight: 700; color: var(--firstColor); margin:0 0.5em 1em 0; }
 .specs { margin: 1em 0; }
 .specButtons { display: flex; flex-wrap: wrap; gap: 0.5em; }
 .specBtn { padding: 0.5em 1em; border: 1px solid var(--mainColor); border-radius: var(--radiusLarge); background: var(--backgroundColor);color: var(--mainColor);cursor: pointer; }
