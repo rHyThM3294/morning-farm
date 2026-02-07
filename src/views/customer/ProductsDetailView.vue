@@ -90,7 +90,7 @@
         <div class="farmerInfo">
           <img
             class="avatar"
-            :src="product.sellerAvatarUrl"
+            :src="`${BASE}${product.sellerAvatarUrl}`"
             :alt="product.sellerName"
           />
           <p class="farmerDesc">{{ product.farmerDescription }}</p>
@@ -158,10 +158,7 @@ const product = reactive({
     placeholderGallery[2],
     placeholderGallery[3],
   ],
-
-  sellerAvatarUrl:
-    storeProduct.value?.sellerAvatarUrl ??
-    "/morning-farm/image/sandPear.png",
+  sellerAvatarUrl:(storeProduct.value?.sellerAvatarUrl || "image/sandPear.png").replace(/^\/+/, ""),
 
   farmerDescription:
     storeProduct.value?.farmerDescription ??
