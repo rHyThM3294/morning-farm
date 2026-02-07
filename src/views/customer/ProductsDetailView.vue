@@ -249,10 +249,13 @@ function goFarmerAll(){
 function resolvePublic(path) {
   if (!path) return "";
   if (/^(https?:|data:|blob:)/.test(path)) return path;
+  
   const basePath = import.meta.env.BASE_URL || "/";
-  const clean = String(path).replace(/^\//, ""); 
-  const fullBase = new URL(basePath, window.location.origin);
-  return new URL(clean, fullBase).toString();
+  // 確保 path 開頭沒有斜線，basePath 結尾有斜線
+  const cleanPath = String(path).replace(/^\//, "");
+  const cleanBase = basePath.endsWith('/') ? basePath : basePath + '/';
+  
+  return cleanBase + cleanPath;
 }
 </script>
 <style scoped>
