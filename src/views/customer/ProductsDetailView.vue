@@ -90,7 +90,7 @@
         <div class="farmerInfo">
           <img
             class="avatar"
-            :src="`${BASE}${product.sellerAvatarUrl}`"
+            :src="`morning-farm/image/sndPear.png`"
             :alt="product.sellerName"
           />
           <p class="farmerDesc">{{ product.farmerDescription }}</p>
