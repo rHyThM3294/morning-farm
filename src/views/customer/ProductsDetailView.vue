@@ -88,7 +88,11 @@
       <div class="farmerCard">
         <h4 class="farmerName">【{{ product.sellerName }}】</h4>
         <div class="farmerInfo">
-          <img class="avatar" :src="resolvePublic(product.sellerAvatarUrl)" :alt="product.sellerName" />
+          <img
+            class="avatar"
+            :src="`${BASE}${product.sellerAvatarUrl}`"
+            :alt="product.sellerName"
+          />
           <p class="farmerDesc">{{ product.farmerDescription }}</p>
         </div>
         <button class="viewAllButton" @click="goFarmerAll">
@@ -246,14 +250,7 @@ function goFarmerAll(){
     params: { id: product.sellerName },
   });
 }
-function resolvePublic(path) {
-  if (!path) return "";
-  if (/^(https?:|data:|blob:)/.test(path)) return path;
-  const basePath = import.meta.env.BASE_URL || "/";
-  const clean = String(path).replace(/^\//, ""); 
-  const fullBase = new URL(basePath, window.location.origin);
-  return new URL(clean, fullBase).toString();
-}
+
 </script>
 <style scoped>
 .detailPage { width: min(1200px, 92%); margin: 0 auto; padding: 7.5em 1.5em 2em 1.5em; }
