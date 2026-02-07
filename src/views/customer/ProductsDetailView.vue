@@ -163,7 +163,7 @@ const product = reactive({
       { label: "10 顆 / 箱", value: 10 },
       { label: "12 顆 / 箱", value: 12 },
     ],
-  sellerAvatarUrl: storeProduct.value?.sellerAvatarUrl ?? "image/sandPear.png",
+  sellerAvatarUrl: storeProduct.value?.sellerAvatarUrl ?? "image/sandpear.png",
   farmerDescription:
     storeProduct.value?.farmerDescription ??
     "堅持產地直送、友善耕作超過二十年。",
