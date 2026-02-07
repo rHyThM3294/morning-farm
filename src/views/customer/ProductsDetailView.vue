@@ -246,7 +246,7 @@ function goFarmerAll(){
     params: { id: product.sellerName },
   });
 }
-function resolvePublic(path) {
+function resolvePublic(path){
   if (!path) return "";
   if (/^(https?:|data:|blob:)/.test(path)) return path;
   
