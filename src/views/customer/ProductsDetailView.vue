@@ -88,11 +88,7 @@
       <div class="farmerCard">
         <h4 class="farmerName">【{{ product.sellerName }}】</h4>
         <div class="farmerInfo">
-          <img
-            class="avatar"
-            :src="`morning-farm/image/sndPear.png`"
-            :alt="product.sellerName"
-          />
+          <img class="avatar" :src="product.sellerAvatarUrl" :alt="product.sellerName" />
           <p class="farmerDesc">{{ product.farmerDescription }}</p>
         </div>
         <button class="viewAllButton" @click="goFarmerAll">
@@ -150,19 +146,28 @@ const product = reactive({
   price: storeProduct.value?.price ?? 420,
   status: storeProduct.value?.status ?? "New",
   category: storeProduct.value?.category ?? "all",
-  imageUrl: "/morning-farm/image/chinese-pear.png",
+  imageUrl: `${BASE}image/chinese-pear.png`,
   gallery: [
-    "/morning-farm/image/chinese-pear.png",
+    `${BASE}image/chinese-pear.png`,
     placeholderGallery[1],
     placeholderGallery[2],
     placeholderGallery[3],
   ],
-  sellerAvatarUrl:(storeProduct.value?.sellerAvatarUrl || "image/sandPear.png").replace(/^\/+/, ""),
+  description:
+    storeProduct.value?.description ??
+    "以自然農法種植，果肉脆甜多汁，冷藏風味更佳。下單後新鮮採收直送。",
+  specs:
+    storeProduct.value?.specs ??
+    [
+      { label: "6 顆 / 盒", value: 6 },
+      { label: "10 顆 / 箱", value: 10 },
+      { label: "12 顆 / 箱", value: 12 },
+    ],
+  sellerAvatarUrl: storeProduct.value?.sellerAvatarUrl ?? "/morning-farm/image/sandPear.png", // 保持硬編碼
   farmerDescription:
     storeProduct.value?.farmerDescription ??
     "堅持產地直送、友善耕作超過二十年。",
 });
-
 const isFavorited = computed(() => favorites.isFavorited(product.id));
 const isAnimating = ref(false);
 const heartIcon = computed(() =>
@@ -241,28 +246,14 @@ function goFarmerAll(){
     params: { id: product.sellerName },
   });
 }
-function withBase(path) {
-  if (!path) return "";
-  // 外部網址直接放行
-  if (/^(https?:|data:|blob:)/.test(path)) return path;
-  let p = String(path);
-  p = p.replace(/^\/+/, "");
-  const baseClean = BASE.replace(/^\/+/, ""); 
-  if (p.startsWith(baseClean)) p = p.slice(baseClean.length);
-  return `${BASE}${p}`;
-}
-
-const avatarSrc = computed(() =>
-  withBase(storeProduct.value?.sellerAvatarUrl || "image/sandPear.png")
-);
 </script>
 <style scoped>
 .detailPage { width: min(1200px, 92%); margin: 0 auto; padding: 7.5em 1.5em 2em 1.5em; }
 .productSection { display: grid; grid-template-columns: 1fr; gap: 2em; margin-top: 1em; }
-.gallery .mainImage { width: 100%; aspect-ratio: 1/1; border-radius: var(--radiusLarge); overflow: hidden; box-shadow: var(--shadow); background: var(--white); }
+.gallery .mainImage { width: 100%; aspect-ratio: 1/1; border-radius: var(--radiusLarge); overflow: hidden; box-shadow: var(--shadow); background: #fff; }
 .gallery .mainImage img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .thumbs { margin-top: 0.75em; display: grid; grid-template-columns: repeat(4, 1fr); gap: .5em; }
-.thumbBtn { border: 1px solid var(--white); border-radius: 8px; padding: 0; overflow: hidden; cursor: pointer; background:var(--white); }
+.thumbBtn { border: 1px solid #eee; border-radius: 8px; padding: 0; overflow: hidden; cursor: pointer; background: #fff; }
 .thumbBtn img { width: 100%; height: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
 .thumbBtn.active { outline: 2px solid var(--mainColor); }
 .info .titleRow { display: flex; align-items: center; gap: 0.75em; }
@@ -278,18 +269,18 @@ const avatarSrc = computed(() =>
 .tag[data-type="可自取"] { background: var(--mainColor); color: var(--white); }
 .seller { color: var(--secondColor); }
 .price { margin-left: auto; font-weight: 700; color: var(--secondColor); }
-.label { font-weight: 700; color: var(--firstColor); margin:0 0.5em 1em 0; }
+.label { font-weight: 700; color: var(--firstColor); margin-right: 0.5em; }
 .specs { margin: 1em 0; }
 .specButtons { display: flex; flex-wrap: wrap; gap: 0.5em; }
 .specBtn { padding: 0.5em 1em; border: 1px solid var(--mainColor); border-radius: var(--radiusLarge); background: var(--backgroundColor);color: var(--mainColor);cursor: pointer; }
 .specBtn.selected { background: var(--mainColor); color:var(--white); }
 .quantityRow { display: flex; align-items: center; gap: 0.75em; margin: 1em 0; flex-wrap: wrap; }
-.qtyControl { display: inline-flex; border: 1px solid var(--white); border-radius: var(--radiusNormal); overflow: hidden; }
-.qtyBtn { width: 40px; height: 40px; border: none; background:var(--white); cursor: pointer; font-size: 1.2em; }
+.qtyControl { display: inline-flex; border: 1px solid #ddd; border-radius: 10px; overflow: hidden; }
+.qtyBtn { width: 40px; height: 40px; border: none; background: #f7f7f7; cursor: pointer; font-size: 1.2em; }
 .qtyBtn:disabled { opacity: 0.4; cursor: not-allowed; }
 .qtyInput { width: 64px; height: 40px; text-align: center; border: none; outline: none; }
 .stock { color:var(--black); }
-.warn { color: var(--warningColor); font-weight: 700; }
+.warn { color: var(--warning); font-weight: 700; }
 .desc { margin-top: 1em; }
 .desc h3 { margin: 0 0 0.5em; }
 .actions { display: flex; gap: 1em; margin-top: 1.25em; flex-wrap: wrap; }
