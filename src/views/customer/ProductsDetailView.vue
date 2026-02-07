@@ -140,40 +140,34 @@ const placeholderGallery = [
   svgPlaceholder(4, "#F3E5F5", "#4A148C"),
 ];
 const product = reactive({
-  id: "temp-1",
-  productTitle: "寶島甘露梨",
-  sellerName: "王建國果園",
-  price: 420,
-  status: "New",
-  category: "all",
+  id: storeProduct.value?.id ?? "temp-1",
+  productTitle: storeProduct.value?.productTitle ?? "寶島甘露梨",
+  sellerName: storeProduct.value?.sellerName ?? "王建國果園",
+  price: storeProduct.value?.price ?? 420,
+  status: storeProduct.value?.status ?? "New",
+  category: storeProduct.value?.category ?? "all",
   imageUrl: `${BASE}image/chinese-pear.png`,
-  gallery: [`${BASE}image/chinese-pear.png`],
-  sellerAvatarUrl: `${BASE}image/sandPear.png`,
-  farmerDescription: "堅持產地直送、友善耕作超過二十年。",
-  specs: [
-    { label: "6 顆 / 盒", value: 6 },
-    { label: "10 顆 / 箱", value: 10 },
-    { label: "12 顆 / 箱", value: 12 },
+  gallery: [
+    `${BASE}image/chinese-pear.png`,
+    placeholderGallery[1],
+    placeholderGallery[2],
+    placeholderGallery[3],
   ],
+  description:
+    storeProduct.value?.description ??
+    "以自然農法種植，果肉脆甜多汁，冷藏風味更佳。下單後新鮮採收直送。",
+  specs:
+    storeProduct.value?.specs ??
+    [
+      { label: "6 顆 / 盒", value: 6 },
+      { label: "10 顆 / 箱", value: 10 },
+      { label: "12 顆 / 箱", value: 12 },
+    ],
+  sellerAvatarUrl: storeProduct.value?.sellerAvatarUrl ?? "/morning-farm/image/sandPear.png",
+  farmerDescription:
+    storeProduct.value?.farmerDescription ??
+    "堅持產地直送、友善耕作超過二十年。",
 });
-watch(
-  storeProduct,
-  (sp) => {
-    if (!sp) return;
-    product.id = sp.id;
-    product.productTitle = sp.productTitle;
-    product.sellerName = sp.sellerName;
-    product.price = sp.price;
-    product.status = sp.status;
-    product.category = sp.category;
-
-    // ✅ avatar：統一用 build-time BASE
-    product.sellerAvatarUrl = sp.sellerAvatarUrl
-      ? (sp.sellerAvatarUrl.startsWith("http") ? sp.sellerAvatarUrl : `${BASE}${String(sp.sellerAvatarUrl).replace(/^\/+/, "")}`)
-      : `${BASE}image/sandPear.png`;
-  },
-  { immediate: true }
-);
 const isFavorited = computed(() => favorites.isFavorited(product.id));
 const isAnimating = ref(false);
 const heartIcon = computed(() =>
@@ -228,7 +222,7 @@ function blockNonNumber(e){
 }
 watch(quantity, () => (qtyInput.value = String(quantity.value)), { immediate: true });
 const canCheckout = computed(() => quantity.value >= 1 && quantity.value <= maxGroupCount.value);
-function addToCart(){
+function addToCart() {
   if (!canCheckout.value) return;
   cart.addItem({
     id: product.id,
