@@ -150,7 +150,6 @@ const product = reactive({
   price: storeProduct.value?.price ?? 420,
   status: storeProduct.value?.status ?? "New",
   category: storeProduct.value?.category ?? "all",
-
   imageUrl: "/morning-farm/image/chinese-pear.png",
   gallery: [
     "/morning-farm/image/chinese-pear.png",
@@ -159,7 +158,6 @@ const product = reactive({
     placeholderGallery[3],
   ],
   sellerAvatarUrl:(storeProduct.value?.sellerAvatarUrl || "image/sandPear.png").replace(/^\/+/, ""),
-
   farmerDescription:
     storeProduct.value?.farmerDescription ??
     "堅持產地直送、友善耕作超過二十年。",
