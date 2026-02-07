@@ -248,20 +248,12 @@ function goFarmerAll(){
 }
 function withBase(path) {
   if (!path) return "";
-
   // 外部網址直接放行
   if (/^(https?:|data:|blob:)/.test(path)) return path;
-
   let p = String(path);
-
-  // 1) 去掉開頭的 /
   p = p.replace(/^\/+/, "");
-
-  // 2) 如果資料裡已經包含 morning-farm，就去掉避免加兩次
-  const baseClean = BASE.replace(/^\/+/, ""); // "morning-farm/"
+  const baseClean = BASE.replace(/^\/+/, ""); 
   if (p.startsWith(baseClean)) p = p.slice(baseClean.length);
-
-  // 3) 最後加回 BASE
   return `${BASE}${p}`;
 }
 
