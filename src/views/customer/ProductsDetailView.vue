@@ -163,7 +163,7 @@ const product = reactive({
       { label: "10 顆 / 箱", value: 10 },
       { label: "12 顆 / 箱", value: 12 },
     ],
-  sellerAvatarUrl:  storeProduct.value?.sellerAvatarUrl ?? `${BASE}image/sandPear.png`,
+  sellerAvatarUrl: storeProduct.value?.sellerAvatarUrl ?? "image/sandPear.png",
   farmerDescription:
     storeProduct.value?.farmerDescription ??
     "堅持產地直送、友善耕作超過二十年。",
@@ -258,10 +258,10 @@ function resolvePublic(path) {
 <style scoped>
 .detailPage { width: min(1200px, 92%); margin: 0 auto; padding: 7.5em 1.5em 2em 1.5em; }
 .productSection { display: grid; grid-template-columns: 1fr; gap: 2em; margin-top: 1em; }
-.gallery .mainImage { width: 100%; aspect-ratio: 1/1; border-radius: var(--radiusLarge); overflow: hidden; box-shadow: var(--shadow); background: #fff; }
+.gallery .mainImage { width: 100%; aspect-ratio: 1/1; border-radius: var(--radiusLarge); overflow: hidden; box-shadow: var(--shadow); background: var(--white); }
 .gallery .mainImage img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .thumbs { margin-top: 0.75em; display: grid; grid-template-columns: repeat(4, 1fr); gap: .5em; }
-.thumbBtn { border: 1px solid #eee; border-radius: 8px; padding: 0; overflow: hidden; cursor: pointer; background: #fff; }
+.thumbBtn { border: 1px solid var(--white); border-radius: 8px; padding: 0; overflow: hidden; cursor: pointer; background:var(--white); }
 .thumbBtn img { width: 100%; height: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
 .thumbBtn.active { outline: 2px solid var(--mainColor); }
 .info .titleRow { display: flex; align-items: center; gap: 0.75em; }
@@ -283,12 +283,12 @@ function resolvePublic(path) {
 .specBtn { padding: 0.5em 1em; border: 1px solid var(--mainColor); border-radius: var(--radiusLarge); background: var(--backgroundColor);color: var(--mainColor);cursor: pointer; }
 .specBtn.selected { background: var(--mainColor); color:var(--white); }
 .quantityRow { display: flex; align-items: center; gap: 0.75em; margin: 1em 0; flex-wrap: wrap; }
-.qtyControl { display: inline-flex; border: 1px solid #ddd; border-radius: 10px; overflow: hidden; }
-.qtyBtn { width: 40px; height: 40px; border: none; background: #f7f7f7; cursor: pointer; font-size: 1.2em; }
+.qtyControl { display: inline-flex; border: 1px solid var(--white); border-radius: var(--radiusNormal); overflow: hidden; }
+.qtyBtn { width: 40px; height: 40px; border: none; background:var(--white); cursor: pointer; font-size: 1.2em; }
 .qtyBtn:disabled { opacity: 0.4; cursor: not-allowed; }
 .qtyInput { width: 64px; height: 40px; text-align: center; border: none; outline: none; }
 .stock { color:var(--black); }
-.warn { color: var(--warning); font-weight: 700; }
+.warn { color: var(--warningColor); font-weight: 700; }
 .desc { margin-top: 1em; }
 .desc h3 { margin: 0 0 0.5em; }
 .actions { display: flex; gap: 1em; margin-top: 1.25em; flex-wrap: wrap; }
