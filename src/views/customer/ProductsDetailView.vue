@@ -246,23 +246,14 @@ function goFarmerAll(){
     params: { id: product.sellerName },
   });
 }
-
-
-
 function resolvePublic(path) {
   if (!path) return "";
-  // 已經是完整網址（http/https/data/blob）就原樣回傳
   if (/^(https?:|data:|blob:)/.test(path)) return path;
-
   const basePath = import.meta.env.BASE_URL || "/";
-  const clean = String(path).replace(/^\//, ""); // 去掉開頭 / 避免跑到 domain root
-
-  // ✅ new URL 的 base 一定要是完整 URL
+  const clean = String(path).replace(/^\//, ""); 
   const fullBase = new URL(basePath, window.location.origin);
   return new URL(clean, fullBase).toString();
 }
-
-
 </script>
 <style scoped>
 .detailPage { width: min(1200px, 92%); margin: 0 auto; padding: 7.5em 1.5em 2em 1.5em; }
