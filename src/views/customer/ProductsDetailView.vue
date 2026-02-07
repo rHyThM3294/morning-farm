@@ -163,7 +163,7 @@ const product = reactive({
       { label: "10 顆 / 箱", value: 10 },
       { label: "12 顆 / 箱", value: 12 },
     ],
-  sellerAvatarUrl: storeProduct.value?.sellerAvatarUrl ?? "image/sandpear.png",
+  sellerAvatarUrl:  storeProduct.value?.sellerAvatarUrl ?? `${BASE}image/sandPear.png`,
   farmerDescription:
     storeProduct.value?.farmerDescription ??
     "堅持產地直送、友善耕作超過二十年。",
@@ -246,18 +246,14 @@ function goFarmerAll(){
     params: { id: product.sellerName },
   });
 }
-function resolvePublic(path){
+function resolvePublic(path) {
   if (!path) return "";
   if (/^(https?:|data:|blob:)/.test(path)) return path;
-  
-  // 根據當前網址判斷環境
-  const isGitHub = window.location.hostname.includes('github.io');
-  const basePath = isGitHub ? "/morning-farm/" : "/";
-  const cleanPath = String(path).replace(/^\//, "");
-  
-  return basePath + cleanPath;
+  const basePath = import.meta.env.BASE_URL || "/";
+  const clean = String(path).replace(/^\//, ""); 
+  const fullBase = new URL(basePath, window.location.origin);
+  return new URL(clean, fullBase).toString();
 }
-
 </script>
 <style scoped>
 .detailPage { width: min(1200px, 92%); margin: 0 auto; padding: 7.5em 1.5em 2em 1.5em; }
