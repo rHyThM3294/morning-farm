@@ -222,7 +222,7 @@ function blockNonNumber(e){
 }
 watch(quantity, () => (qtyInput.value = String(quantity.value)), { immediate: true });
 const canCheckout = computed(() => quantity.value >= 1 && quantity.value <= maxGroupCount.value);
-function addToCart() {
+function addToCart(){
   if (!canCheckout.value) return;
   cart.addItem({
     id: product.id,
