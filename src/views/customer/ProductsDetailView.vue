@@ -90,7 +90,7 @@
         <div class="farmerInfo">
           <img
             class="avatar"
-            :src="`${BASE}${product.sellerAvatarUrl}`"
+            :src="product.sellerAvatarUrl"
             :alt="product.sellerName"
           />
           <p class="farmerDesc">{{ product.farmerDescription }}</p>
@@ -150,28 +150,24 @@ const product = reactive({
   price: storeProduct.value?.price ?? 420,
   status: storeProduct.value?.status ?? "New",
   category: storeProduct.value?.category ?? "all",
-  imageUrl: `${BASE}image/chinese-pear.png`,
+
+  imageUrl: "/morning-farm/image/chinese-pear.png",
   gallery: [
-    `${BASE}image/chinese-pear.png`,
+    "/morning-farm/image/chinese-pear.png",
     placeholderGallery[1],
     placeholderGallery[2],
     placeholderGallery[3],
   ],
-  description:
-    storeProduct.value?.description ??
-    "以自然農法種植，果肉脆甜多汁，冷藏風味更佳。下單後新鮮採收直送。",
-  specs:
-    storeProduct.value?.specs ??
-    [
-      { label: "6 顆 / 盒", value: 6 },
-      { label: "10 顆 / 箱", value: 10 },
-      { label: "12 顆 / 箱", value: 12 },
-    ],
-  sellerAvatarUrl:  storeProduct.value?.sellerAvatarUrl ?? `${BASE}image/sandPear.png`,
+
+  sellerAvatarUrl:
+    storeProduct.value?.sellerAvatarUrl ??
+    "/morning-farm/image/sandPear.png",
+
   farmerDescription:
     storeProduct.value?.farmerDescription ??
     "堅持產地直送、友善耕作超過二十年。",
 });
+
 const isFavorited = computed(() => favorites.isFavorited(product.id));
 const isAnimating = ref(false);
 const heartIcon = computed(() =>
