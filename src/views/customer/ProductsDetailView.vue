@@ -249,10 +249,13 @@ function goFarmerAll(){
 function resolvePublic(path) {
   if (!path) return "";
   if (/^(https?:|data:|blob:)/.test(path)) return path;
-  const base = import.meta.env.BASE_URL || "/";
-  const cleanBase = base.endsWith("/") ? base : base + "/";
+  
+  // 根據當前網址判斷環境
+  const isGitHub = window.location.hostname.includes('github.io');
+  const basePath = isGitHub ? "/morning-farm/" : "/";
   const cleanPath = String(path).replace(/^\//, "");
-  return cleanBase + cleanPath;
+  
+  return basePath + cleanPath;
 }
 
 </script>
