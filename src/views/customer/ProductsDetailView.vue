@@ -249,14 +249,12 @@ function goFarmerAll(){
 function resolvePublic(path) {
   if (!path) return "";
   if (/^(https?:|data:|blob:)/.test(path)) return path;
-  
-  const basePath = import.meta.env.BASE_URL || "/";
-  // 確保 path 開頭沒有斜線，basePath 結尾有斜線
+  const base = import.meta.env.BASE_URL || "/";
+  const cleanBase = base.endsWith("/") ? base : base + "/";
   const cleanPath = String(path).replace(/^\//, "");
-  const cleanBase = basePath.endsWith('/') ? basePath : basePath + '/';
-  
   return cleanBase + cleanPath;
 }
+
 </script>
 <style scoped>
 .detailPage { width: min(1200px, 92%); margin: 0 auto; padding: 7.5em 1.5em 2em 1.5em; }
