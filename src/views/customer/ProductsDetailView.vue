@@ -88,7 +88,7 @@
       <div class="farmerCard">
         <h4 class="farmerName">【{{ product.sellerName }}】</h4>
         <div class="farmerInfo">
-          <img class="avatar" :src="product.sellerAvatarUrl" :alt="product.sellerName" />
+          <img class="avatar" :src="avatarSrc" :alt="productTitle" />
           <p class="farmerDesc">{{ product.farmerDescription }}</p>
         </div>
         <button class="viewAllButton" @click="goFarmerAll">
@@ -116,8 +116,8 @@ const route = useRoute();
 const router = useRouter();
 const productId = route.params.id;
 const BASE = import.meta.env.BASE_URL || "/";
-const storeProduct = computed(() => productStore.getProductById(productId));
-function svgPlaceholder(n, bg = "#f0f0f0", fg = "#555") {
+const storeProduct = computed(() => productStore.getProductById(route.params.id));
+function svgPlaceholder(n, bg = "#f0f0f0", fg = "#555"){
   const svg = `
   <svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
     <defs>
@@ -246,6 +246,15 @@ function goFarmerAll(){
     params: { id: product.sellerName },
   });
 }
+const avatarSrc = computed(() => {
+  const raw = storeProduct.value?.sellerAvatarUrl || "image/sandPear.png"; 
+  // raw 可能是 "/image/xxx.png" 或 "image/xxx.png" 或 已經是 "https://..."
+  if (/^(https?:|data:|blob:)/.test(raw)) return raw;
+  const clean = String(raw).replace(/^\/+/, ""); // 去掉開頭 /
+  return `${BASE}${clean}`; // ✅ 變成 /morning-farm/image/xxx.png
+});
+
+const productTitle = computed(() => storeProduct.value?.productTitle || "商品");
 </script>
 <style scoped>
 .detailPage { width: min(1200px, 92%); margin: 0 auto; padding: 7.5em 1.5em 2em 1.5em; }
