@@ -1,29 +1,34 @@
 <template>
-<div class="partition"><img src="/public/image/banner.png" alt="我只是分隔線"></div>
+  <div
+    class="partition"
+    :style="partitionStyle"
+    aria-hidden="true"
+  ></div>
 </template>
 <script setup>
+import { computed } from 'vue'
+const BASE = import.meta.env.BASE_URL || '/'
+const partitionStyle = computed(() => ({
+  backgroundImage: `url(${BASE}image/banner.png)`
+}))
 </script>
 <style scoped>
 .partition{
-    position: relative;
-    width: 100%;
-    overflow: hidden; 
-    top: -12vh;
+  width: 100%;
+  height: 90px;
+  margin-top: -50px;
+  background-repeat: repeat-x;
+  background-position: center center;
+  background-size: auto 100%;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
 }
-.partition img{
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%) scale(0.7);
-}
-@media(width>=768px){
-    .partition{
-        position: relative;
-        width: 100%;
-        height: 175px;
-        top: -15vh;
-    }
-    .partition img{
-        transform: scaleX(2.5);
-    }
+@media(width>768px){
+  .partition{
+    height: 140px;
+    margin-top: -80px;
+  }
 }
 </style>
