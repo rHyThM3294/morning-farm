@@ -2,8 +2,11 @@
   <header>
     <div class="container">
       <div class="headerUp">
-        <RouterLink to="/" class="logo"
+        <RouterLink
+          to="/"
+          class="logo"
           :style="{ backgroundImage: `url(${BASE}image/Logo.png)` }"
+          @click="handleLogoClick"
         ></RouterLink>
         <div class="searchBox webSearch">
           <input type="text" placeholder="我想要買..." />
@@ -61,28 +64,31 @@ import { useRouter } from "vue-router"
 import { useCartStore } from "@/stores/cart"
 const BASE = import.meta.env.BASE_URL
 const router = useRouter()
+const route = useRoute()
 const cart = useCartStore()
 const isBumping = ref(false)
 const goCart = () => {
-  router.push({ name: "cart" })
+  router.push({ name:"cart" })
 }
 const goMember = () => {
-  router.push({ name: "member" })
+  router.push({ name:"member" })
 }
-const goAdmin = () => {
-  router.push({ name: "adminLogin" })
+const handleLogoClick = () => {
+  if(route.push !== "/"){
+    sessionStorage.setItem("playHomeLoading","true")
+  }
 }
 watch(
   () => cart.itemTypesCount,
-  (newVal, oldVal) => {
-    if (newVal === 0) return
+  (newVal) => {
+    if(newVal === 0)return
     isBumping.value = false
-    requestAnimationFrame(() => {
+    requestAnimationFrame(() =>{
       isBumping.value = true
     })
     setTimeout(() => {
       isBumping.value = false
-    }, 300)
+    },300)
   }
 )
 </script>
