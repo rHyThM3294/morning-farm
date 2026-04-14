@@ -59,23 +59,26 @@
   </header>
 </template>
 <script setup>
-import { ref, watch } from "vue"
-import { useRouter } from "vue-router"
-import { useCartStore } from "@/stores/cart"
+import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useCartStore } from '@/stores/cart'
 const BASE = import.meta.env.BASE_URL
-const router = useRouter()
 const route = useRoute()
+const router = useRouter()
 const cart = useCartStore()
 const isBumping = ref(false)
 const goCart = () => {
-  router.push({ name:"cart" })
+  router.push({ name: 'cart' })
 }
 const goMember = () => {
-  router.push({ name:"member" })
+  router.push({ name: 'member' })
+}
+const goAdmin = () => {
+  router.push({ name: 'adminLogin' })
 }
 const handleLogoClick = () => {
-  if(route.push !== "/"){
-    sessionStorage.setItem("playHomeLoading","true")
+  if(route.path !== '/'){
+    sessionStorage.setItem('playHomeLoading', 'true')
   }
 }
 watch(
@@ -83,12 +86,12 @@ watch(
   (newVal) => {
     if(newVal === 0)return
     isBumping.value = false
-    requestAnimationFrame(() =>{
+    requestAnimationFrame(() => {
       isBumping.value = true
     })
     setTimeout(() => {
       isBumping.value = false
-    },300)
+    }, 300)
   }
 )
 </script>
