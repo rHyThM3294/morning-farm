@@ -40,21 +40,21 @@ const isAdminPage = computed(() => route.path.startsWith('/admin'))
 const showAIdate = ref(false)
 gsap.registerPlugin(ScrollToPlugin)
 const showGoTop = ref(false)
-function openAIdate() {
+function openAIdate(){
   aiBtnRect.value = aiBtnRef.value.getBoundingClientRect()
   showAIdate.value = true
 }
-function closeAIdate() {
+function closeAIdate(){
   showAIdate.value = false
 }
-function scrollToTop() {
+function scrollToTop(){
   gsap.to(window, {
     duration: 1.2,
     scrollTo: { y: 0 },
     ease: 'power2.out'
   })
 }
-function handleScroll() {
+function handleScroll(){
   const scrollY = window.scrollY
   showGoTop.value = scrollY > 150
 }

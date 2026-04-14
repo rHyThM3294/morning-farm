@@ -23,8 +23,6 @@ const showLoading = ref(false)
 const showMorning = ref(false)
 const isExpanding = ref(false)
 let timeouts = []
-let hasPlayedOnce = false
-
 const clearAllTimeouts = () => {
   timeouts.forEach(t => clearTimeout(t))
   timeouts = []
@@ -32,69 +30,88 @@ const clearAllTimeouts = () => {
 const lockScroll = () => {
   document.documentElement.style.overflow = 'hidden'
   document.body.style.overflow = 'hidden'
-}
+} 
 const unlockScroll = () => {
   document.documentElement.style.overflow = ''
   document.body.style.overflow = ''
 }
 const finishLoading = () => {
   showLoading.value = false
-  hasPlayedOnce = true
   unlockScroll()
 }
-const startLoadingAnimation = () => {
-  showLoading.value = true
+const startLoadingAnimation = () =>{
+  sjowLoading.value = true
   showMorning.value = false
   isExpanding.value = false
   clearAllTimeouts()
   lockScroll()
   const MORPH_START = 1500
   const GOOD_FADE_DURATION = 1000
-  const MORNING_DELAY = 1000
+  constMORNING_DELAY = 1000
   const MORNING_SCALE_DURATION = 0.6
   timeouts.push(setTimeout(() => {
-    if (!goodEl.value) return
-    gsap.to(goodEl.value, { opacity: 0, duration: GOOD_FADE_DURATION })
+    if(!goodEl.value)return
+    gsap.to(goodEl.value,{
+      opacity:0,
+      duration:GOOD_FADE_DURATION,
+    })
   }, MORPH_START))
   timeouts.push(setTimeout(() => {
     showMorning.value = true
     nextTick(() => {
-      if (!contentLayerEl.value) return
+      if(!contentLayerEl.value)return
       gsap.fromTo(
         contentLayerEl.value,
-        { '--mask-scale': 0.2 },
+        { '--mask-scale':0.2 },
         {
-          '--mask-scale': 1,
-          duration: MORNING_SCALE_DURATION,
-          ease: 'back.out(0.5)'
+          '--mask-scale':1,
+          duration:MORNING_SCALE_DURATION,
+          ease:'back.out(0.5)'
         }
       )
     })
-  }, MORPH_START + MORNING_DELAY))
+  },MORPH_START + MORNING_DELAY))
   timeouts.push(setTimeout(() => {
     isExpanding.value = true
-  }, 4000))
+  },4000))
   timeouts.push(setTimeout(() => {
     finishLoading()
-  }, 5000))
-}
-const skipHandler = (e) => {
-  if (e.key && e.key.toLowerCase() === 'k'){
-    clearAllTimeouts()
-    finishLoading()
+  },5000))
+  const skipHandler = (e) =>{
+    if(e.key && e.key.toLowerCase() === 'k'){
+      clearAllTimeouts()
+      finishLoading()
+    }
   }
+  const tryPlayHomeLOading = () =>{
+    const playHomeLoading = sessionStorage.getItem('playHomeLoading')
+    if(route.path === '/' && playHomeLoading === 'true'){
+      sessionStorage.removeItem('playHomeLoading')
+      startLoadingAnimation()
+    }
+  }
+  onMounted(() => {
+    window.addEventListener('keydown',skipHandler)
+    const hasVisitedSite = sessionStorage.getItem('hasVisitedSite')
+    if(!hasVisitedSite){
+      sessionStorage.setItem('hasVisited','true')
+      startLoadingAnimation()
+      return
+    }
+    tryPlayHomeLOading()
+  })
+  watch(
+    () => route.path,
+    () =>{
+      tryPlayHomeLOading()
+    }
+  )
+  onBeforeUnmount(() => {
+    clearAllTimeouts()
+    unlockScroll()
+    window.removedEventListener('keydown',skipHandler)
+  })
 }
-watch(() => route.path, (newPath) => {
-  if (newPath === '/' && !hasPlayedOnce) startLoadingAnimation()
-}, { immediate: true })
-onMounted(() => {
-  window.addEventListener('keydown', skipHandler)
-})
-onBeforeUnmount(() => {
-  clearAllTimeouts()
-  unlockScroll()
-  window.removeEventListener('keydown', skipHandler)
-})
 </script>
 <style scoped>
 .loading-overlay{
