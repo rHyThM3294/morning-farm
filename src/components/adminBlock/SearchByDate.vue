@@ -26,7 +26,7 @@
 </template>
 <script setup>
 import { ref, computed } from 'vue'
-import DateRangePicker from '../common/DateRangePicker.vue'
+import DateRangePicker from '@/components/common/DateRangePicker.vue'
 const emit = defineEmits(['search'])
 const startDate = ref(null)
 const endDate = ref(null)

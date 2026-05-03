@@ -14,8 +14,8 @@ export const useAdminProductStore = defineStore("adminProduct", () => {
       status: "Hot",
       settings: ["Hot"],
       imageList: [
-        "/morning-farm/image/banana.png",
-        "/morning-farm/image/chinese-pear.png",
+        "/image/banana.png",
+        "/image/chinese-pear.png",
       ],
       description: "在臺灣這片土地上,有機高山水梨以當季水果的方式孕育而生。從栽種到採收,每一個環節都經過層層把關,只為保留最自然的風味。目前供應穩定,歡迎安心選購。每斤都蘊含著土地的心意,適合與家人一同分享。",
       farmerName: "清晨農鋪合作小農",
@@ -32,9 +32,9 @@ export const useAdminProductStore = defineStore("adminProduct", () => {
       status: "New",
       settings: ["New"],
       imageList: [
-        "/morning-farm/image/chinese-pear.png",
-        "/morning-farm/image/apple.png",
-        "/morning-farm/image/carrot.png",
+        "/image/chinese-pear.png",
+        "/image/apple.png",
+        "/image/carrot.png",
       ],
       description: "友善栽培玉米筍來自小農細心照料的田間,是一份充滿溫度的農作。小農依照季節節奏調整作息,讓作物在最適合的時刻成熟。目前採收量有限,正等待下一批成熟。希望這份來自土地的禮物,能成為你生活中的一部分。",
       farmerName: "清晨農鋪合作小農",

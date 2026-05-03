@@ -40,6 +40,7 @@ import gsap from "gsap";
 import Card from '@/components/common/Card.vue'
 import SeasonChart from './SeasonChart.vue'
 import { useProductStore } from '@/stores/product'
+import { useMapSeasonStore } from '@/stores/mapSeason'
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 gsap.registerPlugin(ScrollToPlugin);
 const productStore = useProductStore()
@@ -47,12 +48,9 @@ const props = defineProps({
   selectedProductId: String
 })
 const emit = defineEmits(['productSelected'])
-const seasonChartData = computed(() => productStore.seasonChartData)
-onMounted(() => {
-  console.log('🔍 SeasonBlock mounted')
-  console.log('📊 seasonChartData:', seasonChartData.value)
-  console.log('🛒 allProducts count:', productStore.allProducts.length)
-})
+const mapSeasonStore = useMapSeasonStore()
+const seasonChartData = computed(() => mapSeasonStore.seasonChartData)
+
 const seasonList = [
   { label: '春', value: 'spring' },
   { label: '夏', value: 'summer' },

@@ -2,7 +2,7 @@
   <section class="financeFilterBar" ref="filterBarRef">
     <div class="filterBlock">
       <div class="filter">
-        <DataRangePicker
+        <FinanceDatePicker
           :startDate="startDate"
           :endDate="endDate"
           @updateStart="$emit('updateStart', $event)"
@@ -28,7 +28,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { financeTableRecords } from '@/stores/finance'
-import DataRangePicker from './DataRangePicker.vue'
+import FinanceDatePicker from './FinanceDatePicker.vue'
 import KeywordSearch from './KeywordSearch.vue'
 import ExportButton from './ExportButton.vue'
 import FinanceTable from './FinanceTable.vue'
