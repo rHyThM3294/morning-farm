@@ -20,10 +20,10 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import TopBar from '../../components/common/TopBar.vue'
-import AsideButton from '../../components/common/AsideButton.vue'
-import Page from '../../components/common/Page.vue'   
-import KnowledgeCard from '../../components/common/KnowledgeCard.vue'
+import TopBar from '@/components/common/TopBar.vue'
+import AsideButton from '@/components/common/AsideButton.vue'
+import Page from '@/components/common/Page.vue'   
+import KnowledgeCard from '@/components/common/KnowledgeCard.vue'
 const totalPages = ref(4)
 const currentPage = ref(1)
 const knowledgeButtons = [

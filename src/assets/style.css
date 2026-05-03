@@ -134,7 +134,7 @@ html{
     color: var(--black);
     background-color: var(--white);
 }
-.body {
+body {
     background-color: var(--white);
     color: var(--black);
     overflow-x: hidden;

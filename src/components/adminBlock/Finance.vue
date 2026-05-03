@@ -13,8 +13,8 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import FinanceSummary from '../finance/FinanceSummary.vue'
-import FinanceFilterBar from '../finance/FinanceFilterBar.vue'
+import FinanceSummary from '@/components/finance/FinanceSummary.vue'
+import FinanceFilterBar from '@/components/finance/FinanceFilterBar.vue'
 const keyword = ref('')
 const startDate = ref('')
 const endDate = ref('')

@@ -14,11 +14,6 @@ const MemberView = () => import('@/views/customer/MemberView.vue')
 
 const AdminLoginView = () => import('@/views/admin/AdminLoginView.vue')
 const AdminDashboardView = () => import('@/views/admin/AdminDashboardView.vue')
-const AddCommodityDetail = () => import('@/components/adminBlock/AddCommodityDetail.vue')
-const CheckOrder = () => import('@/components/adminBlock/CheckOrder.vue')
-const Commodity = () => import('@/components/adminBlock/Commodity.vue')
-const Withdraw = () => import('@/components/adminBlock/Withdraw.vue')
-const Finance = () => import('@/components/adminBlock/Finance.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,8 +25,8 @@ const router = createRouter({
     { path: '/cart', name: 'cart', component: CartView },
     { path: '/member', name: 'member', component: MemberView },
 
-    { path: '/map', name: 'map', component: MapSeasonView },
-    { path: '/season', name: 'season', component: MapSeasonView },
+    // /map 與 /season 原本重複指向同一個 View，統一命名為 mapSeason，alias 保留舊路徑向後兼容
+    { path: '/map-season', name: 'mapSeason', component: MapSeasonView, alias: ['/map', '/season'] },
     { path: '/ranking', name: 'ranking', component: RankView },
 
     { path: '/knowledge', name: 'knowledge', component: KnowledgeView },
@@ -40,13 +35,15 @@ const router = createRouter({
     { path: '/cooperation-farmer', name: 'cooperation-farmer', component: CooperationFarmerView },
     { path: '/farmer/:id', name: 'farmerDetail', component: FarmerDetailView },
 
+    // Admin：登入頁單獨一頁，後台所有功能由 AdminDashboardView 內部動態切換
     { path: '/admin/login', name: 'adminLogin', component: AdminLoginView },
     { path: '/admin/dashboard', name: 'adminDashboard', component: AdminDashboardView },
-    { path: '/admin/add-commodity', name: 'addCommodity', component: AddCommodityDetail },
-    { path: '/admin/check-order', name: 'checkOrder', component: CheckOrder },
-    { path: '/admin/commodity', name: 'commodity', component: Commodity },
-    { path: '/admin/withdraw', name: 'withdraw', component: Withdraw },
-    { path: '/admin/finance', name: 'finance', component: Finance },
+    // 舊路由 redirect 回後台首頁，避免直接存取沒有 layout 的裸組件
+    { path: '/admin/add-commodity', redirect: '/admin/dashboard' },
+    { path: '/admin/check-order', redirect: '/admin/dashboard' },
+    { path: '/admin/commodity', redirect: '/admin/dashboard' },
+    { path: '/admin/withdraw', redirect: '/admin/dashboard' },
+    { path: '/admin/finance', redirect: '/admin/dashboard' },
 
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
@@ -62,3 +59,19 @@ const router = createRouter({
 })
 
 export default router
+
+// ── 路由守衛：保護後台 ─────────────────────────────────────────────────
+// 目前以 sessionStorage 模擬登入狀態，串接真實 API 時替換此邏輯
+router.beforeEach((to) => {
+  const isLoggedIn = sessionStorage.getItem('admin_logged_in') === 'true'
+
+  // 要進後台但未登入 → 導回登入頁
+  if (to.path.startsWith('/admin') && to.name !== 'adminLogin' && !isLoggedIn) {
+    return { name: 'adminLogin' }
+  }
+
+  // 已登入卻訪問登入頁 → 直接進後台
+  if (to.name === 'adminLogin' && isLoggedIn) {
+    return { name: 'adminDashboard' }
+  }
+})

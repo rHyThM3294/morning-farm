@@ -33,10 +33,10 @@
 </template>
 <script setup>
 import { ref, computed } from 'vue'
-import TopBar from '../../components/common/TopBar.vue'
-import AsideButton from '../../components/common/AsideButton.vue'
-import FarmerSection from '../../components/farmer/FarmerSection.vue'
-import Page from '../../components/common/Page.vue'
+import TopBar from '@/components/common/TopBar.vue'
+import AsideButton from '@/components/common/AsideButton.vue'
+import FarmerSection from '@/components/farmer/FarmerSection.vue'
+import Page from '@/components/common/Page.vue'
 const totalPages = ref(0)
 const currentPage = ref(1)
 const perPage = 9 

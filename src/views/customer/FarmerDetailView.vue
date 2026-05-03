@@ -39,8 +39,8 @@
 <script setup>
 import { ref, watch, nextTick, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import AsideButton from '../../components/common/AsideButton.vue'
-import Card from '../../components/common/Card.vue'
+import AsideButton from '@/components/common/AsideButton.vue'
+import Card from '@/components/common/Card.vue'
 const route = useRoute()
 const router = useRouter()
 const base = import.meta.env.BASE_URL

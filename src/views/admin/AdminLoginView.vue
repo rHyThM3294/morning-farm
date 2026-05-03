@@ -19,26 +19,17 @@
   </div>
 </template>
 <script setup>
-import { onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
+
+// 模擬後台登入：設定 sessionStorage token，實際串接 API 時在此替換
 const login = () => {
+  sessionStorage.setItem('admin_logged_in', 'true')
   router.push('/admin/dashboard')
-}
-const handleKey = (e) => {
-  if (e.key.toLowerCase() === 'l') {
-    router.push('/')   
-  }
 }
 const goHome = () => {
   router.push({ name: 'home' })
 }
-onMounted(() => {
-  window.addEventListener('keydown', handleKey)
-})
-onBeforeUnmount(() => {
-  window.removeEventListener('keydown', handleKey)
-})
 </script>
 <style scoped>
 .adminLogin {

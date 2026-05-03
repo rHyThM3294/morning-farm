@@ -38,18 +38,17 @@
   </div>
 </template>
 <script setup>
-import { computed, onMounted, onBeforeUnmount } from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { gsap } from 'gsap'
-import { useProductStore } from '../../stores/product'
-import Card from '../../components/common/Card.vue';
-import Partition from '../../components/ui/Partition.vue';
-import FarmerSection from '../../components/farmer/FarmerSection.vue';
-import Lead from '../../components/common/lead.vue';
-import Produce from '../../components/common/Produce.vue';
-import WeekFarmerIntroduction from '../../components/farmer/WeekFarmerIntroduction.vue';
-import Question from '../../components/product/question.vue';
-import AsideButton from '../../components/common/AsideButton.vue';
+import { useProductStore } from '@/stores/product'
+import Card from '@/components/common/Card.vue';
+import Partition from '@/components/ui/Partition.vue';
+import FarmerSection from '@/components/farmer/FarmerSection.vue';
+import Lead from '@/components/common/Lead.vue';
+import Produce from '@/components/common/Produce.vue';
+import WeekFarmerIntroduction from '@/components/farmer/WeekFarmerIntroduction.vue';
+import Question from '@/components/product/Question.vue';
+import AsideButton from '@/components/common/AsideButton.vue';
 
 const BASE = import.meta.env.BASE_URL || "/";
 const bannerStyle = computed(() => ({
@@ -61,17 +60,6 @@ const bannerStyle = computed(() => ({
 
 const router = useRouter()
 const productStore = useProductStore()
-const handleKey = (e) => {
-  if (e.key.toLowerCase() === 'l'){
-    router.push('/admin/login') 
-  }
-}
-onMounted(() => {
-  window.addEventListener('keydown', handleKey)
-})
-onBeforeUnmount(() => {
-  window.removeEventListener('keydown', handleKey)
-})
 const weekProducts = computed(() => {
   return [...productStore.allProducts]
     .filter(p => p.stock > 0)

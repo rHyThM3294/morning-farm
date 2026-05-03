@@ -10,7 +10,7 @@
         ></RouterLink>
         <div class="searchBox webSearch">
           <input type="text" placeholder="我想要買..." />
-          <button type="submit" id="searchButton" class="searchButton">
+          <button type="submit" id="searchButtonWeb" class="searchButton">
             <i class="fas fa-search"></i>
           </button>
         </div>
@@ -51,7 +51,7 @@
       </div>
       <div class="searchBox mobileSearch">
         <input type="text" placeholder="我想要買..." />
-        <button type="submit" id="searchButton" class="searchButton">
+        <button type="submit" id="searchButtonMobile" class="searchButton">
           <i class="fas fa-search"></i>
         </button>
       </div>

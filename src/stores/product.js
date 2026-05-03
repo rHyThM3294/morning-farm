@@ -15,68 +15,6 @@ export const useProductStore = defineStore('product', () => {
     "阿誠農園",
     "茶山小農"
   ]
-  const seasonChartData = [
-    {
-      id: 'pear',
-      name: '水梨',
-      months: [4,5,6,7,8,9,10,11,12,1],
-      image: 'chinese-pear.png'
-    },
-    {
-      id: 'mango',
-      name: '芒果',
-      months: [5,6,7,8],
-      image: 'chinese-pear.png'
-    },
-    {
-      id: 'pomelo',
-      name: '文旦',
-      months: [8,9,10],
-      image: 'chinese-pear.png'
-    },
-    {
-      id: 'cabbage',
-      name: '高麗菜',
-      months: [11,12,1,2,3],
-      image: 'chinese-pear.png'
-    },
-    {
-      id: 'tea',
-      name: '烏龍茶',
-      months: [4,5,10,11],
-      image: 'chinese-pear.png'
-    },
-    {
-      id: 'rice',
-      name: '稻米',
-      months: [6,7,11,12],
-      image: 'chinese-pear.png'
-    },
-    {
-      id: 'bamboo',
-      name: '竹筍',
-      months: [4,5,6,7,8],
-      image: 'chinese-pear.png'
-    },
-    {
-      id: 'mushroom',
-      name: '香菇',
-      months: [10,11,12,1,2,3],
-      image: 'chinese-pear.png'
-    },
-    {
-      id: 'sweet_potato',
-      name: '地瓜',
-      months: [9,10,11,12,1],
-      image: 'chinese-pear.png'
-    },
-    {
-      id: 'carrot',
-      name: '紅蘿蔔',
-      months: [11,12,1,2,3,4],
-      image: 'chinese-pear.png'
-    }
-  ]
   const productTemplates = [
     { title: "黑珍珠蓮霧", category: "festival", series: null },
     { title: "臺農芒果", category: "festival", series: null },
@@ -187,7 +125,6 @@ export const useProductStore = defineStore('product', () => {
     return seasonProducts[season] || []
   }
   return{
-    seasonChartData,     
     allProducts,
     getProductById,
     getProductsByCategory,

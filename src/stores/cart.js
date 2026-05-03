@@ -1,30 +1,70 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+
+const CART_KEY = 'morning_farm_cart'
+
 export const useCartStore = defineStore('cart', () => {
-  const items = ref([])
+  // 從 localStorage 還原購物車，重整後不清空
+  const savedCart = (() => {
+    try {
+      const raw = localStorage.getItem(CART_KEY)
+      return raw ? JSON.parse(raw) : []
+    } catch {
+      return []
+    }
+  })()
+
+  const items = ref(savedCart)
+
+  // 任何變動都同步寫入 localStorage
+  watch(items, (val) => {
+    try {
+      localStorage.setItem(CART_KEY, JSON.stringify(val))
+    } catch {
+      // localStorage 滿了或被禁用，靜默忽略
+    }
+  }, { deep: true })
+
   function addItem(product) {
-  const exist = items.value.find(i => i.id === product.id)
-  if (exist){
-    exist.quantity++
-  } else{
-    items.value.push({
-      ...product,
-      quantity: 1
-    })
+    const exist = items.value.find(i => i.id === product.id)
+    if (exist) {
+      exist.quantity = Math.min(exist.quantity + 1, exist.stock ?? 999)
+    } else {
+      items.value.push({ ...product, quantity: 1 })
+    }
   }
-}
+
   function removeItem(id) {
     items.value = items.value.filter(i => i.id !== id)
   }
-  const totalCount = computed(() =>
-    items.value.reduce((s, i) => s + i.quantity, 0)
-  )
+
+  function updateQuantity(id, quantity) {
+    const item = items.value.find(i => i.id === id)
+    if (!item) return
+    if (quantity <= 0) {
+      removeItem(id)
+    } else {
+      item.quantity = Math.min(quantity, item.stock ?? 999)
+    }
+  }
+
+  function clearCart() {
+    items.value = []
+  }
+
+  const totalCount    = computed(() => items.value.reduce((s, i) => s + i.quantity, 0))
   const itemTypesCount = computed(() => items.value.length)
-  return{
+  // 商品小計總額（不含運費）
+  const totalPrice    = computed(() => items.value.reduce((s, i) => s + i.price * i.quantity, 0))
+
+  return {
     items,
     addItem,
     removeItem,
+    updateQuantity,
+    clearCart,
     totalCount,
     itemTypesCount,
+    totalPrice,
   }
 })

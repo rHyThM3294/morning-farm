@@ -25,7 +25,7 @@ import AddCommodityDetail from "@/components/adminBlock/AddCommodityDetail.vue";
 import Commodity from "@/components/adminBlock/Commodity.vue";
 import CheckOrder from "@/components/adminBlock/CheckOrder.vue";
 import Withdraw from "@/components/adminBlock/Withdraw.vue";
-import AsideButton from "../../components/common/AsideButton.vue";
+import AsideButton from "@/components/common/AsideButton.vue";
 import Finance from '@/components/adminBlock/Finance.vue'
 const router = useRouter();
 const adminMainRef = ref(null);
@@ -83,6 +83,7 @@ function scrollToOrderDetail(el){
   });
 }
 function handleLogout(){
+  sessionStorage.removeItem('admin_logged_in')
   router.push("/admin/login");
 }
 </script>

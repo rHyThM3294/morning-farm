@@ -19,7 +19,10 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 const props = defineProps({
+  // 接受物件陣列 { label, to } 或純字串陣列
   items: { type: Array, default: null },
+  // 相容舊的 :paths 用法（MemberView 傳入的是純字串陣列）
+  paths: { type: Array, default: null },
 })
 const route = useRoute()
 const categoryMap = {
@@ -59,10 +62,20 @@ const autoCrumbs = computed(() => {
       label: state.product.sellerName,
     })
   }
-
   return crumbs
 })
-const crumbs = computed(() => props.items || autoCrumbs.value)
+// 將純字串陣列轉換為 { label } 物件陣列
+function normalizePaths(arr) {
+  if (!arr) return null
+  return arr.map(item =>
+    typeof item === 'string' ? { label: item } : item
+  )
+}
+const crumbs = computed(() =>
+  normalizePaths(props.items) ||
+  normalizePaths(props.paths) ||
+  autoCrumbs.value
+)
 </script>
 <style scoped>
 .breadcrumb {

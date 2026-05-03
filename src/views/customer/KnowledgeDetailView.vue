@@ -40,9 +40,9 @@
 </template>
 <script setup>
 import { useRoute } from 'vue-router'
-import TopBar from '../../components/common/TopBar.vue'
-import Card from '../../components/common/Card.vue'
-import AsideButton from '../../components/common/AsideButton.vue'
+import TopBar from '@/components/common/TopBar.vue'
+import Card from '@/components/common/Card.vue'
+import AsideButton from '@/components/common/AsideButton.vue'
 const route = useRoute()
 const title = '蓮霧清洗與保存技巧'
 const image = '/image/S__20611108.jpg'
