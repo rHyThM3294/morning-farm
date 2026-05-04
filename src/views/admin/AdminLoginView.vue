@@ -133,11 +133,11 @@ button {
 .login {
   background: var(--mainColor);
   color: var(--white);
-  padding: 0.75em 2em;
+  padding: 1em 2.5em;
   border-radius: var(--radiusLarge);
   font-size: 1em;
-  font-weight: 600;
   letter-spacing: 0.05em;
+  transition: var(--transitionNormal);
 }
 .backHome {
   background: transparent;
@@ -147,25 +147,24 @@ button {
   padding: 0.3em 0;
 }
 
-@media screen and (min-width: 768px) {
-  .container {
+@media(width > 768px){
+  .container{
     max-width: 480px;
   }
-  .enterAccount,
-  .enterPassword {
+  .enterAccount,.enterPassword{
     flex-flow: row nowrap;
     justify-content: center;
     align-items: center;
   }
-  label {
+  label{
     text-align: right;
     flex-shrink: 0;
   }
-  .login:hover {
-    opacity: 0.85;
-    transform: translateY(-1px);
+  .login:hover{
+    color: var(--mainColor);
+    background-color: var(--backgroundColor);
   }
-  .backHome:hover {
+  .backHome:hover{
     color: var(--mainColor);
   }
 }
