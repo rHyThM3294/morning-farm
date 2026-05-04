@@ -88,7 +88,8 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(["edit"]);
-const fallbackImage = "/image/chinese-pear.png";
+const BASE = import.meta.env.BASE_URL
+const fallbackImage = `${BASE}image/chinese-pear.png`;
 const mainImage = computed(() => {
   return props.imageList && props.imageList.length > 0
     ? props.imageList[0]
@@ -149,7 +150,6 @@ const handleDeleteClick = () => {
   adminProductStore.deleteProduct(props.id);
   toastStore.success("商品已刪除");
 };
-console.log('AdminCard imageList:', props.imageList)
 </script>
 <style scoped>
 .card {

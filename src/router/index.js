@@ -47,14 +47,12 @@ const router = createRouter({
 
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
+  // 切換頁面直接回到最頂，不使用任何過渡動畫
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
     }
-    return {
-      top: 0,
-      behavior: 'smooth',
-    }
+    return { top: 0 }
   },
 })
 
