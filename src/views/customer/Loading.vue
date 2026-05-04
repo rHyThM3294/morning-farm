@@ -16,24 +16,19 @@
     </section>
   </Transition>
 </template>
-
 <script setup>
 import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import gsap from 'gsap'
-
-const route = useRoute()
-const goodEl = ref(null)
+// 用 useRouter 取得 currentRoute，比 useRoute() 在跨元件監聽更可靠
+const router         = useRouter()
+const goodEl         = ref(null)
 const contentLayerEl = ref(null)
-const showLoading = ref(false)
-const showMorning = ref(false)
-const isExpanding = ref(false)
-let timeouts = []
-
-const clearAllTimeouts = () => {
-  timeouts.forEach(t => clearTimeout(t))
-  timeouts = []
-}
+const showLoading    = ref(false)
+const showMorning    = ref(false)
+const isExpanding    = ref(false)
+let timeouts         = []
+const clearAllTimeouts = () => { timeouts.forEach(clearTimeout); timeouts = [] }
 const lockScroll = () => {
   document.documentElement.style.overflow = 'hidden'
   document.body.style.overflow = 'hidden'
@@ -42,35 +37,30 @@ const unlockScroll = () => {
   document.documentElement.style.overflow = ''
   document.body.style.overflow = ''
 }
+// ── 結束動畫 ─────────────────────────────────────────────────────────────
+// 播完主動清 flag → 讓下一次重整可以再播
 const finishLoading = () => {
   showLoading.value = false
   unlockScroll()
+  sessionStorage.removeItem('loadingPlayed')
 }
-
-// ── 動畫主體 ───────────────────────────────────────────────────────────
+// ── 動畫主體 ─────────────────────────────────────────────────────────────
 const startLoadingAnimation = () => {
-  // 修復：原本寫成 sjowLoading（typo），且常數宣告寫成 constMORNING_DELAY（少空格）
+  // 防止重複觸發
+  if (showLoading.value) return
   showLoading.value = true
   showMorning.value = false
   isExpanding.value = false
   clearAllTimeouts()
   lockScroll()
-
-  const MORPH_START            = 1500
-  const GOOD_FADE_DURATION     = 1000
-  const MORNING_DELAY          = 1000   // 修復：原本 constMORNING_DELAY（少空格，語法錯誤）
-  const MORNING_SCALE_DURATION = 0.6
-
-  // "Good" 文字淡出
+  const MORPH_START            = 1500  // ms
+  const GOOD_FADE_DURATION     = 1.0   // gsap 秒
+  const MORNING_DELAY          = 1000  // ms
+  const MORNING_SCALE_DURATION = 0.6   // gsap 秒
   timeouts.push(setTimeout(() => {
     if (!goodEl.value) return
-    gsap.to(goodEl.value, {
-      opacity: 0,
-      duration: GOOD_FADE_DURATION / 1000,  // gsap duration 單位是秒
-    })
+    gsap.to(goodEl.value, { opacity: 0, duration: GOOD_FADE_DURATION })
   }, MORPH_START))
-
-  // "morning" 遮罩展開
   timeouts.push(setTimeout(() => {
     showMorning.value = true
     nextTick(() => {
@@ -78,75 +68,66 @@ const startLoadingAnimation = () => {
       gsap.fromTo(
         contentLayerEl.value,
         { '--mask-scale': 0.2 },
-        {
-          '--mask-scale': 1,
-          duration: MORNING_SCALE_DURATION,
-          ease: 'back.out(0.5)',
-        }
+        { '--mask-scale': 1, duration: MORNING_SCALE_DURATION, ease: 'back.out(0.5)' }
       )
     })
   }, MORPH_START + MORNING_DELAY))
-
-  // 畫面爆炸展開
-  timeouts.push(setTimeout(() => {
-    isExpanding.value = true
-  }, 4000))
-
-  // 結束
-  timeouts.push(setTimeout(() => {
-    finishLoading()
-  }, 5000))
+  timeouts.push(setTimeout(() => { isExpanding.value = true }, 4000))
+  timeouts.push(setTimeout(() => { finishLoading() }, 5000))
 }
-
-// ── 判斷是否需要播放 ────────────────────────────────────────────────────
-const tryPlayHomeLoading = () => {  // 修復：原本 tryPlayHomeLOading（大小寫錯誤）
-  const playHomeLoading = sessionStorage.getItem('playHomeLoading')
-  if (route.path === '/' && playHomeLoading === 'true') {
-    sessionStorage.removeItem('playHomeLoading')
-    startLoadingAnimation()
-  }
-}
-
-// ── 鍵盤跳過（按 K 鍵） ─────────────────────────────────────────────────
+// ── 鍵盤跳過（按 K） ─────────────────────────────────────────────────────
 const skipHandler = (e) => {
   if (e.key && e.key.toLowerCase() === 'k') {
     clearAllTimeouts()
     finishLoading()
   }
 }
-
-// ── 生命週期 ────────────────────────────────────────────────────────────
-// 修復：原本 onMounted/watch/onBeforeUnmount 全部被錯誤地包在 startLoadingAnimation 函式內部
-// 導致它們永遠不會被 Vue 執行，Loading 動畫完全失效
+// ── 觸發邏輯 ─────────────────────────────────────────────────────────────
+//
+// 設計原則：
+//   只有在首頁（/）才播放 Loading 動畫
+//   播完後清掉 flag → 下次重整沒有 flag → 再播 → 形成「每次重整都播」的效果
+//
+// 觸發時機 A：頁面第一次載入 / 重整（onMounted）
+// 觸發時機 B：從後台登出，切回首頁（watch router.currentRoute）
+// 用 router.afterEach 來監聽路由切換，比 watch(route) 更可靠
+// 因為 afterEach 是在路由切換完成後觸發，route.path 已是新值
+let routeUnwatch = null
 onMounted(() => {
   window.addEventListener('keydown', skipHandler)
-
-  // 修復：原本判斷用 'hasVisitedSite' 但 setItem 寫的是 'hasVisited'（key 不一致）
-  const hasVisited = sessionStorage.getItem('hasVisitedSite')
-  if (!hasVisited) {
-    sessionStorage.setItem('hasVisitedSite', 'true')  // 修復：統一用 hasVisitedSite
-    startLoadingAnimation()
-    return
+  // 觸發時機 A：重整 / 首次進入
+  const currentPath = router.currentRoute.value.path
+  if (currentPath === '/'){
+    const alreadyPlayed = sessionStorage.getItem('loadingPlayed')
+    if (!alreadyPlayed){
+      sessionStorage.setItem('loadingPlayed', 'true')
+      startLoadingAnimation()
+    }
   }
-  tryPlayHomeLoading()
+  // 觸發時機 B：用 router.afterEach 監聽「切換到首頁」的動作
+  // afterEach 在路由完成後觸發，比 watch(route.path) 時序更穩定
+  routeUnwatch = router.afterEach((to) => {
+    if (to.path === '/'){
+      const shouldPlay = sessionStorage.getItem('playHomeLoading')
+      if (shouldPlay === 'true'){
+        sessionStorage.removeItem('playHomeLoading')
+        sessionStorage.removeItem('loadingPlayed') // 清掉防重播 flag
+        nextTick(() => {
+          startLoadingAnimation()
+        })
+      }
+    }
+  })
 })
-
-watch(
-  () => route.path,
-  () => {
-    tryPlayHomeLoading()
-  }
-)
-
 onBeforeUnmount(() => {
   clearAllTimeouts()
   unlockScroll()
-  window.removeEventListener('keydown', skipHandler)  // 修復：原本寫成 removedEventListener（typo）
+  window.removeEventListener('keydown', skipHandler)
+  if (routeUnwatch) routeUnwatch() // 取消 afterEach 監聽
 })
 </script>
-
 <style scoped>
-.loading-overlay {
+.loading-overlay{
   isolation: isolate;
   position: fixed;
   top: 0;
@@ -157,15 +138,13 @@ onBeforeUnmount(() => {
   z-index: 10000;
   pointer-events: all;
 }
-.loading-fade-enter-active,
-.loading-fade-leave-active {
+.loading-fade-enter-active,.loading-fade-leave-active{
   transition: opacity 0.3s ease;
 }
-.loading-fade-enter-from,
-.loading-fade-leave-to {
+.loading-fade-enter-from,.loading-fade-leave-to{
   opacity: 0;
 }
-.content-layer {
+.content-layer{
   position: absolute;
   top: 0;
   left: 0;
@@ -174,7 +153,7 @@ onBeforeUnmount(() => {
   background-color: var(--backgroundColor);
   --mask-scale: 1;
 }
-.loading-overlay.morning-mode .content-layer {
+.loading-overlay.morning-mode .content-layer{
   -webkit-mask-image:
     linear-gradient(var(--white), var(--white)),
     url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 400"><text x="500" y="240" text-anchor="middle" dominant-baseline="middle" font-size="180" font-weight="700" font-family="Georgia, serif">morning</text></svg>');
@@ -190,7 +169,7 @@ onBeforeUnmount(() => {
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
-.text-container {
+.text-container{
   position: absolute;
   top: 50%;
   left: 50%;
@@ -199,11 +178,11 @@ onBeforeUnmount(() => {
   justify-content: center;
   align-items: center;
 }
-.good-container {
+.good-container{
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
 }
-.text-good {
+.text-good{
   font-size: clamp(48px, 12vw, 96px);
   font-weight: 300;
   letter-spacing: 0.05em;
@@ -217,36 +196,36 @@ onBeforeUnmount(() => {
     typing 1s steps(4, end) forwards,
     blinkCursor 0.75s step-end infinite;
 }
-@keyframes typing {
+@keyframes typing{
   from { width: 0; }
   to   { width: 4ch; }
 }
-@keyframes blinkCursor {
+@keyframes blinkCursor{
   0%, 100% { border-color: #333; }
   50%       { border-color: transparent; }
 }
-.morning-container {
+.morning-container{
   opacity: 0;
   pointer-events: none;
 }
-.text-morning {
+.text-morning{
   font-size: clamp(60px, 15vw, 180px);
   font-weight: 700;
   font-family: 'Georgia', 'Times New Roman', serif;
   color: transparent;
 }
-.loading-overlay.is-expanding .content-layer {
+.loading-overlay.is-expanding .content-layer{
   animation: morningExpand 1s ease-in forwards;
 }
 @keyframes morningExpand {
   0%   { transform: scale(1); }
   100% { transform: scale(10); }
 }
-@media (width >= 768px) {
+@media (width >= 768px){
   .text-good    { font-size: clamp(64px, 8vw, 120px); }
   .text-morning { font-size: clamp(80px, 12vw, 200px); }
 }
-@media (width >= 1024px) {
+@media (width >= 1024px){
   .text-good    { font-size: clamp(80px, 6vw, 140px); }
   .text-morning { font-size: clamp(100px, 10vw, 240px); }
 }

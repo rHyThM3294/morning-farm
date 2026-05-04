@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+// 動態組合圖片路徑，確保 dev 和 GitHub Pages (base: '/morning-farm/') 都正確
+const baseImg = (name) => `${import.meta.env.BASE_URL}image/${name}`;
 export const useAdminProductStore = defineStore("adminProduct", () => {
   const products = ref([
     {
@@ -40,6 +42,7 @@ export const useAdminProductStore = defineStore("adminProduct", () => {
       farmerName: "清晨農鋪合作小農",
     },
   ]);
+
   const addProduct = (product) => {
     products.value.push(product);
   };
@@ -52,7 +55,8 @@ export const useAdminProductStore = defineStore("adminProduct", () => {
   const deleteProduct = (id) => {
     products.value = products.value.filter((p) => p.id !== id);
   };
-  return{
+
+  return {
     products,
     addProduct,
     updateProduct,
