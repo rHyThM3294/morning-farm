@@ -130,14 +130,14 @@ p:lang(en) {
     margin: 0;
 }
 html{
-    overflow-x: clip;  /* clip 不建立滾動容器，sticky 不受影響 */
+    overflow-x: hidden;
     color: var(--black);
     background-color: var(--white);
 }
 body {
     background-color: var(--white);
     color: var(--black);
-    overflow-x: clip;  /* clip 不建立滾動容器，sticky 不受影響 */
+    overflow-x: hidden;
 }
 .container {
     position: relative;
@@ -187,7 +187,7 @@ body {
         transform: scale(1);
     }
 }
-@media screen and (min-width:768px){
+@media(width>768px){
     h1:lang(zh-Hant-TW){
         font-size: 72px;
         font-weight: 900;
