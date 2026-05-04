@@ -130,14 +130,14 @@ p:lang(en) {
     margin: 0;
 }
 html{
-    overflow-x: hidden;
+    overflow-x: clip;  /* clip 不建立滾動容器，sticky 不受影響 */
     color: var(--black);
     background-color: var(--white);
 }
 body {
     background-color: var(--white);
     color: var(--black);
-    overflow-x: hidden;
+    overflow-x: clip;  /* clip 不建立滾動容器，sticky 不受影響 */
 }
 .container {
     position: relative;
