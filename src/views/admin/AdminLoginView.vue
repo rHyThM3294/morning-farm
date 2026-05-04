@@ -4,13 +4,13 @@
       <img :src="`${BASE}image/Logo.png`" alt="清晨農鋪 Logo">
     </div>
     <div class="container">
-      <h4>後台管理系統</h4>
+      <h4>後臺管理系統</h4>
 
       <!-- 求職展示提示 -->
       <div class="demo-notice">
         <span class="demo-icon">👋</span>
         <p>這是作品集展示用的後台系統</p>
-        <p>無需帳號密碼，直接點擊下方按鈕即可進入</p>
+        <p>無需帳號密碼，直接點擊下方｢登入｣按鈕即可進入，點擊｢忘記密碼｣可返回前臺</p>
       </div>
 
       <div class="enterAccount">
@@ -22,8 +22,8 @@
         <input type="password" placeholder="（展示模式，可不填）" v-model="password" />
       </div>
 
-      <button type="button" class="login" @click="login">進入後台展示</button>
-      <button type="button" class="backHome" @click="goHome">← 回到前台</button>
+      <button type="button" class="login" @click="login">登入</button>
+      <button type="button" class="backHome" @click="goHome">忘記密碼</button>
     </div>
   </div>
 </template>
