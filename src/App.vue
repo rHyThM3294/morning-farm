@@ -28,7 +28,10 @@ const hideLayout = computed(() =>
   min-height: 100vh;
 }
 main{
-  flex: 1;
+  /* flex: 1 會讓 main 高度固定在 viewport，使 sticky 的滾動空間變成 0    */
+  /* 改為 flex-grow: 1 + 不限制高度，讓 main 隨內容自然撐高                */
+  /* 這樣 sticky 的祖先容器高度 > viewport，window 才有真正的滾動空間       */
+  flex-grow: 1;
   min-height: 60vh;
 }
 main.fullScreen{
@@ -39,6 +42,6 @@ main.fullScreen{
   overflow: hidden;      
   padding: 0;
   margin: 0;
-  background: #fff;     
+  background-color: var(--white);     
 }
 </style>
