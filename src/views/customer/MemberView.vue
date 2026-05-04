@@ -256,13 +256,13 @@ const breadcrumb = computed(() => {
   }
   .desktopMenu{
     position: sticky;
-    top: 120px;
-    height: fit-content;
+    top: 100px;           /* header 高度，sticky 停在這裡 */
+    height: fit-content;  /* 不被 grid cell 撐高，sticky 才有作用 */
+    align-self: start;    /* grid 裡讓自己只佔內容高度 */
     display: flex;
     flex-direction: column;
     gap: 0;
-    margin: 5em 0 0 0;
-    align-self: start;
+    padding-top: 2em;     /* 視覺上的頂部留白，用 padding 而非 margin */
   }
   .desktopMenu button{
     padding: 1em 1em;

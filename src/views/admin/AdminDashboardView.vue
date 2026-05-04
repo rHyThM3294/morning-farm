@@ -32,7 +32,7 @@ const adminMainRef = ref(null);
 const farmerName = "小農";
 const currentView = shallowRef(Commodity);
 const editingProductId = ref(null);
-function switchView(viewName) {
+function switchView(viewName){
   switch (viewName) {
     case "add-commodity":
       editingProductId.value = null;
