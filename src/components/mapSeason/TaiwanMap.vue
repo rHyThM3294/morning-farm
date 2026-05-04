@@ -20,7 +20,6 @@ const normalizeCityName = (name) => {
 const normalizeSvg = (raw) =>
   raw.replace(/<\?xml[^>]*>/gi, '').replace(/<!DOCTYPE[^>]*>/gi, '')
 onMounted(() => {
-  console.log('🚀 開始初始化地圖')
   svgHtml.value = normalizeSvg(twSvgRaw)
   requestAnimationFrame(() => {
     const svgEl = svgHost.value?.querySelector('svg')
@@ -28,28 +27,23 @@ onMounted(() => {
       console.error('❌ 找不到 SVG 元素')
       return
     }
-    console.log('✅ SVG 元素已找到')
     svgEl.removeAttribute('width')
     svgEl.removeAttribute('height')
     svgEl.style.width = '100%'
     svgEl.style.height = 'auto'
     svgEl.classList.add('tw-svg')
     const rects = svgEl.querySelectorAll('rect')
-    console.log(`🗑️ 找到 ${rects.length} 個 rect 元素，準備移除`)
     rects.forEach((rect) => rect.remove())
     const lines = svgEl.querySelectorAll('line')
-    console.log(`🗑️ 找到 ${lines.length} 個 line 元素，準備移除`)
     lines.forEach((line) => line.remove())
     const allPaths = svgEl.querySelectorAll('path')
     allPaths.forEach((p) => {
       const id = p.getAttribute('id')
-      if (!id || !/[\u4e00-\u9fa5]/.test(id)) {
+      if (!id || !/[\u4e00-\u9fa5]/.test(id)){
         p.remove()
-        console.log(`🗑️ 移除無縣市名稱的 path`)
       }
     })
     const paths = svgEl.querySelectorAll('path')
-    console.log(`📊 剩餘 ${paths.length} 個 path 元素`)
     let countyCount = 0
     paths.forEach((p, index) => {
       const id = p.getAttribute('id')
@@ -87,7 +81,6 @@ onBeforeUnmount(() => {
   }
 })
 const selectCity = (cityName) => {
-  console.log('🎯 selectCity 被呼叫，目標城市：', cityName)
   const svgEl = svgHost.value?.querySelector('svg')
   if (!svgEl) {
     console.warn('⚠️ SVG 元素尚未準備好')
@@ -100,7 +93,6 @@ const selectCity = (cityName) => {
   const targetPath = svgEl.querySelector(`path[id="${normalizedTarget}"]`)
   if(targetPath){
     targetPath.classList.add('selected')
-    console.log('✅ 成功選取縣市：', normalizedTarget)
   }else{
     const allPaths = svgEl.querySelectorAll('path.tw-county')
     let found = false
