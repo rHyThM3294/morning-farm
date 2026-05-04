@@ -85,7 +85,7 @@ function scrollToOrderDetail(el){
 function handleLogout(){
   sessionStorage.removeItem('admin_logged_in')
   sessionStorage.setItem('playHomeLoading', 'true')
-  router.push('/')
+  router.push('/admin/login')
 }
 </script>
 <style scoped>
