@@ -202,10 +202,14 @@ const handleDeleteClick = () => {
 }
 .cardBottom{
   cursor: pointer;
-  height: 260px;
+  /* 移除固定高度：高度固定 + space-between 是換行的根本原因         */
+  /* 元素數量不同（有無 originalPrice/isOutOfStock）時分到的空間不同 */
+  /* 改為高度由內容撐開，間距統一由 gap 控制                         */
+  height: auto;
+  min-height: 200px;
   display: flex;
-  justify-content: space-between;
   flex-flow: column nowrap;
+  justify-content: flex-start;
   gap: 0.5em;
   padding: 1em;
 }
@@ -235,6 +239,7 @@ const handleDeleteClick = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: auto; /* 把價格/編輯按鈕永遠推到底部 */
 }
 .price {
   color: var(--secondColor);
