@@ -43,6 +43,8 @@ const finishLoading = () => {
   showLoading.value = false
   unlockScroll()
   sessionStorage.removeItem('loadingPlayed')
+  // 通知 HomeView 開始 banner 文字動畫
+  window.dispatchEvent(new CustomEvent('loading-done'))
 }
 // ── 動畫主體 ─────────────────────────────────────────────────────────────
 const startLoadingAnimation = () => {
