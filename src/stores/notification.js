@@ -44,9 +44,18 @@ export const useNotificationStore = defineStore('notification', () => {
             icon:'fa-solid fa-bell',
             title:'帳戶安全提醒',
             body:'您的帳戶已於 05/05 15:26 在新裝置登入，如非本人操作請立即變更密碼。',
-            time:'剛剛',
+            time:'7天前',
             read:true,
         },
+        {
+            id:6,
+            type:'system',
+            icon:'fa-solid fa-bell',
+            title:'帳戶安全提醒',
+            body:'您的帳戶已於05/15 19:42 在新裝置登入，如非本人操作請立即變更密碼。',
+            time:'剛剛',
+            read:false,
+        }
     ])
     const unreadCount = computed(() => 
         notifications.value.filter(n => !n.read).length
