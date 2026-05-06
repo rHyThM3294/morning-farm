@@ -273,17 +273,22 @@ section.banner .bannerWords.is-horizontal {
     transform: translate(-50%, -50%);
     align-items: flex-start;
     gap: 0.4em;
-    /* 橫向打字時字間距為 0，避免行動裝置寬度不足換行 */
     letter-spacing: 0;
+}
+/* h3 本身也要明確覆寫 writing-mode，否則會繼承父層縱排影響寬度計算 */
+section.banner .bannerWords.is-horizontal h3 {
+    writing-mode: horizontal-tb;
+    white-space: nowrap;
+    word-spacing: normal;
+    /* 375px 裝置：7字 × 最小字體需 ≤ 53px，clamp 確保不換行 */
+    font-size: clamp(20px, 8.5vw, 32px);
 }
 /* 每個字的 span：FLIP 動畫時 transform 由 GSAP 控制，需要 inline-block */
 .bannerWords h3 {
     margin: 0;
-    /* 消除 v-for span 之間因 HTML 空白字元產生的隱形間隙 */
     word-spacing: -1em;
 }
 .bannerWords h3 .char-span {
-    /* 還原每個字自身的字間距為正常 */
     word-spacing: normal;
     display: inline-block;
 }
