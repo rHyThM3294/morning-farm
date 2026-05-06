@@ -1,9 +1,19 @@
 <template>
   <div class="homeView">
     <section class="banner" :style="bannerStyle">
+      <!--
+        bannerWords：動畫分兩階段
+        階段一（打字，2.5s）：橫向排列，逐字 fade-in，模擬打字效果
+        階段二（歸位，1.5s）：每個字用 GSAP 位移到縱向最終位置
+        動畫由 Loading.vue 結束後透過 CustomEvent 'loading-done' 觸發
+      -->
       <div ref="bannerWordsRef" class="bannerWords">
-        <h3>從田間到餐桌</h3>
-        <h3>每一口都是用心</h3>
+        <h3 ref="line1Ref">
+          <span v-for="(char, i) in line1Chars" :key="'l1-'+i" class="char-span">{{ char }}</span>
+        </h3>
+        <h3 ref="line2Ref">
+          <span v-for="(char, i) in line2Chars" :key="'l2-'+i" class="char-span">{{ char }}</span>
+        </h3>
       </div>
     </section>
     <Partition />
@@ -38,10 +48,11 @@
   </div>
 </template>
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useProductStore } from '@/stores/product'
+import gsap from 'gsap'
 import Card from '@/components/common/Card.vue';
 import Partition from '@/components/ui/Partition.vue';
 import FarmerSection from '@/components/farmer/FarmerSection.vue';
@@ -51,41 +62,166 @@ import WeekFarmerIntroduction from '@/components/farmer/WeekFarmerIntroduction.v
 import Question from '@/components/product/Question.vue';
 import AsideButton from '@/components/common/AsideButton.vue';
 
-// ── Scroll Reveal ──────────────────────────────────────────────────────────
+// ── 文字拆字 ───────────────────────────────────────────────────────────────
+const line1Chars = '從田間到餐桌'.split('')
+const line2Chars = '每一口都是用心'.split('')
+
+// ── Refs ───────────────────────────────────────────────────────────────────
 const bannerWordsRef   = ref(null)
+const line1Ref         = ref(null)
+const line2Ref         = ref(null)
 const categoryRef      = ref(null)
 const weekTitleRef     = ref(null)
 const containerCardRef = ref(null)
 const moreProductsRef  = ref(null)
 
-useScrollReveal(bannerWordsRef,   { y: 30, duration: 0.8, start: 'top 90%' })
+// bannerWords 不套 ScrollReveal，改由 Loading 結束事件驅動
 useScrollReveal(categoryRef,      { childSelector: ':scope > *', stagger: 0.15 })
 useScrollReveal(weekTitleRef,     { y: 24 })
 useScrollReveal(containerCardRef, { childSelector: ':scope > *', stagger: 0.12 })
 useScrollReveal(moreProductsRef,  { y: 20 })
+
 // ──────────────────────────────────────────────────────────────────────────
 
 const BASE = import.meta.env.BASE_URL || "/";
 const bannerImageUrl = `${BASE}image/bannerHero.png`
 
 // ── Banner 圖片預載 ────────────────────────────────────────────────────────
-// 在元件掛載時立即以 JS 預載圖片，確保圖片進入瀏覽器快取
-// 當 Loading 動畫結束、banner 出現在畫面時，圖片已經就緒，不會有白屏閃爍
 const bannerLoaded = ref(false)
+
+// ── Banner 文字動畫 ────────────────────────────────────────────────────────
+//
+// 動畫分兩階段，由 Loading.vue 結束後 dispatch 的 'loading-done' 事件觸發：
+//
+// 【階段一｜打字效果，共 2.5 秒】
+//   - bannerWords 切換成橫向排版（writing-mode: horizontal-tb）
+//   - 所有 .char-span 初始 opacity:0
+//   - 兩行文字的每個字依序 stagger fade-in，模擬橫向打字
+//   - 每行打字時間 ≒ 1s，行間延遲 0.3s
+//
+// 【階段二｜歸位，共 1.5 秒】
+//   - 記錄每個字在橫排狀態的 getBoundingClientRect()（起點）
+//   - 切換 bannerWords 回縱向排版（writing-mode: vertical-rl）
+//   - 讓 Vue 完成渲染後，再記錄每個字在縱排狀態的位置（終點）
+//   - 用 GSAP 把每個字從「起點偏移量」以 1.5s 動畫滑回 (0,0)（FLIP 技法）
+//
+const runBannerAnimation = async () => {
+  const words = bannerWordsRef.value
+  if (!words) return
+
+  const allSpans = words.querySelectorAll('.char-span')
+
+  // ── 階段一：橫向打字 ──────────────────────────────────────────────────
+  // 切換成橫向
+  words.classList.add('is-horizontal')
+  gsap.set(allSpans, { opacity: 0 })
+
+  const TYPING_DURATION   = 0.18   // 每個字淡入時長 (s)
+  const TYPING_STAGGER    = 0.13   // 每個字之間間距 (s)，可讓整體打字感更真實
+  const LINE2_DELAY       = 1.1    // 第二行延遲開始 (s)，讓兩行加起來共 ~2.5s
+
+  // 第一行
+  const line1Spans = line1Ref.value?.querySelectorAll('.char-span') ?? []
+  gsap.to(line1Spans, {
+    opacity: 1,
+    duration: TYPING_DURATION,
+    stagger: TYPING_STAGGER,
+    ease: 'none',
+  })
+
+  // 第二行（延遲）
+  const line2Spans = line2Ref.value?.querySelectorAll('.char-span') ?? []
+  gsap.to(line2Spans, {
+    opacity: 1,
+    duration: TYPING_DURATION,
+    stagger: TYPING_STAGGER,
+    ease: 'none',
+    delay: LINE2_DELAY,
+  })
+
+  // 等打字動畫播完
+  await new Promise(r => setTimeout(r, 2500))
+
+  // ── 階段二：FLIP 歸位（橫→縱）──────────────────────────────────────────
+  // Step 1：記錄每個字在橫排下的螢幕位置（起點）
+  const startRects = Array.from(allSpans).map(el => el.getBoundingClientRect())
+
+  // Step 2：切換回縱向排版，讓瀏覽器算出最終排版
+  words.classList.remove('is-horizontal')
+
+  // Step 3：等 Vue / 瀏覽器完成 layout
+  await nextTick()
+  // 強制 reflow 確保 getBoundingClientRect 拿到新位置
+  void words.offsetHeight
+
+  // Step 4：記錄縱排下每個字的位置（終點）
+  const endRects = Array.from(allSpans).map(el => el.getBoundingClientRect())
+
+  // Step 5：計算每個字需要從哪裡出發（起點相對終點的偏移），
+  //         用 GSAP 瞬間把字放回「起點視覺位置」，再 animate 到 0
+  allSpans.forEach((el, i) => {
+    const dx = startRects[i].left - endRects[i].left
+    const dy = startRects[i].top  - endRects[i].top
+    gsap.fromTo(
+      el,
+      { x: dx, y: dy, opacity: 1 },
+      {
+        x: 0,
+        y: 0,
+        opacity: 1,
+        duration: 1.5,
+        ease: 'power3.out',
+        // 最後清掉 inline transform，讓縱向 CSS 完全接管
+        clearProps: 'transform',
+      }
+    )
+  })
+}
+
+// ── Loading 結束事件監聽 ─────────────────────────────────────────────────
+// Loading.vue 的 finishLoading() 會 dispatch 'loading-done' CustomEvent
+// 若沒有 Loading 動畫（如從後台回來第二次），直接啟動
+let loadingDoneHandler = null
 
 onMounted(() => {
   const img = new Image()
-  img.onload = () => { bannerLoaded.value = true }
-  img.onerror = () => { bannerLoaded.value = true } // 載入失敗也要顯示，避免卡住
+  img.onload  = () => { bannerLoaded.value = true }
+  img.onerror = () => { bannerLoaded.value = true }
   img.src = bannerImageUrl
+
+  // 先把文字設成不可見，等事件來才開始
+  nextTick(() => {
+    const words = bannerWordsRef.value
+    if (words) {
+      const allSpans = words.querySelectorAll('.char-span')
+      gsap.set(allSpans, { opacity: 0 })
+    }
+  })
+
+  loadingDoneHandler = () => { runBannerAnimation() }
+  window.addEventListener('loading-done', loadingDoneHandler)
+
+  // 如果此次沒有播 Loading（sessionStorage 沒有 flag），
+  // 代表是從其他頁切回來，延遲一點直接跑動畫
+  const willPlay = sessionStorage.getItem('loadingPlayed')
+  if (!willPlay) {
+    setTimeout(() => { runBannerAnimation() }, 300)
+  }
 })
+
+onBeforeUnmount(() => {
+  if (loadingDoneHandler) {
+    window.removeEventListener('loading-done', loadingDoneHandler)
+  }
+})
+
+// ──────────────────────────────────────────────────────────────────────────
 
 const bannerStyle = computed(() => ({
   backgroundImage: bannerLoaded.value ? `url(${bannerImageUrl})` : 'none',
   backgroundPosition: "top",
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
-  // 圖片尚未載入時顯示一個接近的佔位背景色，避免純白閃爍
   backgroundColor: bannerLoaded.value ? 'transparent' : 'var(--firstColor, #5c7a4e)',
   transition: 'background-image 0.3s ease'
 }));
@@ -124,8 +260,26 @@ section.banner .bannerWords {
     line-height: 1.4;
     letter-spacing: 0.08em;
 }
+/*
+  打字階段的橫向排版：
+  - writing-mode 切回水平，讓兩行文字橫向顯示在畫面中央
+  - 動畫結束後由 JS 移除此 class，恢復縱向
+*/
+section.banner .bannerWords.is-horizontal {
+    writing-mode: horizontal-tb;
+    text-orientation: mixed;
+    right: unset;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    align-items: flex-start;
+    gap: 0.4em;
+}
+/* 每個字的 span：FLIP 動畫時 transform 由 GSAP 控制，需要 inline-block */
 .bannerWords h3 {
     margin: 0;
+}
+.bannerWords .char-span {
+    display: inline-block;
 }
 .thisWeekFresh{
   width: 90%;
