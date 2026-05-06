@@ -1,0 +1,21 @@
+{
+  "name": "清晨農鋪",
+  "short_name": "清晨農鋪",
+  "description": "清晨農鋪 - 新鮮直送的農產品",
+  "start_url": "/morning-farm/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4a7c59",
+  "icons": [
+    {
+      "src": "/morning-farm/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/morning-farm/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
