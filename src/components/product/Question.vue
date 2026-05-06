@@ -1,7 +1,7 @@
 <template>
     <section class="question">
-        <h2>常見問題Q&A</h2>
-        <div class="container">
+        <h2 ref="titleRef">常見問題Q&A</h2>
+        <div ref="containerRef" class="container">
             <div class="questionBox">
                 <h5>出貨相關</h5>
                 <div class="questionBoxItem">
@@ -26,6 +26,12 @@
     </section>
 </template>
 <script setup>
+import { ref } from 'vue'
+import { useScrollReveal } from '@/composables/useScrollReveal'
+const titleRef     = ref(null)
+const containerRef = ref(null)
+useScrollReveal(titleRef,     { y: 24 })
+useScrollReveal(containerRef, { childSelector: ':scope > *', stagger: 0.15 })
 </script>
 <style scoped>
 .question{
