@@ -100,7 +100,7 @@ section.banner .bannerWords {
     right: 2em;
     transform: translateY(-50%);
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 1em;
     writing-mode: vertical-rl;
     text-orientation: upright;
