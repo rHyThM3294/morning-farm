@@ -2,8 +2,8 @@
   <div class="homeView">
     <section class="banner" :style="bannerStyle">
       <div ref="bannerWordsRef" class="bannerWords">
-        <h3 class="right">從田間到餐桌</h3>
-        <h3 class="left">每一口都是用心</h3>
+        <h3>從田間到餐桌</h3>
+        <h3>每一口都是用心</h3>
       </div>
     </section>
     <Partition />
@@ -96,17 +96,19 @@ section.banner {
 section.banner .bannerWords {
     color: var(--backgroundColor);
     position: absolute;
-    top: 25%;
-    right: 1.5em;
+    top: 50%;
+    right: 2em;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
     writing-mode: vertical-rl;
-    /* 文字由上往下，從右到左 */
     text-orientation: upright;
-    /* 每個字保持正立，不旋轉 */
-    line-height: 1em;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
 }
-/* .bannerWords h3{} */
-.bannerWords h3.left {
-    margin: 1.2em 1.2em 0 0;
+.bannerWords h3 {
+    margin: 0;
 }
 .thisWeekFresh{
   width: 90%;
