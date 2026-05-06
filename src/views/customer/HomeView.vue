@@ -273,12 +273,18 @@ section.banner .bannerWords.is-horizontal {
     transform: translate(-50%, -50%);
     align-items: flex-start;
     gap: 0.4em;
+    /* 橫向打字時字間距為 0，避免行動裝置寬度不足換行 */
+    letter-spacing: 0;
 }
 /* 每個字的 span：FLIP 動畫時 transform 由 GSAP 控制，需要 inline-block */
 .bannerWords h3 {
     margin: 0;
+    /* 消除 v-for span 之間因 HTML 空白字元產生的隱形間隙 */
+    word-spacing: -1em;
 }
-.bannerWords .char-span {
+.bannerWords h3 .char-span {
+    /* 還原每個字自身的字間距為正常 */
+    word-spacing: normal;
     display: inline-block;
 }
 .thisWeekFresh{
