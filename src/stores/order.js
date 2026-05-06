@@ -62,6 +62,9 @@ function cancelOrder(orderId){
     if (!products.length) return []
 
     return Array.from({ length: 50 }, (_, i) => {
+      // 將 50 筆訂單的主日期平均分散在 -30 ~ +30 天內
+      // i=0 → -30天前（最舊）, i=49 → +30天後（最新預購）
+      const dayOffset = Math.round(-30 + (i / 49) * 60)
       const itemCount = (i % 3) + 1
       const items = []
       let itemsTotal = 0
@@ -104,12 +107,12 @@ function cancelOrder(orderId){
           status: isPendingReturn ? 'pending' : 'done',
           reason: randomReason,
           method: randomMethod,
-          applyTime: `${recentDate(i - 1)} 18:30`,
+          applyTime: `${recentDate(dayOffset - 1)} 18:30`,
           deadline: isPendingReturn
-            ? `${recentDate(i + 2)} 23:59`
+            ? `${recentDate(dayOffset + 2)} 23:59`
             : null,
           finishedTime: !isPendingReturn
-            ? `${recentDate(i)} 14:20`
+            ? `${recentDate(dayOffset)} 14:20`
             : null
         }
       }
@@ -120,8 +123,8 @@ function cancelOrder(orderId){
         phone: `09${Math.floor(10000000 + Math.random() * 89999999)}`,
         telephone: '',
         email: `buyer${i + 1}@example.com`,
-        date: recentDate(i),
-        payTime: i % 2 === 0 ? recentDate(i - 1) : null,
+        date: recentDate(dayOffset),
+        payTime: i % 2 === 0 ? recentDate(dayOffset - 1) : null,
         status: hasReturn ? 'returned' : statusPool[i % statusPool.length],
         isPaid: i % 2 === 0,
         payMethod,
