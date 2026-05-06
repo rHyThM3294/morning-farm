@@ -6,7 +6,7 @@
       <RouterView :key="$route.fullPath" />
     </main>
     <SiteFooter v-if="!hideLayout" />
-    <Tosat />
+    <Toast />
   </div>
 </template>
 <script setup>

@@ -27,7 +27,7 @@ export const useNotificationStore = defineStore('notification', () => {
             title:'訂單已完成',
             body:'訂單 #20260428已確認收貨完成，感謝您的支持，歡迎再次選購',
             time:'昨天',
-            read:'false',
+            read:false,
         },
         {
             id:4,
@@ -52,7 +52,11 @@ export const useNotificationStore = defineStore('notification', () => {
         notifications.value.filter(n => !n.read).length
     )
     function markAsRead(id){
-        const n = notifications.value.forEach(n => { n.read = true })
+        const n = notifications.value.find(n => n.id === id)
+        if (n) n.read = true
+    }
+    function markAllAsRead(){
+        notifications.value.forEach(n => { n.read = true })
     }
     return{ notifications, unreadCount, markAsRead, markAllAsRead }
 })
