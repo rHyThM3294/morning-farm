@@ -133,7 +133,7 @@ button {
 .login {
   background: var(--mainColor);
   color: var(--white);
-  padding: 1em 2.5em;
+  padding: 0.5em 2.5em;
   border-radius: var(--radiusLarge);
   font-size: 1em;
   letter-spacing: 0.05em;
