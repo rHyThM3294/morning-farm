@@ -38,7 +38,7 @@
   </div>
 </template>
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useProductStore } from '@/stores/product'
@@ -66,11 +66,28 @@ useScrollReveal(moreProductsRef,  { y: 20 })
 // ──────────────────────────────────────────────────────────────────────────
 
 const BASE = import.meta.env.BASE_URL || "/";
+const bannerImageUrl = `${BASE}image/bannerHero.png`
+
+// ── Banner 圖片預載 ────────────────────────────────────────────────────────
+// 在元件掛載時立即以 JS 預載圖片，確保圖片進入瀏覽器快取
+// 當 Loading 動畫結束、banner 出現在畫面時，圖片已經就緒，不會有白屏閃爍
+const bannerLoaded = ref(false)
+
+onMounted(() => {
+  const img = new Image()
+  img.onload = () => { bannerLoaded.value = true }
+  img.onerror = () => { bannerLoaded.value = true } // 載入失敗也要顯示，避免卡住
+  img.src = bannerImageUrl
+})
+
 const bannerStyle = computed(() => ({
-  backgroundImage: `url(${BASE}image/bannerHero.png)`,
+  backgroundImage: bannerLoaded.value ? `url(${bannerImageUrl})` : 'none',
   backgroundPosition: "top",
   backgroundRepeat: "no-repeat",
-  backgroundSize: "cover"
+  backgroundSize: "cover",
+  // 圖片尚未載入時顯示一個接近的佔位背景色，避免純白閃爍
+  backgroundColor: bannerLoaded.value ? 'transparent' : 'var(--firstColor, #5c7a4e)',
+  transition: 'background-image 0.3s ease'
 }));
 
 const router = useRouter()

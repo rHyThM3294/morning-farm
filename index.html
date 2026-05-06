@@ -11,6 +11,11 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
+    <!--
+      preload banner 圖片：讓瀏覽器在解析 HTML 時就以高優先度下載 bannerHero.png
+      與 Loading 動畫播放時間並行，確保動畫結束後圖片已在快取中就緒
+    -->
+    <link rel="preload" as="image" href="/image/bannerHero.png">
   </head>
   <body>
     <div id="app"></div>
