@@ -1,7 +1,7 @@
 <template>
   <section class="weekFarmer">
-    <h2>{{ title }}</h2>
-    <div class="container">
+    <h2 ref="titleRef">{{ title }}</h2>
+    <div ref="containerRef" class="container">
       <div
         class="cardFarmer"
         v-for="(farmer, index) in farmers"
@@ -32,7 +32,15 @@
   </section>
 </template>
 <script setup>
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useScrollReveal } from '@/composables/useScrollReveal'
+
+const titleRef     = ref(null)
+const containerRef = ref(null)
+useScrollReveal(titleRef,     { y: 24 })
+useScrollReveal(containerRef, { childSelector: ':scope > *', stagger: 0.12 })
+
 const router = useRouter()
 const goToCooperation = () => {
   router.push({ name: 'cooperation-farmer' })

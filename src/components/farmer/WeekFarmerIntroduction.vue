@@ -1,7 +1,7 @@
 <template>
 <section class="weekFarmerIntroduction">
-  <h2>本週小農介紹</h2>
-  <div class="container">
+  <h2 ref="titleRef">本週小農介紹</h2>
+  <div ref="containerRef" class="container">
     <div class="farmerPhoto">
       <img src="/public/image/orange-1.png" alt="">
     </div>
@@ -22,7 +22,15 @@
 </section>
 </template>
 <script setup>
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useScrollReveal } from '@/composables/useScrollReveal'
+
+const titleRef     = ref(null)
+const containerRef = ref(null)
+useScrollReveal(titleRef,     { y: 24 })
+useScrollReveal(containerRef, { childSelector: ':scope > *', stagger: 0.15 })
+
 const router = useRouter()
 const farmerName = '阿月嬤'
 function goFarmerDetail() {

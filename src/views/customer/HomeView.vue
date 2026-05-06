@@ -1,26 +1,26 @@
 <template>
   <div class="homeView">
     <section class="banner" :style="bannerStyle">
-      <div class="bannerWords">
+      <div ref="bannerWordsRef" class="bannerWords">
         <h3 class="right">從田間到餐桌</h3>
         <h3 class="left">每一口都是用心</h3>
       </div>
     </section>
     <Partition />
-    <section class="category">
+    <section ref="categoryRef" class="category">
       <Lead />
       <Produce />
     </section>
     <section class="thisWeekFresh">
-      <h2>本週新鮮現採</h2>
-      <div class="containerCard">
+      <h2 ref="weekTitleRef">本週新鮮現採</h2>
+      <div ref="containerCardRef" class="containerCard">
         <Card
           v-for="(product, i) in weekProducts"
           :key="product.id"
           v-bind="product"
         />
       </div>
-      <div class="moreProducts">
+      <div ref="moreProductsRef" class="moreProducts">
           <button 
             type="button" 
             class="toAllproducts" 
@@ -38,8 +38,9 @@
   </div>
 </template>
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useProductStore } from '@/stores/product'
 import Card from '@/components/common/Card.vue';
 import Partition from '@/components/ui/Partition.vue';
@@ -49,6 +50,20 @@ import Produce from '@/components/common/Produce.vue';
 import WeekFarmerIntroduction from '@/components/farmer/WeekFarmerIntroduction.vue';
 import Question from '@/components/product/Question.vue';
 import AsideButton from '@/components/common/AsideButton.vue';
+
+// ── Scroll Reveal ──────────────────────────────────────────────────────────
+const bannerWordsRef   = ref(null)
+const categoryRef      = ref(null)
+const weekTitleRef     = ref(null)
+const containerCardRef = ref(null)
+const moreProductsRef  = ref(null)
+
+useScrollReveal(bannerWordsRef,   { y: 30, duration: 0.8, start: 'top 90%' })
+useScrollReveal(categoryRef,      { childSelector: ':scope > *', stagger: 0.15 })
+useScrollReveal(weekTitleRef,     { y: 24 })
+useScrollReveal(containerCardRef, { childSelector: ':scope > *', stagger: 0.12 })
+useScrollReveal(moreProductsRef,  { y: 20 })
+// ──────────────────────────────────────────────────────────────────────────
 
 const BASE = import.meta.env.BASE_URL || "/";
 const bannerStyle = computed(() => ({
