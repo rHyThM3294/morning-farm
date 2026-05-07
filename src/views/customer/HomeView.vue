@@ -82,29 +82,9 @@ useScrollReveal(containerCardRef, { childSelector: ':scope > *', stagger: 0.12 }
 useScrollReveal(moreProductsRef,  { y: 20 })
 
 // ──────────────────────────────────────────────────────────────────────────
-
 const BASE = import.meta.env.BASE_URL || "/";
 const bannerImageUrl = `${BASE}image/bannerHero.png`
-
-// ── Banner 圖片預載 ────────────────────────────────────────────────────────
 const bannerLoaded = ref(false)
-
-// ── Banner 文字動畫 ────────────────────────────────────────────────────────
-//
-// 動畫分兩階段，由 Loading.vue 結束後 dispatch 的 'loading-done' 事件觸發：
-//
-// 【階段一｜打字效果，共 2.5 秒】
-//   - bannerWords 切換成橫向排版（writing-mode: horizontal-tb）
-//   - 所有 .char-span 初始 opacity:0
-//   - 兩行文字的每個字依序 stagger fade-in，模擬橫向打字
-//   - 每行打字時間 ≒ 1s，行間延遲 0.3s
-//
-// 【階段二｜歸位，共 1.5 秒】
-//   - 記錄每個字在橫排狀態的 getBoundingClientRect()（起點）
-//   - 切換 bannerWords 回縱向排版（writing-mode: vertical-rl）
-//   - 讓 Vue 完成渲染後，再記錄每個字在縱排狀態的位置（終點）
-//   - 用 GSAP 把每個字從「起點偏移量」以 1.5s 動畫滑回 (0,0)（FLIP 技法）
-//
 const runBannerAnimation = async () => {
   const words = bannerWordsRef.value
   if (!words) return
@@ -119,8 +99,6 @@ const runBannerAnimation = async () => {
   const TYPING_DURATION   = 0.18   // 每個字淡入時長 (s)
   const TYPING_STAGGER    = 0.13   // 每個字之間間距 (s)，可讓整體打字感更真實
   const LINE2_DELAY       = 1.1    // 第二行延遲開始 (s)，讓兩行加起來共 ~2.5s
-
-  // 第一行
   const line1Spans = line1Ref.value?.querySelectorAll('.char-span') ?? []
   gsap.to(line1Spans, {
     opacity: 1,
@@ -128,8 +106,6 @@ const runBannerAnimation = async () => {
     stagger: TYPING_STAGGER,
     ease: 'none',
   })
-
-  // 第二行（延遲）
   const line2Spans = line2Ref.value?.querySelectorAll('.char-span') ?? []
   gsap.to(line2Spans, {
     opacity: 1,
