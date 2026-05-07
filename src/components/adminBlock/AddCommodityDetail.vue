@@ -338,6 +338,12 @@ input,select,textarea{
   padding: 0.5em;
   font-size: 1em;
 }
+input[type="radio"],
+input[type="checkbox"] {
+    width: auto;
+    padding: 0;
+    border: revert;
+}
 .unit-group{
   display: flex;
   align-items: center;
