@@ -143,7 +143,7 @@ export default {
           emit("switch-view", "sales-report");
           break;
         case "販售統計":
-          emit("switch-view", "finance");
+          emit("switch-view", "product-sales");
           break;
         case "金流管理":
           emit("switch-view", "finance");
@@ -451,6 +451,7 @@ export default {
   to{
     transform: translateX(0);
   }
+
 @keyframes slideOutLeft{
   from{
     transform: translateX(0);
