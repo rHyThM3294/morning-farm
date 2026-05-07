@@ -405,23 +405,21 @@ function exportCSV() {
 }
 
 /* ── 商品報表 ────────────────────────────── */
-.report-section {
+.report-section{
   display: flex;
   flex-direction: column;
-  gap: 0.6em;
+  gap: 0;
 }
-.report-header {
+.report-header{
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.report-tag {
+.report-tag{
   background: var(--mainColor);
-  color: var(--black);
-  font-size: 0.88em;
-  font-weight: 700;
+  color: var(--white);
+  font-size: 1em;
   padding: 0.25em 0.8em;
-  border-radius: 4px;
 }
 .export-btn {
   background: none;
