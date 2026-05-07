@@ -1,5 +1,53 @@
 <template>
   <div class="app-container">
+    <!-- 列印訂單 Modal -->
+    <Teleport to="body">
+      <div v-if="showPrintModal" class="print-modal-backdrop" @click.self="closePrintModal">
+        <div class="print-modal">
+          <h3 class="print-modal-title">列印訂單清單</h3>
+          <div class="print-modal-body">
+            <p>這裡是列印訂單的相關說明文字，後續可以替換成實際內容。</p>
+            <p>訂單編號：A202500001</p>
+            <p>訂單編號：A202500002</p>
+            <p>訂單編號：A202500003</p>
+            <p>訂單編號：A202500004</p>
+            <p>訂單編號：A202500005</p>
+            <p>商品名稱：有機草莓 x2</p>
+            <p>商品名稱：臺農57號地瓜 x1</p>
+            <p>商品名稱：玉荷包荔枝 x3</p>
+            <p>商品名稱：高山烏龍茶 x1</p>
+            <p>商品名稱：牛番茄 x5</p>
+            <p>出貨日期：2025/05/10</p>
+            <p>出貨日期：2025/05/11</p>
+            <p>出貨日期：2025/05/12</p>
+            <p>收件地址：臺北市大安區復興南路一段</p>
+            <p>收件地址：新北市板橋區文化路二段</p>
+            <p>收件人：王小明</p>
+            <p>收件人：李小華</p>
+            <p>聯絡電話：0912-345-678</p>
+            <p>聯絡電話：0923-456-789</p>
+            <p>付款方式：信用卡一次付清</p>
+            <p>付款方式：超商代碼繳費</p>
+            <p>訂單金額：NT$ 1,280</p>
+            <p>訂單金額：NT$ 560</p>
+            <p>訂單狀態：處理中</p>
+            <p>訂單狀態：已出貨</p>
+            <p>備註：請勿過度冷藏</p>
+            <p>備註：需要附發票</p>
+            <p>小農：清晨農鋪合作小農</p>
+            <p>小農：山頂有機農場</p>
+            <p>配送方式：常溫宅配</p>
+            <p>配送方式：低溫冷藏配送</p>
+            <p>預計送達：2025/05/13</p>
+            <p>預計送達：2025/05/14</p>
+            <p>目前共有 32 筆訂單待列印。</p>
+            <p>系統產生時間：2025/05/07 10:30:00</p>
+            <p>請確認以上資料無誤後按下確定進行列印。</p>
+          </div>
+          <button class="print-modal-confirm" @click="closePrintModal">確定</button>
+        </div>
+      </div>
+    </Teleport>
     <button
       class="navButton"
       :class="{ hidden: isNavOpen }"
@@ -53,6 +101,8 @@ export default {
     const isNavOpen = ref(false);
     const openMenu = ref(null);
     const isDesktop = ref(window.innerWidth >= 768);
+    const showPrintModal = ref(false);
+    const closePrintModal = () => { showPrintModal.value = false; };
     const navBlockRef = ref(null);
     const overlayRef = ref(null);
     const menuItems = [
@@ -87,7 +137,7 @@ export default {
           emit("switch-view", "withdraw");
           break;
         case "列印訂單":
-          window.open("https://www.google.com/maps", "_blank");
+          showPrintModal.value = true;
           break;
         case "銷售報表":
           emit("switch-view", "finance");
@@ -137,6 +187,8 @@ export default {
       navBlockRef,
       overlayRef,
       menuItems,
+      showPrintModal,
+      closePrintModal,
       toggleMenu,
       handleNavButtonClick,
       handleCloseClick,
@@ -331,7 +383,67 @@ export default {
   opacity: 1;
   pointer-events: auto;
 }
-@keyframes slideInLeft{
+/* ── 列印訂單 Modal ── */
+.print-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.55);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.print-modal {
+  background-color: var(--backgroundColor);
+  border-radius: var(--radiusNormal);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 2em 2.5em;
+  width: min(480px, 90vw);
+  max-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2em;
+}
+.print-modal-title {
+  font-size: 1.2em;
+  font-weight: 700;
+  color: var(--black);
+  border-bottom: 2px solid var(--mainColor);
+  padding-bottom: 0.5em;
+}
+.print-modal-body {
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  color: var(--black);
+  font-size: 0.95em;
+  line-height: 1.7;
+  scrollbar-width: thin;
+  scrollbar-color: var(--mainColor) transparent;
+}
+.print-modal-body::-webkit-scrollbar {
+  width: 5px;
+}
+.print-modal-body::-webkit-scrollbar-thumb {
+  background-color: var(--mainColor);
+  border-radius: 3px;
+}
+.print-modal-confirm {
+  align-self: flex-end;
+  padding: 0.5em 2em;
+  background-color: var(--mainColor);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radiusNormal);
+  font-size: 1em;
+  cursor: pointer;
+  transition: var(--transitionNormal);
+}
+.print-modal-confirm:hover {
+  background-color: var(--addColor);
+  color: var(--black);
   from{
     transform: translateX(-100%);
   }
