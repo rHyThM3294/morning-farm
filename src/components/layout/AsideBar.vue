@@ -13,14 +13,14 @@
             <p>訂單編號：A202500004</p>
             <p>訂單編號：A202500005</p>
             <p>商品名稱：有機草莓 x2</p>
-            <p>商品名稱：臺農57號地瓜 x1</p>
+            <p>商品名稱：台農57號地瓜 x1</p>
             <p>商品名稱：玉荷包荔枝 x3</p>
             <p>商品名稱：高山烏龍茶 x1</p>
             <p>商品名稱：牛番茄 x5</p>
             <p>出貨日期：2025/05/10</p>
             <p>出貨日期：2025/05/11</p>
             <p>出貨日期：2025/05/12</p>
-            <p>收件地址：臺北市大安區復興南路一段</p>
+            <p>收件地址：台北市大安區復興南路一段</p>
             <p>收件地址：新北市板橋區文化路二段</p>
             <p>收件人：王小明</p>
             <p>收件人：李小華</p>
@@ -140,7 +140,7 @@ export default {
           showPrintModal.value = true;
           break;
         case "銷售報表":
-          emit("switch-view", "finance");
+          emit("switch-view", "sales-report");
           break;
         case "販售統計":
           emit("switch-view", "finance");
@@ -444,13 +444,13 @@ export default {
 .print-modal-confirm:hover {
   background-color: var(--addColor);
   color: var(--black);
+}
   from{
     transform: translateX(-100%);
   }
   to{
     transform: translateX(0);
   }
-}
 @keyframes slideOutLeft{
   from{
     transform: translateX(0);

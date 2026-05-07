@@ -27,6 +27,7 @@ import CheckOrder from "@/components/adminBlock/CheckOrder.vue";
 import Withdraw from "@/components/adminBlock/Withdraw.vue";
 import AsideButton from "@/components/common/AsideButton.vue";
 import Finance from '@/components/adminBlock/Finance.vue'
+import SalesReport from '@/components/adminBlock/SalesReport.vue'
 const router = useRouter();
 const adminMainRef = ref(null);
 const farmerName = "小農";
@@ -50,6 +51,9 @@ function switchView(viewName){
       break;
   case "finance":
     currentView.value = Finance;
+    break;
+  case "sales-report":
+    currentView.value = SalesReport;
     break;
     default:
       currentView.value = Commodity;
