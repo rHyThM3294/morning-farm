@@ -15,8 +15,6 @@
         v-for="item in seasonChartData" 
         :key="item.id" 
         class="chartRow"
-        @mouseenter="hoveredProduct = item.id"
-        @mouseleave="hoveredProduct = null"
       >
         <div class="monthGrid">
           <div
@@ -28,6 +26,8 @@
               selected: selectedProductId === item.id
             }"
             :style="computeBarStyle(segment)"
+            @mouseenter="hoveredProduct = item.id"
+            @mouseleave="hoveredProduct = null"
             @click="selectProduct(item)"
           >
             <span>{{ item.name }}</span>
@@ -225,7 +225,7 @@ function computeMobileBarStyle(segment){
   color:var(--white);
   white-space: nowrap;
 }
-@media (min-width: 768px){
+@media(width>768px){
   .chartMobile{
     display: none;
   }
