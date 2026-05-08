@@ -93,7 +93,7 @@ export const useMapSeasonStore = defineStore('mapSeason', () => {
       id: 'mango',
       name: '芒果',
       months: [5,6,7,8],
-      image: 'chinese-pear.png',
+      image: 'mango.png',
       price: 200,
       seller: '玉井果園'
     },
@@ -104,24 +104,87 @@ export const useMapSeasonStore = defineStore('mapSeason', () => {
       image: 'chinese-pear.png',
       price: 250,
       seller: '柚子伯'
+    },
+    {
+      id: 'cabbage',
+      name: '高麗菜',
+      months: [11,12,1,2,3,4],
+      image: 'cabbage.png',
+      price: 70,
+      seller: '清境農場'
+    },
+    {
+      id: 'tea',
+      name: '烏龍茶',
+      months: [3,4,5,9,10,11],
+      image: 'chinese-pear.png',
+      price: 680,
+      seller: '阿里山茶農'
+    },
+    {
+      id: 'rice',
+      name: '池上米',
+      months: [6,7,8,10,11,12],
+      image: 'rice.png',
+      price: 280,
+      seller: '池上農會'
+    },
+    {
+      id: 'bamboo',
+      name: '竹筍',
+      months: [4,5,6,7,8,9],
+      image: 'bamboo-shoots.png',
+      price: 120,
+      seller: '阿明農場'
+    },
+    {
+      id: 'mushroom',
+      name: '香菇',
+      months: [10,11,12,1,2,3],
+      image: 'mushroom.png',
+      price: 150,
+      seller: '新社菇農'
+    },
+    {
+      id: 'sweet_potato',
+      name: '地瓜',
+      months: [8,9,10,11,12,1],
+      image: 'potato.png',
+      price: 90,
+      seller: '雲林地瓜伯'
+    },
+    {
+      id: 'carrot',
+      name: '紅蘿蔔',
+      months: [11,12,1,2,3],
+      image: 'carrot.png',
+      price: 80,
+      seller: '彰化阿誠'
     }
   ]
   const seasonProducts = {
     spring: [
-      { id: 101, name: '春季玉米筍', price: 80, image: 'chinese-pear.png', seller: '林大哥' },
-      { id: 102, name: '春季青茶', price: 150, image: 'chinese-pear.png', seller: '王阿姨' },
+      { id: 101, name: '春季竹筍', price: 120, image: 'bamboo-shoots.png', seller: '阿明農場' },
+      { id: 102, name: '春季烏龍茶', price: 680, image: 'chinese-pear.png', seller: '阿里山茶農' },
+      { id: 103, name: '春季高麗菜', price: 70, image: 'cabbage.png', seller: '清境農場' },
     ],
     summer: [
-      { id: 201, name: '夏季芒果', price: 220, image: 'chinese-pear.png', seller: '玉井果園' },
-      { id: 202, name: '夏季西瓜', price: 180, image: 'chinese-pear.png', seller: '大湖農場' },
+      { id: 201, name: '夏季芒果', price: 220, image: 'mango.png', seller: '玉井果園' },
+      { id: 202, name: '夏季竹筍', price: 120, image: 'bamboo-shoots.png', seller: '阿明農場' },
+      { id: 203, name: '夏季水梨', price: 350, image: 'chinese-pear.png', seller: '王大哥' },
+      { id: 204, name: '夏季池上米', price: 280, image: 'rice.png', seller: '池上農會' },
     ],
     autumn: [
-      { id: 301, name: '秋季文旦', price: 260, image: 'chinese-pear.png', seller: '柚子伯' },
-      { id: 302, name: '秋季栗子南瓜', price: 90, image: 'chinese-pear.png', seller: '阿誠農園' },
+      { id: 301, name: '秋季文旦', price: 250, image: 'chinese-pear.png', seller: '柚子伯' },
+      { id: 302, name: '秋季地瓜', price: 90, image: 'potato.png', seller: '雲林地瓜伯' },
+      { id: 303, name: '秋季烏龍茶', price: 680, image: 'chinese-pear.png', seller: '阿里山茶農' },
+      { id: 304, name: '秋季池上米', price: 280, image: 'rice.png', seller: '池上農會' },
     ],
     winter: [
-      { id: 401, name: '冬季高麗菜', price: 70, image: 'chinese-pear.png', seller: '清境農場' },
-      { id: 402, name: '冬季大蒜', price: 110, image: 'chinese-pear.png', seller: '阿吉伯' },
+      { id: 401, name: '冬季高麗菜', price: 70, image: 'cabbage.png', seller: '清境農場' },
+      { id: 402, name: '冬季香菇', price: 150, image: 'mushroom.png', seller: '新社菇農' },
+      { id: 403, name: '冬季紅蘿蔔', price: 80, image: 'carrot.png', seller: '彰化阿誠' },
+      { id: 404, name: '冬季地瓜', price: 90, image: 'potato.png', seller: '雲林地瓜伯' },
     ]
   }
   const filteredSeasonProducts = computed(() =>

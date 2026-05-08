@@ -281,9 +281,7 @@ function exportCSV() {
 </script>
 
 <style scoped>
-* { box-sizing: border-box; }
-
-.product-sales {
+.product-sales{
   width: 100%;
   padding: 1.5em 1em 3em;
   display: flex;
