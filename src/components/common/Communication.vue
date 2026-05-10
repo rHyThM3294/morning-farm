@@ -2,7 +2,7 @@
   <div v-show="visible" class="commOverlay" ref="overlayRef" @click.self="closePanel">
     <div class="commPanel" ref="panelRef">
       <div class="commContent">
-        <p>此專案調查、設計問卷、電訪等各種調查，到功能流程(相對UI更重視UX)，隨後給予測試後，最後再以 Vue3 + Vite 來開發，未來目標則是將其串接真實的資料，以及製作出第三個擁有者端的介面，直接從該介面來去介入消費者的前臺與農夫操作的後臺</p>
+        <p>不是從寫程式開始的——而是先去了解「誰需要這個網站」。｢清晨農鋪｣由四人團隊從市場調查出發，共同定義功能、規劃使用者流程與介面設計；而最終的 Vue 3 + Vite 前端開發，則由我獨立完成。這個作品想呈現的不只是技術能力，而是一個前端工程師如何從調查到實作，走完一個產品的完整旅程。</p>
       </div>
       <div class="commFooter">
         <button type="button" class="confirmButton" @click="closePanel">確定</button>
@@ -10,45 +10,34 @@
     </div>
   </div>
 </template>
-
 <script setup>
 import { ref, watch, nextTick } from 'vue'
 import { gsap } from 'gsap'
-
 const props = defineProps({
   visible: Boolean,
   originRect: Object
 })
-
 const emit = defineEmits(['close'])
-
 const overlayRef = ref(null)
 const panelRef = ref(null)
-
 watch(() => props.visible, async (val) => {
   if (!val) return
   await nextTick()
   if (!panelRef.value || !props.originRect) return
-
   const { x, y, width, height } = props.originRect
-
   // 計算按鈕中心點相對於視窗的位置
   const btnCenterX = x + width / 2
   const btnCenterY = y + height / 2
-
   // 取得 panel 的尺寸，計算 panel 中心
   const panelRect = panelRef.value.getBoundingClientRect()
   const panelCenterX = window.innerWidth / 2
   const panelCenterY = window.innerHeight / 2
-
   // 偏移量：從按鈕中心到 panel 正中間的差距
   const offsetX = btnCenterX - panelCenterX
   const offsetY = btnCenterY - panelCenterY
-
   // overlay 淡入
   gsap.set(overlayRef.value, { opacity: 0 })
   gsap.to(overlayRef.value, { opacity: 1, duration: 0.3, ease: 'power2.out' })
-
   // panel 從按鈕位置縮放展開到正中間
   gsap.set(panelRef.value, { clearProps: 'all' })
   gsap.set(panelRef.value, {
@@ -67,25 +56,20 @@ watch(() => props.visible, async (val) => {
     ease: 'power3.out'
   })
 })
-
 function closePanel() {
   if (!panelRef.value || !props.originRect) {
     emit('close')
     return
   }
-
   const { x, y, width, height } = props.originRect
   const btnCenterX = x + width / 2
   const btnCenterY = y + height / 2
   const panelCenterX = window.innerWidth / 2
   const panelCenterY = window.innerHeight / 2
-
   const offsetX = btnCenterX - panelCenterX
   const offsetY = btnCenterY - panelCenterY
-
   // overlay 淡出
   gsap.to(overlayRef.value, { opacity: 0, duration: 0.3, ease: 'power2.in' })
-
   // panel 從正中間縮放消失到按鈕位置
   gsap.to(panelRef.value, {
     x: offsetX,
@@ -101,9 +85,8 @@ function closePanel() {
   })
 }
 </script>
-
 <style scoped>
-.commOverlay {
+.commOverlay{
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.35);
@@ -112,8 +95,7 @@ function closePanel() {
   justify-content: center;
   align-items: center;
 }
-
-.commPanel {
+.commPanel{
   background: var(--white);
   border-radius: 1em;
   padding: 1.5em;
@@ -124,20 +106,17 @@ function closePanel() {
   gap: 1.2em;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
 }
-
-.commContent p {
+.commContent p{
   font-size: 1em;
   line-height: 1.8;
   color: var(--black);
   margin: 0;
 }
-
-.commFooter {
+.commFooter{
   display: flex;
   justify-content: center;
 }
-
-.confirmButton {
+.confirmButton{
   padding: 0.5em 2em;
   border: none;
   border-radius: 2em;
@@ -153,5 +132,4 @@ function closePanel() {
         background-color: var(--backgroundColor);
     }
 }
-
 </style>
