@@ -2,7 +2,7 @@
   <div v-show="visible" class="commOverlay" ref="overlayRef" @click.self="closePanel">
     <div class="commPanel" ref="panelRef">
       <div class="commContent">
-        <p>晨間農場致力於提供最新鮮的有機農產品，從田間直送到您的餐桌。我們的農夫每天清晨採收，確保每一樣蔬果都充滿生命力與營養。選擇我們，就是選擇健康、自然與永續的生活方式。</p>
+        <p>此專案調查、設計問卷、電訪等各種調查，到功能流程(相對UI更重視UX)，隨後給予測試後，最後再以 Vue3 + Vite 來開發，未來目標則是將其串接真實的資料，以及製作出第三個擁有者端的介面，直接從該介面來去介入消費者的前臺與農夫操作的後臺</p>
       </div>
       <div class="commFooter">
         <button type="button" class="confirmButton" @click="closePanel">確定</button>
@@ -134,11 +134,11 @@ function closePanel() {
 
 .commFooter {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .confirmButton {
-  padding: 0.6em 2em;
+  padding: 0.5em 2em;
   border: none;
   border-radius: 2em;
   background-color: var(--mainColor);
@@ -147,8 +147,11 @@ function closePanel() {
   cursor: pointer;
   transition: var(--transitionNormal);
 }
-
-.confirmButton:hover {
-  opacity: 0.85;
+@media(width > 768px){
+    .confirmButton:hover{
+        color: var(--black);
+        background-color: var(--backgroundColor);
+    }
 }
+
 </style>
