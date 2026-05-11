@@ -109,6 +109,7 @@ import Address from "@/components/member/address.vue";
 import SearchList from "@/components/member/searchList.vue";
 import SearchListDetail from "@/components/member/searchListDetail.vue";
 import Favorite from "@/components/member/favorite.vue";
+import Credit from "@/components/member/credit.vue";
 const currentTab = ref("personal");
 const orderDetailMode = ref(false);
 const selectedOrder = ref(null);
@@ -123,7 +124,7 @@ const currentComponent = computed(() => {
   const map = {
     personal: Personal,
     password: Password,
-    credit: Personal,
+    credit: Credit,
     address: Address,
     searchList: SearchList,
     favorite: Favorite,
