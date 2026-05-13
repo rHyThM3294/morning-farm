@@ -8,7 +8,6 @@
 
       <!-- 求職展示提示 -->
       <div class="demo-notice">
-        <span class="demo-icon">👋</span>
         <p>這是作品集展示用的後台系統</p>
         <p>無需帳號密碼，直接點擊下方｢登入｣按鈕即可進入，點擊｢忘記密碼｣可返回前臺</p>
       </div>
@@ -165,7 +164,7 @@ button {
     background-color: var(--backgroundColor);
   }
   .backHome:hover{
-    color: var(--mainColor);
+    color: var(--warningColor);
   }
 }
 </style>
