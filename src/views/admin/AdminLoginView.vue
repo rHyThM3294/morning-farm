@@ -7,7 +7,7 @@
       <h4>後臺管理系統</h4>
       <!-- 求職展示提示 -->
       <div class="demo-notice">
-        <p>這是作品集展示用的後台系統</p>
+        <p>這是作品集展示用的後臺系統</p>
         <p>無需帳號密碼，直接點擊下方｢登入｣按鈕即可進入，點擊｢忘記密碼｣可返回前臺</p>
       </div>
       <div class="enterAccount">
@@ -30,7 +30,7 @@ const router   = useRouter()
 const BASE     = import.meta.env.BASE_URL
 const account  = ref('')
 const password = ref('')
-// 求職展示模式：不驗證帳密，直接進入後台
+// 求職展示模式：不驗證帳密，直接進入後臺
 const login = () => {
   sessionStorage.setItem('admin_logged_in', 'true')
   router.push('/admin/dashboard')
