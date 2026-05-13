@@ -17,7 +17,7 @@
   </Transition>
 </template>
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import gsap from 'gsap'
 // 用 useRouter 取得 currentRoute，比 useRoute() 在跨元件監聽更可靠
@@ -43,8 +43,7 @@ const finishLoading = () => {
   showLoading.value = false
   unlockScroll()
   sessionStorage.removeItem('loadingPlayed')
-  // 清除等待旗標，然後通知 HomeView 開始 banner 文字動畫
-  sessionStorage.removeItem('bannerShouldWait')
+  // 通知 HomeView 開始 banner 文字動畫
   window.dispatchEvent(new CustomEvent('loading-done'))
 }
 // ── 動畫主體 ─────────────────────────────────────────────────────────────
@@ -56,8 +55,6 @@ const startLoadingAnimation = () => {
   isExpanding.value = false
   clearAllTimeouts()
   lockScroll()
-  // 告訴 HomeView：本次有 Loading 動畫，請等待 loading-done 事件再播 banner
-  sessionStorage.setItem('bannerShouldWait', 'true')
   const MORPH_START            = 1500  // ms
   const GOOD_FADE_DURATION     = 1.0   // gsap 秒
   const MORNING_DELAY          = 1000  // ms
@@ -93,14 +90,10 @@ const skipHandler = (e) => {
 //   只有在首頁（/）才播放 Loading 動畫
 //   播完後清掉 flag → 下次重整沒有 flag → 再播 → 形成「每次重整都播」的效果
 //
-// 觸發時機 A：頁面第一次載入 / 重整（onMounted）
-// 觸發時機 B：從後臺登出，切回首頁（watch router.currentRoute）
-// 用 router.afterEach 來監聽路由切換，比 watch(route) 更可靠
-// 因為 afterEach 是在路由切換完成後觸發，route.path 已是新值
-let routeUnwatch = null
+// 觸發時機：頁面第一次載入 / 重整（onMounted）
 onMounted(() => {
   window.addEventListener('keydown', skipHandler)
-  // 觸發時機 A：重整 / 首次進入
+  // 重整 / 首次進入首頁才播
   const currentPath = router.currentRoute.value.path
   if (currentPath === '/'){
     const alreadyPlayed = sessionStorage.getItem('loadingPlayed')
@@ -109,26 +102,11 @@ onMounted(() => {
       startLoadingAnimation()
     }
   }
-  // 觸發時機 B：用 router.afterEach 監聽「切換到首頁」的動作
-  // afterEach 在路由完成後觸發，比 watch(route.path) 時序更穩定
-  routeUnwatch = router.afterEach((to) => {
-    if (to.path === '/'){
-      const shouldPlay = sessionStorage.getItem('playHomeLoading')
-      if (shouldPlay === 'true'){
-        sessionStorage.removeItem('playHomeLoading')
-        sessionStorage.removeItem('loadingPlayed') // 清掉防重播 flag
-        nextTick(() => {
-          startLoadingAnimation()
-        })
-      }
-    }
-  })
 })
 onBeforeUnmount(() => {
   clearAllTimeouts()
   unlockScroll()
   window.removeEventListener('keydown', skipHandler)
-  if (routeUnwatch) routeUnwatch() // 取消 afterEach 監聽
 })
 </script>
 <style scoped>
