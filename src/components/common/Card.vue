@@ -227,6 +227,7 @@ function goDetail() {
   padding: 0.5em 0;
   color: var(--secondColor);
   margin: 0;
+  text-align: left;
 }
 .intoCartButton{
   width: 100%;
