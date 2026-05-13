@@ -1,12 +1,6 @@
 <template>
   <div class="homeView">
     <section class="banner" :style="bannerStyle">
-      <!--
-        bannerWords：動畫分兩階段
-        階段一（打字，2.5s）：橫向排列，逐字 fade-in，模擬打字效果
-        階段二（歸位，1.5s）：每個字用 GSAP 位移到縱向最終位置
-        動畫由 Loading.vue 結束後透過 CustomEvent 'loading-done' 觸發
-      -->
       <div ref="bannerWordsRef" class="bannerWords">
         <h3 ref="line1Ref">
           <span v-for="(char, i) in line1Chars" :key="'l1-'+i" class="char-span">{{ char }}</span>
@@ -165,22 +159,17 @@ onMounted(() => {
   img.onerror = () => { bannerLoaded.value = true }
   img.src = bannerImageUrl
 
-  // 先把文字設成不可見，等事件來才開始
-  nextTick(() => {
-    const words = bannerWordsRef.value
-    if (words) {
-      const allSpans = words.querySelectorAll('.char-span')
-      gsap.set(allSpans, { opacity: 0 })
-    }
-  })
+  // char-span 的 opacity:0 已由 CSS 預設處理，不需在這裡用 JS 補設
+  // 這樣可避免 nextTick 前短暫閃現的問題
 
   loadingDoneHandler = () => { runBannerAnimation() }
   window.addEventListener('loading-done', loadingDoneHandler)
 
-  // 如果此次沒有播 Loading（sessionStorage 沒有 flag），
-  // 代表是從其他頁切回來，延遲一點直接跑動畫
-  const willPlay = sessionStorage.getItem('loadingPlayed')
-  if (!willPlay) {
+  // Loading.vue 在 onMounted 時會設定 'bannerShouldWait' 旗標，
+  // 代表本次頁面載入有 Loading 動畫，HomeView 應等待 loading-done 事件。
+  // 若沒有 'bannerShouldWait'，代表是從其他頁切回來，直接播動畫。
+  const shouldWait = sessionStorage.getItem('bannerShouldWait')
+  if (!shouldWait) {
     setTimeout(() => { runBannerAnimation() }, 300)
   }
 })
@@ -267,6 +256,8 @@ section.banner .bannerWords.is-horizontal h3 {
 .bannerWords h3 .char-span {
     word-spacing: normal;
     display: inline-block;
+    /* 預設隱藏，由 GSAP 控制出場，避免 JS onMounted 前短暫閃現 */
+    opacity: 0;
 }
 .thisWeekFresh{
   width: 90%;
