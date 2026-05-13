@@ -21,10 +21,10 @@
           <i class="fa-brands fa-youtube"></i>
         </div>
 
-        <!-- 後台展示入口 -->
+        <!-- 後臺展示入口 -->
         <RouterLink to="/admin/login" class="adminEntry">
           <i class="fa-solid fa-screwdriver-wrench"></i>
-          後台管理展示
+          後臺管理展示
         </RouterLink>
 
         <p class="copyright">
@@ -96,7 +96,7 @@
   font-size: 2em;
 }
 
-/* 後台入口按鈕 */
+/* 後臺入口按鈕 */
 .adminEntry{
   display: inline-flex;
   align-items: center;

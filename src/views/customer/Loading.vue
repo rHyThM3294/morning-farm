@@ -94,7 +94,7 @@ const skipHandler = (e) => {
 //   播完後清掉 flag → 下次重整沒有 flag → 再播 → 形成「每次重整都播」的效果
 //
 // 觸發時機 A：頁面第一次載入 / 重整（onMounted）
-// 觸發時機 B：從後台登出，切回首頁（watch router.currentRoute）
+// 觸發時機 B：從後臺登出，切回首頁（watch router.currentRoute）
 // 用 router.afterEach 來監聽路由切換，比 watch(route) 更可靠
 // 因為 afterEach 是在路由切換完成後觸發，route.path 已是新值
 let routeUnwatch = null

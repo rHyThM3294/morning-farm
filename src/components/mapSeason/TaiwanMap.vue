@@ -13,7 +13,7 @@ let clickHandler = null
 const normalizeCityName = (name) => {
   if (!name) return ''
   return name
-    .replace(/台/g, '臺')
+    .replace(/臺/g, '臺')
     .replace(/\s+/g, '')
     .trim()
 }

@@ -43,7 +43,7 @@ import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 gsap.registerPlugin(ScrollToPlugin)
 const props = defineProps({
   products: { type: Array, default: () => [] },
-  currentCity: { type: String, default: '台北市' },
+  currentCity: { type: String, default: '臺北市' },
   autoScroll: { type: Boolean, default: false }
 })
 const productGridSection = ref(null)
