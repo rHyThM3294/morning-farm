@@ -43,7 +43,8 @@ const finishLoading = () => {
   showLoading.value = false
   unlockScroll()
   sessionStorage.removeItem('loadingPlayed')
-  // 通知 HomeView 開始 banner 文字動畫
+  // 清除等待旗標，然後通知 HomeView 開始 banner 文字動畫
+  sessionStorage.removeItem('bannerShouldWait')
   window.dispatchEvent(new CustomEvent('loading-done'))
 }
 // ── 動畫主體 ─────────────────────────────────────────────────────────────
@@ -55,6 +56,8 @@ const startLoadingAnimation = () => {
   isExpanding.value = false
   clearAllTimeouts()
   lockScroll()
+  // 告訴 HomeView：本次有 Loading 動畫，請等待 loading-done 事件再播 banner
+  sessionStorage.setItem('bannerShouldWait', 'true')
   const MORPH_START            = 1500  // ms
   const GOOD_FADE_DURATION     = 1.0   // gsap 秒
   const MORNING_DELAY          = 1000  // ms
