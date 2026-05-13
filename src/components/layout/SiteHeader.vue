@@ -163,9 +163,7 @@ const goCart   = () => router.push({ name: 'cart' })
 const goMember = () => router.push({ name: 'member' })
 
 const handleLogoClick = () => {
-  if (route.path !== '/') {
-    sessionStorage.setItem('playHomeLoading', 'true')
-  }
+  // Logo 點擊回首頁不觸發 Loading 動畫，Vue Router 直接切換
 }
 </script>
 
