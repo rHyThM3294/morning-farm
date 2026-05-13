@@ -1,7 +1,6 @@
 <template>
   <div class="credit">
     <h4>信用卡管理</h4>
-
     <!-- 已儲存的卡片列表 -->
     <div class="cardList">
       <h5>已綁定的卡片</h5>
@@ -24,7 +23,7 @@
             <p class="cardNetwork">{{ card.network }}</p>
             <p class="cardNumber">•••• •••• •••• {{ card.last4 }}</p>
             <p class="cardHolder">{{ card.holder }}</p>
-            <p class="cardExpiry">有效期限 {{ card.expiry }}</p>
+            <p class="cardExpiry">有效期限{{ card.expiry }}</p>
           </div>
         </div>
         <div class="cardRight">
@@ -40,11 +39,9 @@
         </div>
       </div>
     </div>
-
     <!-- 新增卡片表單 -->
     <div class="addCardSection">
       <h5>新增信用卡</h5>
-
       <div class="formGroup">
         <label>持卡人姓名<span class="required">*</span></label>
         <input
@@ -56,7 +53,6 @@
         />
         <p v-if="errors.holder" class="errorText">{{ errors.holder }}</p>
       </div>
-
       <div class="formGroup">
         <label>卡號<span class="required">*</span></label>
         <div class="cardNumberInput">
@@ -94,7 +90,7 @@
 
         <div class="formGroup">
           <label>
-            安全碼（CVV）<span class="required">*</span>
+            安全碼(CVV)<span class="required">*</span>
             <span class="cvvHint" title="卡片背面後三碼">
               <i class="fa-solid fa-circle-question"></i>
             </span>
