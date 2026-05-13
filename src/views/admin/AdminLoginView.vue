@@ -89,10 +89,6 @@ h4 {
   flex-direction: column;
   gap: 0.3em;
 }
-.demo-notice .demo-icon {
-  font-size: 1.5em;
-  margin-bottom: 0.2em;
-}
 .demo-notice p {
   margin: 0;
   font-size: 0.85em;
