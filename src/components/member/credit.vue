@@ -131,7 +131,7 @@
       <!-- 安全提示 -->
       <div class="secureHint">
         <i class="fa-solid fa-lock"></i>
-        <p>您的卡片資訊受到 SSL 加密保護，晨間農場不會儲存您的完整卡號。</p>
+        <p>您的卡片資訊受到 SSL 加密保護，清晨農鋪不會儲存您的完整卡號。</p>
       </div>
 
       <div class="creditButtons">
