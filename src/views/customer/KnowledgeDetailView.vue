@@ -1,24 +1,25 @@
 <template>
-  <TopBar
+  <TopBar 
     title="蔬果小學堂"
     :buttons="knowledgeButtons"
     searchPlaceholder="搜尋商品知識..."
     @selectButton="switchKnowledge"
     @search="handleSearch"
   />
+
   <template v-if="article">
     <div class="knowledgeDetailView">
       <h4>{{ article.title }}</h4>
-      <div class="detailCOntainer">
+      <div class="detailContainer">
         <div class="detailBox">
           <div class="pictureBox">
-            <img :src="article.img" :alt="article.title" />
+            <img :src="article.image" :alt="article.title" />
           </div>
           <div class="textBox">
             <p>{{ article.content.intro }}</p>
             <div
               v-for="(para, index) in article.content.paragraphs"
-              :key="index" 
+              :key="index"
               class="paragraph"
             >
               <h6 class="detailQuestion">{{ para.question }}</h6>
@@ -28,27 +29,31 @@
         </div>
       </div>
     </div>
+
     <div class="extra">
       <h5>{{ article.content.relatedProducts.title }}</h5>
       <div class="containerCards">
         <Card
-          v-for="(item,index) in article.relatedCardItems"
+          v-for="(item, index) in article.relatedCardItems"
           :key="index"
           :status="item.status"
-          :porductTitle="item.productTitle"
+          :productTitle="item.productTitle"
           :sellerName="item.sellerName"
           :unit="item.unit"
           :price="item.price"
-          :imgUrl="item.imgUrl"
+          :imageUrl="item.imageUrl"
         />
       </div>
     </div>
   </template>
+
   <div v-else class="notFound">
     <p>找不到這篇文章，請回到<RouterLink to="/knowledge">蔬果小學堂</RouterLink>瀏覽。</p>
   </div>
+
   <AsideButton />
 </template>
+
 <script setup>
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -56,21 +61,26 @@ import TopBar from '@/components/common/TopBar.vue'
 import Card from '@/components/common/Card.vue'
 import AsideButton from '@/components/common/AsideButton.vue'
 import { useKnowledgeStore } from '@/stores/knowledge'
+
 const route = useRoute()
 const router = useRouter()
-const stord = useKnowledgeStore()
+const store = useKnowledgeStore()
+
 const article = computed(() => store.getById(route.params.id))
+
 const knowledgeButtons = [
-  { label:'所有文章',value:'all' },
-  { label:'農業知識',value:'farming' },
-  { label:'蔬果處理',value:'vegetable_handling' },
-  { label:'飲食知識',value:'dietary_knowledge' },
-  { label:'食譜',value:'recipes' },
+  { label: '所有文章', value: 'all' },
+  { label: '農業知識', value: 'farming' },
+  { label: '蔬果處理', value: 'vegetable_handling' },
+  { label: '飲食知識', value: 'dietary_knowledge' },
+  { label: '食譜', value: 'recipes' }
 ]
+
 const switchKnowledge = (value) => {
   store.setCategory(value)
-  router.push({ name:'knowledge' })
+  router.push({ name: 'knowledge' })
 }
+
 const handleSearch = (keyword) => {
   store.setSearch(keyword)
   router.push({ name: 'knowledge' })
@@ -144,7 +154,7 @@ const handleSearch = (keyword) => {
   color: var(--firstColor);
   text-decoration: underline;
 }
-@media(width > 768px){
+@media screen and (min-width:768px){
   .detailBox{
     flex-flow: row nowrap;
   }
