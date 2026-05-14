@@ -1,5 +1,5 @@
 <template>
-  <TopBar 
+  <TopBar
     title="蔬果小學堂"
     :buttons="knowledgeButtons"
     searchPlaceholder="搜尋商品知識..."
@@ -8,60 +8,41 @@
   />
   <div class="knowledgeBlock">
     <KnowledgeCard
-      v-for="item in list"
+      v-for="item in filteredList"
       :key="item.id"
-      :to="{ name: 'knowledge-detail', params: { id: item.id } }"
+      :to="{ name:'knowledge-detail',params:{ id:item.id } }"
       :imageUrl="item.image"
       :word="item.title"
       :tags="item.tags"
     />
+    <p v-if="filteredList.length === 0" class="emptyHint">目前沒有符合條件的文章</p>
   </div>
   <AsideButton />
 </template>
 <script setup>
-import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import TopBar from '@/components/common/TopBar.vue'
 import AsideButton from '@/components/common/AsideButton.vue'
-import Page from '@/components/common/Page.vue'   
 import KnowledgeCard from '@/components/common/KnowledgeCard.vue'
-const totalPages = ref(4)
-const currentPage = ref(1)
+import { useKnowledgeStore } from '@/stores/knowledge'
+const store = useKnowledgeStore()
+const { filteredList } = storeToRefs(store)
 const knowledgeButtons = [
-  { label: '所有文章', value: 'all' },
-  { label: '農業知識', value: 'farming' },
-  { label: '蔬果處理', value: 'vegetable_handling' },
-  { label: '飲食知識', value: 'dietary_knowledge' },
-  { label: '食譜', value: 'recipes' }
-]
-const list = [
-  {
-    id: 1,
-    title: '裂果蓮霧更好吃？原來是熟到剛剛好！教你安心吃的處理方法',
-    image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
-    tags: [
-      { label: '蔬果處理', to: '/tag/produce' },
-      { label: '蓮霧', to: '/tag/wax-apple' }
-    ]
-  },
-  {
-    id: 2,
-    title: '芭樂挑選與冷藏方法',
-    image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
-    tags: [
-      { label: '蔬果處理', to: '/tag/produce' },
-      { label: '芭樂', to: '/tag/guava' }
-    ]
-  }
+  { label:'所有文章',value:'all' },
+  { label:'農業知識',value:'farming' },
+  { label:'蔬果處理',value:'vegetable_handling' },
+  { label:'飲食知識',value:'dietary_knowledge' },
+  { label:'食譜',value:'recipes' },
 ]
 const switchKnowledge = (value) => {
-  console.log('切換分類：', value)
+  store.setCategory(value)
 }
-const handleSearch = (keyword) => {
-  console.log('搜尋關鍵字：', keyword)
+const handleSearch = (keyword) =>{
+  store.setSearch(keyword)
 }
 </script>
 <style scoped>
-.knowledgeBlock{
+.knowledgeBlock {
   display: flex;
   flex-direction: column;
   gap: 1em;
@@ -69,8 +50,9 @@ const handleSearch = (keyword) => {
   width: 90%;
   max-width: 1200px;
 }
-.paginationBlock{
-  margin: 2em auto;
+.emptyHint {
   text-align: center;
+  color: #999;
+  padding: 2em 0;
 }
 </style>
