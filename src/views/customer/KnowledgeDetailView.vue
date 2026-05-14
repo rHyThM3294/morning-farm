@@ -1,88 +1,80 @@
 <template>
-  <TopBar 
+  <TopBar
     title="蔬果小學堂"
     :buttons="knowledgeButtons"
     searchPlaceholder="搜尋商品知識..."
     @selectButton="switchKnowledge"
     @search="handleSearch"
   />
-  <div class="knowledgeDetailView">
-    <h4>裂果蓮霧更好吃？原來是熟到剛剛好！教你安心吃的處理方法</h4>
-    <div class="detailContainer">
-      <div class="detailBox">
-        <div class="pictureBox"><img src="/image/S__20611108.png" alt=""></div>
-        <div class="textBox">
-          <p>走進果園或市場，你或許會看到一些「裂果」的蓮霧──表皮出現自然的裂痕，不如市售光滑漂亮的果實那樣討喜。但其實，這些裂果蓮霧往往是最甜、最剛好熟成的美味代表！</p>
-          <div class="paragraph">
-            <h6 class="detailQuestion">為什麼蓮霧會裂果？</h6>
-            <p class="detailAnswer">裂果多半發生在蓮霧成熟期遇到雨水，果實吸水過多、膨脹迅速，導致表皮來不及延展而自然開裂。這不是病蟲害，也不是腐爛的象徵，而是一種天然的「熟成指標」。</p>
+  <template v-if="article">
+    <div class="knowledgeDetailView">
+      <h4>{{ article.title }}</h4>
+      <div class="detailCOntainer">
+        <div class="detailBox">
+          <div class="pictureBox">
+            <img :src="article.img" :alt="article.title" />
+          </div>
+          <div class="textBox">
+            <p>{{ article.content.intro }}</p>
+            <div
+              v-for="(para, index) in article.content.paragraphs"
+              :key="index" 
+              class="paragraph"
+            >
+              <h6 class="detailQuestion">{{ para.question }}</h6>
+              <p class="detailAnswer">{{ para.answer }}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="extra">
-    <h5>來這裡購買蓮霧：</h5>
-    <div class="containerCards">
-      <Card
-        v-for="(item, index) in cardItems"
-        :key="index"
-        :status="item.status"
-        :productTitle="item.productTitle"
-        :sellerName="item.sellerName"
-        :unit="item.unit"
-        :price="item.price"
-        :imageUrl="item.imageUrl"
-      />
+    <div class="extra">
+      <h5>{{ article.content.relatedProducts.title }}</h5>
+      <div class="containerCards">
+        <Card
+          v-for="(item,index) in article.relatedCardItems"
+          :key="index"
+          :status="item.status"
+          :porductTitle="item.productTitle"
+          :sellerName="item.sellerName"
+          :unit="item.unit"
+          :price="item.price"
+          :imgUrl="item.imgUrl"
+        />
+      </div>
     </div>
+  </template>
+  <div v-else class="notFound">
+    <p>找不到這篇文章，請回到<RouterLink to="/knowledge">蔬果小學堂</RouterLink>瀏覽。</p>
   </div>
   <AsideButton />
 </template>
 <script setup>
-import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import TopBar from '@/components/common/TopBar.vue'
 import Card from '@/components/common/Card.vue'
 import AsideButton from '@/components/common/AsideButton.vue'
+import { useKnowledgeStore } from '@/stores/knowledge'
 const route = useRoute()
-const title = '蓮霧清洗與保存技巧'
-const image = '/image/S__20611108.jpg'
-const tags = [
-  { label: '蔬果處理', to: '/tag/produce' },
-  { label: '蓮霧', to: '/tag/wax-apple' }
-]
+const router = useRouter()
+const stord = useKnowledgeStore()
+const article = computed(() => store.getById(route.params.id))
 const knowledgeButtons = [
-  { label: '所有文章', value: 'all' },
-  { label: '農業知識', value: 'farming' },
-  { label: '蔬果處理', value: 'vegetable_handling' },
-  { label: '飲食知識', value: 'dietary_knowledge' },
-  { label: '食譜', value: 'recipes' }
+  { label:'所有文章',value:'all' },
+  { label:'農業知識',value:'farming' },
+  { label:'蔬果處理',value:'vegetable_handling' },
+  { label:'飲食知識',value:'dietary_knowledge' },
+  { label:'食譜',value:'recipes' },
 ]
-const cardItems = [
-  {
-    status: 'New',
-    productTitle: '黑珍珠蓮霧',
-    sellerName: '王建國果園',
-    unit: '6 顆 / 盒',
-    price: '180',
-    imageUrl: '/image/chinese-pear.png'
-  },
-  {
-    status: 'Hot',
-    productTitle: '大武蓮霧',
-    sellerName: '林家果園',
-    unit: '10 顆 / 箱',
-    price: '420',
-    imageUrl: '/image/chinese-pear.png'
-  },
-  {
-    status: 'New',
-    productTitle: '蜜甜蓮霧',
-    sellerName: '陳媽媽水果舖',
-    unit: '12 顆 / 箱',
-    price: '390',
-    imageUrl: '/image/chinese-pear.png'
-  }
-]
+const switchKnowledge = (value) => {
+  store.setCategory(value)
+  router.push({ name:'knowledge' })
+}
+const handleSearch = (keyword) => {
+  store.setSearch(keyword)
+  router.push({ name: 'knowledge' })
+}
 </script>
 <style scoped>
 .knowledgeDetailView{
@@ -138,7 +130,21 @@ const cardItems = [
   gap: 2em;
   height: auto;
 }
-@media screen and (min-width:768px){
+.paragraph {
+  margin-top: 1.5em;
+}
+.notFound {
+  width: 90%;
+  max-width: 1200px;
+  margin: 4em auto;
+  text-align: center;
+  color: #888;
+}
+.notFound a {
+  color: var(--firstColor);
+  text-decoration: underline;
+}
+@media(width > 768px){
   .detailBox{
     flex-flow: row nowrap;
   }
