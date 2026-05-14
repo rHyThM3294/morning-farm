@@ -73,6 +73,7 @@
 </template>
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+const base = import.meta.env.BASE_URL
 const selectedProductId = ref(null)
 const props = defineProps({
   seasonChartData: Array
@@ -188,16 +189,27 @@ function computeMobileBarStyle(segment){
   position: relative;
   width: 100%;
   height: 500px;
+  border-radius: 6px;
+}
+/* 手機水平格線 */
+.monthCells::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background-image: repeating-linear-gradient(
     to bottom,
     transparent 0,
     transparent calc(100% / 12 - 1px),
-    var(--backgroundColor) calc(100% / 12 - 1px),
-    var(--backgroundColor) calc(100% / 12)
+    var(--secondColor) calc(100% / 12 - 1px),
+    var(--secondColor) calc(100% / 12)
   );
-  border-radius: 6px;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
 }
-
+.mobileRangeBar {
+  z-index: 1;
+}
 .mobileRangeBar{
   position: absolute;
   left: 0;
@@ -260,15 +272,27 @@ function computeMobileBarStyle(segment){
     position: relative;
     flex: 1;
     height: 32px;
+    border-radius: var(--radiusNormal);
+  }
+  /* 桌機垂直格線：用 outline 在 monthGrid 內畫 12 等份線 */
+  .monthGrid::before {
+    content: '';
+    position: absolute;
+    inset: 0;
     background-image: repeating-linear-gradient(
       to right,
       transparent 0,
       transparent calc(100% / 12 - 1px),
-      var(--backgroundColor) calc(100% / 12 - 1px),
-      var(--backgroundColor) calc(100% / 12)
+      var(--secondColor) calc(100% / 12 - 1px),
+      var(--secondColor) calc(100% / 12)
     );
-    border-radius: var(--radiusNormal);
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 0;
   }
+.rangeBar {
+  z-index: 1; /* bar 要在格線上面 */
+}
   .rangeBar{
     position: absolute;
     top: 0;
