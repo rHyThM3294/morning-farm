@@ -5,7 +5,6 @@
 </template>
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import twSvgRaw from '@/assets/Blank_Taiwan_map.svg?raw'
 const emit = defineEmits(['citySelected', 'svgReady'])
 const svgHost = ref(null)
 const svgHtml = ref('')
@@ -19,9 +18,10 @@ const normalizeCityName = (name) => {
 }
 const normalizeSvg = (raw) =>
   raw.replace(/<\?xml[^>]*>/gi, '').replace(/<!DOCTYPE[^>]*>/gi, '')
-onMounted(() => {
-  console.log('🚀 開始初始化地圖')
-  svgHtml.value = normalizeSvg(twSvgRaw)
+onMounted(async() => {
+  const res = await fetch(`${import.meta.env.BASE_URL}map/Blank_Taiwan_map.svg`)
+  const raw = await res.text()
+  svgHtml.value = normalizeSvg(raw)
   requestAnimationFrame(() => {
     const svgEl = svgHost.value?.querySelector('svg')
     if (!svgEl) {
