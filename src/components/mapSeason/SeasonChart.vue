@@ -11,9 +11,7 @@
           {{ m }}月
         </div>
       </div>
-      <!-- 新增：bodyWrapper 包住格線層 + 所有 chartRow -->
       <div class="bodyWrapper">
-        <!-- 垂直格線層，貫穿所有列 -->
         <div class="gridOverlay" aria-hidden="true">
           <div
             v-for="m in months"
@@ -47,6 +45,7 @@
         </div>
       </div>
     </div>
+
     <div class="chartMobile" v-else>
       <div class="mobileMonthColumn">
         <div class="monthLabels">
@@ -60,6 +59,15 @@
           </div>
         </div>
         <div class="productsColumn">
+          <!-- 水平格線層，貫穿所有產品欄 -->
+          <div class="hGridOverlay" aria-hidden="true">
+            <div
+              v-for="m in months"
+              :key="m"
+              class="hGridRow"
+              :class="{ highlightRow: m === currentMonth }"
+            ></div>
+          </div>
           <div
             v-for="item in seasonChartData"
             :key="item.id"
@@ -83,6 +91,7 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 const base = import.meta.env.BASE_URL
@@ -145,6 +154,7 @@ function computeMobileBarStyle(segment) {
   }
 }
 </script>
+
 <style scoped>
 .seasonChart {
   width: 100%;
@@ -187,39 +197,49 @@ function computeMobileBarStyle(segment) {
   padding: 0 0.5em;
   border-radius: 4px;
 }
+
+/* productsColumn：加 position:relative 讓 hGridOverlay 定位用 */
 .productsColumn {
   flex: 1;
   display: flex;
   gap: 0.8em;
   overflow-x: auto;
+  position: relative;
 }
+
+/* 水平格線層：absolute 貫穿整個 productsColumn */
+.hGridOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+  z-index: 0;
+}
+.hGridRow {
+  flex: 1;
+  border-bottom: 1px solid var(--secondColor, #e8e4de);
+}
+.hGridRow:last-child {
+  border-bottom: none;
+}
+.hGridRow.highlightRow {
+  background: rgba(255, 160, 60, 0.07);
+}
+
 .productColumn {
   flex: 0 0 60px;
   min-width: 60px;
   max-width: 60px;
   position: relative;
+  z-index: 1;
 }
 .monthCells {
   position: relative;
   width: 100%;
   height: 500px;
   border-radius: 6px;
-}
-/* 手機：水平格線（每欄各自畫，已是水平方向所以不需要連通） */
-.monthCells::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent calc(100% / 12 - 1px),
-    var(--secondColor) calc(100% / 12 - 1px),
-    var(--secondColor) calc(100% / 12)
-  );
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 0;
+  /* ::before 拿掉，改由 hGridOverlay 統一畫線 */
 }
 .mobileRangeBar {
   position: absolute;
@@ -277,8 +297,6 @@ function computeMobileBarStyle(segment) {
     background: var(--backgroundColor);
     color: var(--firstColor);
   }
-
-  /* bodyWrapper：格線層 + 所有 chartRow 的共同容器 */
   .bodyWrapper {
     position: relative;
     display: flex;
@@ -286,8 +304,6 @@ function computeMobileBarStyle(segment) {
     gap: 0.8em;
     padding: 0.4em 0;
   }
-
-  /* 垂直格線層：absolute 貫穿整個 bodyWrapper */
   .gridOverlay {
     position: absolute;
     inset: 0;
@@ -305,7 +321,6 @@ function computeMobileBarStyle(segment) {
   .gridCol.highlightCol {
     background: rgba(255, 160, 60, 0.07);
   }
-
   .chartRow {
     display: flex;
     align-items: center;
