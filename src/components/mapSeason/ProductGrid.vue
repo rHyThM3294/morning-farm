@@ -78,7 +78,7 @@ watch(
 .commodity .cardBottom button.intoCart{
   margin: 0;
 }
-@media screen and (min-width: 768px){
+@media(width>768px){
   .commodity{
     width: 100%;
     max-width: 1440px;
