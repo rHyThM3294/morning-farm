@@ -169,18 +169,23 @@ function computeMobileBarStyle(segment) {
 /* ── 手機版 ─────────────────────────────── */
 .chartMobile {
   width: 100%;
-  overflow-x: auto;
+  overflow-x: auto; /* 捲動層在最外面 */
 }
 .mobileMonthColumn {
   display: flex;
   gap: 0.5em;
   min-height: 500px;
+  min-width: max-content; /* 讓整排撐開，格線跟著內容走 */
 }
 .monthLabels {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 0.5em 0;
+  position: sticky; /* 月份標籤固定在左側不跟著橫捲 */
+  left: 0;
+  z-index: 2;
+  background: var(--white);
 }
 .monthLabel {
   flex: 1;
@@ -198,16 +203,15 @@ function computeMobileBarStyle(segment) {
   border-radius: 4px;
 }
 
-/* productsColumn：加 position:relative 讓 hGridOverlay 定位用 */
+/* productsColumn：不自己捲，格線層跟內容同寬 */
 .productsColumn {
   flex: 1;
   display: flex;
   gap: 0.8em;
-  overflow-x: auto;
   position: relative;
 }
 
-/* 水平格線層：absolute 貫穿整個 productsColumn */
+/* 水平格線層：absolute 貼滿 productsColumn 實際內容寬度 */
 .hGridOverlay {
   position: absolute;
   inset: 0;
