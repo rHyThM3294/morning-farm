@@ -1,5 +1,5 @@
 <template>
-  <TopBar
+  <TopBar 
     title="蔬果小學堂"
     :buttons="knowledgeButtons"
     searchPlaceholder="搜尋商品知識..."
@@ -10,7 +10,7 @@
     <KnowledgeCard
       v-for="item in filteredList"
       :key="item.id"
-      :to="{ name:'knowledge-detail',params:{ id:item.id } }"
+      :to="{ name: 'knowledge-detail', params: { id: item.id } }"
       :imageUrl="item.image"
       :word="item.title"
       :tags="item.tags"
@@ -19,28 +19,34 @@
   </div>
   <AsideButton />
 </template>
+
 <script setup>
 import { storeToRefs } from 'pinia'
 import TopBar from '@/components/common/TopBar.vue'
 import AsideButton from '@/components/common/AsideButton.vue'
 import KnowledgeCard from '@/components/common/KnowledgeCard.vue'
 import { useKnowledgeStore } from '@/stores/knowledge'
+
 const store = useKnowledgeStore()
 const { filteredList } = storeToRefs(store)
+
 const knowledgeButtons = [
-  { label:'所有文章',value:'all' },
-  { label:'農業知識',value:'farming' },
-  { label:'蔬果處理',value:'vegetable_handling' },
-  { label:'飲食知識',value:'dietary_knowledge' },
-  { label:'食譜',value:'recipes' },
+  { label: '所有文章', value: 'all' },
+  { label: '農業知識', value: 'farming' },
+  { label: '蔬果處理', value: 'vegetable_handling' },
+  { label: '飲食知識', value: 'dietary_knowledge' },
+  { label: '食譜', value: 'recipes' }
 ]
+
 const switchKnowledge = (value) => {
   store.setCategory(value)
 }
-const handleSearch = (keyword) =>{
+
+const handleSearch = (keyword) => {
   store.setSearch(keyword)
 }
 </script>
+
 <style scoped>
 .knowledgeBlock {
   display: flex;
