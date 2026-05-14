@@ -11,7 +11,7 @@
       v-for="item in filteredList"
       :key="item.id"
       :to="{ name: 'knowledge-detail', params: { id: item.id } }"
-      :imageUrl="item.image"
+      :imageUrl="base + item.image"
       :word="item.title"
       :tags="item.tags"
     />
@@ -26,6 +26,8 @@ import TopBar from '@/components/common/TopBar.vue'
 import AsideButton from '@/components/common/AsideButton.vue'
 import KnowledgeCard from '@/components/common/KnowledgeCard.vue'
 import { useKnowledgeStore } from '@/stores/knowledge'
+
+const base = import.meta.env.BASE_URL
 
 const store = useKnowledgeStore()
 const { filteredList } = storeToRefs(store)

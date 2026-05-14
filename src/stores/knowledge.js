@@ -12,7 +12,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       id: 1,
       category: 'vegetable_handling',
       title: '裂果蓮霧更好吃？原來是熟到剛剛好！教你安心吃的處理方法',
-      image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
+      image: 'image/S__20611108.png',
       tags: [
         { label: '蔬果處理', to: '/tag/vegetable_handling' },
         { label: '蓮霧', to: '/tag/wax-apple' }
@@ -48,7 +48,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       id: 2,
       category: 'vegetable_handling',
       title: '芭樂這樣挑、這樣放，甜脆口感保存更久！',
-      image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
+      image: 'image/S__20611108.png',
       tags: [
         { label: '蔬果處理', to: '/tag/vegetable_handling' },
         { label: '芭樂', to: '/tag/guava' }
@@ -84,7 +84,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       id: 3,
       category: 'vegetable_handling',
       title: '葉菜類保鮮有撇步！讓菠菜青江菜在冰箱多放三倍久',
-      image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
+      image: 'image/S__20611108.png',
       tags: [
         { label: '蔬果處理', to: '/tag/vegetable_handling' },
         { label: '葉菜', to: '/tag/leafy-greens' }
@@ -120,7 +120,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       id: 4,
       category: 'vegetable_handling',
       title: '番茄千萬不能放冰箱！揭開低溫傷番茄的真相',
-      image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
+      image: 'image/S__20611108.png',
       tags: [
         { label: '蔬果處理', to: '/tag/vegetable_handling' },
         { label: '番茄', to: '/tag/tomato' }
@@ -158,7 +158,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       id: 5,
       category: 'farming',
       title: '有機農業到底有多難？一個農夫的三年轉型之路',
-      image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
+      image: 'image/S__20611108.png',
       tags: [
         { label: '農業知識', to: '/tag/farming' },
         { label: '有機農業', to: '/tag/organic-farming' }
@@ -194,7 +194,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       id: 6,
       category: 'farming',
       title: '台灣四季農曆與農作物對照：什麼時候吃什麼最對？',
-      image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
+      image: 'image/S__20611108.png',
       tags: [
         { label: '農業知識', to: '/tag/farming' },
         { label: '節氣飲食', to: '/tag/seasonal' }
@@ -230,7 +230,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       id: 7,
       category: 'farming',
       title: '友善農法 vs 有機農業：傻傻分不清楚？一次看懂差異',
-      image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
+      image: 'image/S__20611108.png',
       tags: [
         { label: '農業知識', to: '/tag/farming' },
         { label: '友善農法', to: '/tag/eco-farming' }
@@ -266,7 +266,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       id: 8,
       category: 'farming',
       title: '土壤是農業的靈魂：什麼是健康的土壤？農夫怎麼養地？',
-      image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
+      image: 'image/S__20611108.png',
       tags: [
         { label: '農業知識', to: '/tag/farming' },
         { label: '土壤', to: '/tag/soil' }
@@ -304,7 +304,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       id: 9,
       category: 'dietary_knowledge',
       title: '每天一顆蘋果？帶皮吃才是對的！蘋果的營養秘密全揭露',
-      image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
+      image: 'image/S__20611108.png',
       tags: [
         { label: '飲食知識', to: '/tag/dietary_knowledge' },
         { label: '蘋果', to: '/tag/apple' }
@@ -340,7 +340,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       id: 10,
       category: 'dietary_knowledge',
       title: '地瓜是減肥好幫手？一次破解地瓜的 5 個飲食迷思',
-      image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
+      image: 'image/S__20611108.png',
       tags: [
         { label: '飲食知識', to: '/tag/dietary_knowledge' },
         { label: '地瓜', to: '/tag/sweet-potato' }
@@ -376,7 +376,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       id: 11,
       category: 'dietary_knowledge',
       title: '攝取足夠鐵質不一定靠肉！植物性鐵質吸收的關鍵技巧',
-      image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
+      image: 'image/S__20611108.png',
       tags: [
         { label: '飲食知識', to: '/tag/dietary_knowledge' },
         { label: '鐵質', to: '/tag/iron' }
@@ -414,7 +414,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       id: 12,
       category: 'recipes',
       title: '10 分鐘完成！清甜高麗菜炒飯，讓孩子多吃兩碗飯',
-      image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
+      image: 'image/S__20611108.png',
       tags: [
         { label: '食譜', to: '/tag/recipes' },
         { label: '高麗菜', to: '/tag/cabbage' }
@@ -450,7 +450,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       id: 13,
       category: 'recipes',
       title: '日式南瓜燉煮：用電鍋就能做出軟糯香甜的下飯良伴',
-      image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
+      image: 'image/S__20611108.png',
       tags: [
         { label: '食譜', to: '/tag/recipes' },
         { label: '南瓜', to: '/tag/pumpkin' }
@@ -486,7 +486,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       id: 14,
       category: 'recipes',
       title: '鳳梨炒木耳：酸甜清脆的台式家常菜，讓晚餐充滿南洋風情',
-      image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
+      image: 'image/S__20611108.png',
       tags: [
         { label: '食譜', to: '/tag/recipes' },
         { label: '鳳梨', to: '/tag/pineapple' }
@@ -522,7 +522,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       id: 15,
       category: 'recipes',
       title: '西瓜涼拌沙拉：夏日派對必備，5 分鐘端上桌的清涼甜品',
-      image: `${import.meta.env.BASE_URL}image/S__20611108.png`,
+      image: 'image/S__20611108.png',
       tags: [
         { label: '食譜', to: '/tag/recipes' },
         { label: '西瓜', to: '/tag/watermelon' }

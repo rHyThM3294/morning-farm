@@ -13,7 +13,7 @@
       <div class="detailContainer">
         <div class="detailBox">
           <div class="pictureBox">
-            <img :src="article.image" :alt="article.title" />
+            <img :src="base + article.image" :alt="article.title" />
           </div>
           <div class="textBox">
             <p>{{ article.content.intro }}</p>
@@ -62,6 +62,7 @@ import Card from '@/components/common/Card.vue'
 import AsideButton from '@/components/common/AsideButton.vue'
 import { useKnowledgeStore } from '@/stores/knowledge'
 
+const base = import.meta.env.BASE_URL
 const route = useRoute()
 const router = useRouter()
 const store = useKnowledgeStore()
@@ -154,7 +155,7 @@ const handleSearch = (keyword) => {
   color: var(--firstColor);
   text-decoration: underline;
 }
-@media screen and (min-width:768px){
+@media(width > 768px){
   .detailBox{
     flex-flow: row nowrap;
   }
