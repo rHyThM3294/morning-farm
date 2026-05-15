@@ -21,13 +21,31 @@
           <p>因為堅持自然種植，產量有限，阿嬤只在在地小市集販售或透過熟人預訂。每一箱葡萄她都親手包裝，附上一張手寫小卡，上面寫著：「感謝你吃我的葡萄，這是我用太陽和時間種出來的。」她笑說：「我年紀也不小了，做一天算一天，但能種出讓人喜歡的東西，這輩子就很滿足了。」</p>
         </div>
       </div>
+
+      <!-- 該農夫的商品（從 product store 撈真實資料，Card 可正確跳詳情頁）-->
       <div class="anothers" v-if="farmerProducts.length">
         <h5>來這裡購買{{ farmer.farmerName }}的產品</h5>
         <div class="containerCard">
-          <Card v-for="item in farmerProducts" :key="item.id" v-bind="item" />
+          <Card
+            v-for="item in farmerProducts"
+            :key="item.id"
+            :id="item.id"
+            :status="item.status"
+            :productTitle="item.productTitle"
+            :sellerName="item.sellerName"
+            :unit="item.unit"
+            :price="item.price"
+            :imageUrl="item.imageUrl"
+            :category="item.category"
+            :stock="item.stock"
+          />
         </div>
       </div>
-    <RouterLink to="/cooperation-farmer" class="backAllFarmer">← 返回合作小農總覽</RouterLink>
+      <div class="anothers" v-else>
+        <p class="noProduct">目前此小農尚無上架商品。</p>
+      </div>
+
+      <RouterLink to="/cooperation-farmer" class="backAllFarmer">← 返回合作小農總覽</RouterLink>
     </div>
     <div v-else class="notFound">
       <p>找不到該小農資料，將自動返回合作小農總覽...</p>
@@ -36,93 +54,49 @@
   </div>
   <div v-else style="text-align:center;margin:5em 0;color:gray;">載入中...</div>
 </template>
+
 <script setup>
 import { ref, watch, nextTick, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AsideButton from '@/components/common/AsideButton.vue'
 import Card from '@/components/common/Card.vue'
-const route = useRoute()
+import { useFarmerStore } from '@/stores/farmer'
+
+const route  = useRoute()
 const router = useRouter()
-const base = import.meta.env.BASE_URL
-const isLoading = ref(true)
-const farmer = ref(null)
+const farmerStore = useFarmerStore()
+
+const isLoading     = ref(true)
+const farmer        = ref(null)
 const farmerProducts = ref([])
-const allFarmers = [
-  { farmerName: '陳阿明', crop: '日照番茄', likes: 720, date: '2024-05-12', imageUrl: `${base}image/farmers-are-working-chinese-cabbage-farm.png` },
-  { farmerName: '李春花', crop: '蜜香木瓜', likes: 680, date: '2024-06-01', imageUrl: `${base}image/farmers-are-working-chinese-cabbage-farm.png` },
-  { farmerName: '黃文發', crop: '紅肉火龍果', likes: 950, date: '2024-03-28', imageUrl: `${base}image/farmers-are-working-chinese-cabbage-farm.png` },
-  { farmerName: '張育成', crop: '甜玉米', likes: 340, date: '2024-01-25', imageUrl: `${base}image/farmers-are-working-chinese-cabbage-farm.png` },
-  { farmerName: '林秀蘭', crop: '蜜香蓮霧', likes: 888, date: '2024-08-10', imageUrl: `${base}image/farmers-are-working-chinese-cabbage-farm.png` },
-  { farmerName: '王建國', crop: '高山萵苣', likes: 320, date: '2024-07-20', imageUrl: `${base}image/farmers-are-working-chinese-cabbage-farm.png` },
-]
-function createFarmerProducts(found) {
-  const crop = found.crop
-  let cropImage = 'default'
-  if (crop.includes('番茄')) cropImage = 'tomato'
-  else if (crop.includes('木瓜')) cropImage = 'papaya'
-  else if (crop.includes('火龍果')) cropImage = 'dragonfruit'
-  else if (crop.includes('萵苣')) cropImage = 'lettuce'
-  else if (crop.includes('芭樂')) cropImage = 'guava'
-  else if (crop.includes('玉米')) cropImage = 'corn'
-  else if (crop.includes('蓮霧')) cropImage = 'waxapple'
-   return [
-    {
-      id: `${found.farmerName}-1`,
-      status: 'Hot',
-      productTitle: `${found.crop}`,
-      sellerName: found.farmerName,
-      unit: '500g / 盒',
-      price: 350,
-      imageUrl: `chinese-pear.png`,
-      category: 'fruit',
-      stock: 20,
-      sellerAvatarUrl: '/image/頭貼.png',
-      farmerDescription: `由 ${found.farmerName} 採收的 ${found.crop}，香氣濃郁、自然甜味。`
-    },
-    {
-      id: `${found.farmerName}-2`,
-      status: 'New',
-      productTitle: `${found.crop}`,
-      sellerName: found.farmerName,
-      unit: '300g / 盒',
-      price: 420,
-      imageUrl: `chinese-pear.png`,
-      category: 'process',
-      stock: 12,
-      sellerAvatarUrl: '/image/頭貼.png',
-      farmerDescription: `${found.farmerName} 手工製作的 ${found.crop} 果乾，無添加防腐劑。`
-    }
-  ]
-}
+
 async function loadFarmer(idParam) {
   isLoading.value = true
   await nextTick()
 
-  const decoded = decodeURIComponent(idParam || '').trim()
-  const found = allFarmers.find(f => f.farmerName.trim() === decoded)
+  const found = farmerStore.getFarmerByName(idParam)
 
-  if (found){
-    farmer.value = found
-    farmerProducts.value = createFarmerProducts(found)
-  } else{
-    farmer.value = {
-      farmerName: decoded || '未知小農',
-      crop: '季節水果',
-      likes: 0,
-      date: '2024-01-01',
-      imageUrl: `${base}image/farmers-are-working-chinese-cabbage-farm.png`
-    }
-    farmerProducts.value = createFarmerProducts(farmer.value)
+  if (found) {
+    farmer.value        = found
+    // 直接從 product store 取真實商品，Card 點進去 id 才對得到
+    farmerProducts.value = farmerStore.getProductsByFarmer(found.farmerName)
+  } else {
+    // 找不到農夫 → 2 秒後跳回總覽
+    farmer.value        = null
+    farmerProducts.value = []
+    setTimeout(() => router.push('/cooperation-farmer'), 2000)
   }
 
   isLoading.value = false
 }
+
 onMounted(() => {
   nextTick(() => {
     if (route.params.id) loadFarmer(route.params.id)
     else router.push('/cooperation-farmer')
   })
 })
+
 watch(
   () => route.params.id,
   (newId, oldId) => {
@@ -133,20 +107,21 @@ watch(
   }
 )
 </script>
+
 <style scoped>
-.farmerDetail{
+.farmerDetail {
   width: 90%;
   margin: 10em auto;
   text-align: center;
 }
-.introduction{
+.introduction {
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
   gap: 2em;
   margin: 4em 0;
 }
-.introductionText{
+.introductionText {
   text-align: justify;
   width: 100%;
   display: flex;
@@ -155,26 +130,26 @@ watch(
   align-items: center;
   gap: 1em;
 }
-.farmerPhoto{
+.farmerPhoto {
   width: 100%;
   border-radius: 1em;
   margin-bottom: 1.5em;
 }
-.additional{
+.additional {
   display: flex;
   flex-flow: column nowrap;
   gap: 2em;
 }
-.listText{
+.listText {
   text-align: justify;
 }
-.listPhoto{
+.listPhoto {
   width: 100%;
   height: 378px;
   background: url('/image/whitegrapes.png') no-repeat center/cover;
   border-radius: var(--radiusNormal);
 }
-.backAllFarmer{
+.backAllFarmer {
   cursor: pointer;
   font-size: 1.1em;
   margin: 1em auto;
@@ -185,38 +160,46 @@ watch(
   border-radius: var(--radiusLarge);
   transition: var(--transitionNormal);
 }
-.anothers{
+.anothers {
   width: 90%;
   margin: 5em auto;
 }
-.anothers h5{
+.anothers h5 {
   color: var(--firstColor);
   margin-bottom: 1em;
 }
-.containerCard{
+.containerCard {
   display: flex;
   flex-wrap: wrap;
   gap: 1.5em;
   justify-content: center;
 }
-
-@media screen and (min-width:768px){
-  .farmerDetail{
+.noProduct {
+  color: var(--black);
+  margin: 2em 0;
+}
+.notFound {
+  text-align: center;
+  margin: 10em auto;
+  color: gray;
+}
+@media screen and (min-width: 768px) {
+  .farmerDetail {
     max-width: 1200px;
   }
-  .introduction{
+  .introduction {
     flex-flow: row nowrap;
   }
-  .farmerPhoto{
+  .farmerPhoto {
     width: 50%;
   }
-  .introductionText{
+  .introductionText {
     width: 50%;
   }
-  .additional{
+  .additional {
     flex-flow: row-reverse nowrap;
   }
-  .backAllFarmer:hover{
+  .backAllFarmer:hover {
     color: var(--mainColor);
     background-color: var(--backgroundColor);
   }
