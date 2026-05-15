@@ -546,7 +546,7 @@ const relatedProducts = computed(() => {
       align-items: center;
       gap: 2em;
     }
-    @media screen and (min-width: 768px){
+    @media(width>768px){
         .cartContainer{
             max-width: 1200px;
             flex-flow: row nowrap;
