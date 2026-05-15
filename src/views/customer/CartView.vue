@@ -42,14 +42,21 @@
             <div class="number">NT$ {{ item.price }}</div>
           </div>
           <div class="many">
-            <button @click="decrease(item)">-</button>
+            <!-- - 按鈕：數量已是 1 時 disable -->
+            <button @click="decrease(item)" :disabled="item.quantity <= 1">-</button>
             <input
               type="number"
               min="1"
+              :max="item.stock ?? 999"
               :value="item.quantity"
-              @input="updateQuantity(item, $event.target.value)"
+              @change="handleInput(item, $event.target.value)"
             />
-            <button @click="increase(item)">+</button>
+            <!-- + 按鈕：數量達到庫存上限時 disable -->
+            <button @click="increase(item)" :disabled="item.quantity >= (item.stock ?? 999)">+</button>
+          </div>
+          <!-- 庫存警示：接近或達到上限時顯示 -->
+          <div class="stockHint" v-if="item.stock != null && item.quantity >= item.stock">
+            已達庫存上限（{{ item.stock }}）
           </div>
           <div class="howMuch">
             <div class="word">小計</div>
@@ -138,8 +145,9 @@
   </div>
   <AsideButton />
 </template>
+
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useProductStore } from '@/stores/product'
 import { useRouter } from 'vue-router'
 import { gsap } from 'gsap'
@@ -147,89 +155,102 @@ import { useCartStore } from '@/stores/cart'
 import Partition from '@/components/ui/Partition.vue'
 import Card from '@/components/common/Card.vue'
 import AsideButton from '@/components/common/AsideButton.vue'
-import { useFavoriteStore } from "@/stores/favorite"
-import { useToastStore } from "@/stores/toast"
-const toast = useToastStore()
-const cart = useCartStore();
-const router = useRouter();
-const favorites = useFavoriteStore();
-function goDetail(item){
-  router.push({
-    name: 'productDetail',
-    params: { category: item.category, id: item.id }
-  })
+import { useFavoriteStore } from '@/stores/favorite'
+import { useToastStore } from '@/stores/toast'
+
+const toast     = useToastStore()
+const cart      = useCartStore()
+const router    = useRouter()
+const favorites = useFavoriteStore()
+
+function goDetail(item) {
+  router.push({ name: 'productDetail', params: { category: item.category, id: item.id } })
 }
-const BASE = import.meta.env.BASE_URL || '/'
+
+const BASE        = import.meta.env.BASE_URL || '/'
 const DEFAULT_IMG = `${BASE}image/chinese-pear.png`
-function resolveImage(u){
-  if(!u) return DEFAULT_IMG
-  if(/^https?:\/\//.test(u)) return u
-  if(u.startsWith(`${BASE}image/`)) return u
-  if(u.startsWith('/image/') || u.startsWith('image/')){
+
+function resolveImage(u) {
+  if (!u) return DEFAULT_IMG
+  if (/^https?:\/\//.test(u)) return u
+  if (u.startsWith(`${BASE}image/`)) return u
+  if (u.startsWith('/image/') || u.startsWith('image/')) {
     return `${BASE}${u.replace(/^\/+/, '')}`
   }
   return `${BASE}image/${u}`
 }
-const increase = (item) => item.quantity++
-const decrease = (item) => item.quantity > 1 && item.quantity--
-const updateQuantity = (item, v) => {
-  const qty = parseInt(v)
-  if (qty >= 1) item.quantity = qty
+
+// ─── 數量操作：全部走 cart.updateQuantity，讓 stock 限制統一在 store 執行 ───
+function increase(item) {
+  cart.updateQuantity(item.id, item.quantity + 1)
 }
+
+function decrease(item) {
+  if (item.quantity > 1) cart.updateQuantity(item.id, item.quantity - 1)
+}
+
+function handleInput(item, value) {
+  const qty = parseInt(value)
+  // 空白或非數字 → 還原成 1
+  if (!qty || qty < 1) {
+    cart.updateQuantity(item.id, 1)
+    return
+  }
+  cart.updateQuantity(item.id, qty)
+  // 如果輸入值超過庫存，store 會夾住，順便提示
+  const stock = item.stock ?? 999
+  if (qty > stock) {
+    toast.info(`庫存僅剩 ${stock}，已自動調整為上限數量`)
+  }
+}
+
+// ─── 小計 / 運費 ─────────────────────────────────────────────────────────
 const productTotal = computed(() =>
   cart.items.reduce((s, i) => s + i.price * i.quantity, 0)
 )
 const shipping = computed(() => (cart.items.length > 0 ? 120 : 0))
-function toggleFavorite(item){
+
+// ─── 收藏 ─────────────────────────────────────────────────────────────────
+function toggleFavorite(item) {
   const product = {
-    id: item.id,
-    productTitle: item.productTitle,
-    sellerName: item.sellerName,
-    price: item.price,
-    imageUrl: item.imageUrl,
-    unit: item.unit,
-    category: item.category,
-    stock: item.stock
+    id: item.id, productTitle: item.productTitle, sellerName: item.sellerName,
+    price: item.price, imageUrl: item.imageUrl, unit: item.unit,
+    category: item.category, stock: item.stock
   }
   const added = favorites.toggle(product)
-  if (added) toast.success("已加入最愛")
-  else toast.info("已取消最愛")
+  if (added) toast.success('已加入最愛')
+  else toast.info('已取消最愛')
   item.favoriteAnimating = true
   setTimeout(() => (item.favoriteAnimating = false), 300)
 }
-function deleteCheck(item){
+
+// ─── 刪除（帶動畫）────────────────────────────────────────────────────────
+function deleteCheck(item) {
   if (!confirm(`確定要刪除「${item.productTitle}」嗎？`)) return
   const el = document.getElementById('cart-' + item.id)
   gsap.to(el, {
-    opacity: 0,
-    scale: 0.6,
-    duration: 0.3,
+    opacity: 0, scale: 0.6, duration: 0.3,
     onComplete: () => cart.removeItem(item.id)
   })
 }
+
 function goProducts() {
   router.push('/products')
 }
+
+// ─── 猜你喜歡 ─────────────────────────────────────────────────────────────
 const productStore = useProductStore()
 const relatedProducts = computed(() => {
   if (cart.items.length === 0) return []
-  const mainCategory = computed(() => {
-    const count = {};
-    cart.items.forEach(i => {
-      count[i.category] = (count[i.category] || 0) + 1;
-    });
-    return Object.entries(count).sort((a, b) => b[1] - a[1])[0][0];
-  });
-
+  const count = {}
+  cart.items.forEach(i => { count[i.category] = (count[i.category] || 0) + 1 })
+  const mainCategory = Object.entries(count).sort((a, b) => b[1] - a[1])[0][0]
   let list = productStore.getProductsByCategory(mainCategory)
-  if(list.length === 0) {
-    list = productStore.allProducts
-  }
-  return list
-    .filter(p => !cart.items.find(i => i.id === p.id))
-    .slice(0, 6)
+  if (list.length === 0) list = productStore.allProducts
+  return list.filter(p => !cart.items.find(i => i.id === p.id)).slice(0, 6)
 })
 </script>
+
 <style scoped>
     .cartContainer{
         width: 90%;
@@ -311,12 +332,16 @@ const relatedProducts = computed(() => {
         cursor: pointer;
         color: var(--black);
         background-color: var(--backgroundColor);
-        border:0;
+        border: 0;
         border-radius: 50%;
         font-size: 1.2em;
         transition: var(--transitionNormal);
     }
-    .priceList .many button:active{
+    .priceList .many button:disabled{
+        opacity: 0.35;
+        cursor: not-allowed;
+    }
+    .priceList .many button:active:not(:disabled){
         transform: scale(0.85);
     }
     .priceList .many input{
@@ -324,12 +349,19 @@ const relatedProducts = computed(() => {
         color: var(--black);
         background-color: var(--backgroundColor);
         border: 0;
-        margin:0 1em;
+        margin: 0 1em;
         text-align: center;
         line-height: 2em;
     }
     .priceList .howMuch{
         text-align: center;
+    }
+    /* 庫存警示文字 */
+    .stockHint{
+        text-align: center;
+        font-size: 0.82em;
+        color: var(--secondColor);
+        margin-top: -0.5em;
     }
     .word{
         width: 100%;
@@ -436,14 +468,14 @@ const relatedProducts = computed(() => {
     }
     .box4 input{
         width: calc(100% - 5em);
-        padding:0 0 0 0.4em;
+        padding: 0 0 0 0.4em;
         line-height: 2.5em;
         background-color: var(--gray);
         border: 0;
         border-bottom: 1px solid var(--black);
         margin: 1em;
     }
-    .box4 button{cursor: pointer;}
+    .box4 button{ cursor: pointer; }
     .box4 .forget{
       display: flex;
       justify-content: flex-end;
@@ -463,7 +495,7 @@ const relatedProducts = computed(() => {
         color: var(--backgroundColor);
         transition: var(--transitionNormal);
         border-radius: var(--radiusLarge);
-        border:0;
+        border: 0;
     }
     .box4 .register{
         width: 80%;
@@ -472,7 +504,7 @@ const relatedProducts = computed(() => {
         color: var(--backgroundColor);
         transition: var(--transitionNormal);
         border-radius: var(--radiusLarge);
-        border:0;
+        border: 0;
     }
     .keep{
         width: 100%;
@@ -498,15 +530,9 @@ const relatedProducts = computed(() => {
       animation: heartBeat 0.3s ease-in-out;
     }
     @keyframes heartBeat {
-      0%{
-        transform: scale(1);
-      }
-      40%{
-        transform: scale(1.4);
-      }
-      100%{
-        transform: scale(1);
-      }
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.4); }
+      100% { transform: scale(1); }
     }
     .recommendTitle{
       text-align: center;
@@ -520,7 +546,7 @@ const relatedProducts = computed(() => {
       align-items: center;
       gap: 2em;
     }
-    @media screen and (min-width:768px){
+    @media screen and (min-width: 768px){
         .cartContainer{
             max-width: 1200px;
             flex-flow: row nowrap;
@@ -546,17 +572,17 @@ const relatedProducts = computed(() => {
             flex-direction: row;
             gap: 0;
         }
-        .priceList .much{width: 50%;}
+        .priceList .much{ width: 50%; }
         .priceList .many{
           width: 100%;
           display: flex;
           flex-flow: row nowrap;
         }
-        .priceList .howMuch{width: 50%;}
+        .priceList .howMuch{ width: 50%; }
         .cartPrice{
             width: 30%;
         }
-        .priceList .many button:hover{
+        .priceList .many button:hover:not(:disabled){
             background-color: var(--mainColor);
             color: var(--backgroundColor);
         }
