@@ -28,9 +28,12 @@ export const useCartStore = defineStore('cart', () => {
   function addItem(product) {
     const exist = items.value.find(i => i.id === product.id)
     if (exist) {
-      exist.quantity = Math.min(exist.quantity + 1, exist.stock ?? 999)
+      // 若規格改變（stock 可能不同），更新 stock 上限
+      if (product.stock != null) exist.stock = product.stock
+      const addQty = product.quantity ?? 1
+      exist.quantity = Math.min(exist.quantity + addQty, exist.stock ?? 999)
     } else {
-      items.value.push({ ...product, quantity: 1 })
+      items.value.push({ ...product, quantity: product.quantity ?? 1 })
     }
   }
 
