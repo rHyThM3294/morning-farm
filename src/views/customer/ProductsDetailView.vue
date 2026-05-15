@@ -256,6 +256,7 @@ function addToCart() {
     sellerName:   product.value.sellerName,
     unit:         `${unitPerGroup.value} 顆 / 組`,
     category:     product.value.category,
+    stock:        product.value.stock,   // ← 補上，購物車才能正確限制數量上限
     quantity:     quantity.value,
     pieces:       quantity.value * unitPerGroup.value,
   });
