@@ -88,7 +88,7 @@
       <div class="farmerCard">
         <h4 class="farmerName">【{{ product.sellerName }}】</h4>
         <div class="farmerInfo">
-          <img class="avatar" :src="avatarSrc" :alt="productTitle" />
+          <img class="avatar" :src="avatarSrc" :alt="product.productTitle" />
           <p class="farmerDesc">{{ product.farmerDescription }}</p>
         </div>
         <button class="viewAllButton" @click="goFarmerAll">
@@ -99,8 +99,9 @@
     <AsideButton />
   </div>
 </template>
+
 <script setup>
-import { reactive, ref, computed, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Bread from "@/components/common/Bread.vue";
 import AsideButton from "@/components/common/AsideButton.vue";
@@ -108,16 +109,20 @@ import { useProductStore } from "@/stores/product";
 import { useFavoriteStore } from "@/stores/favorite";
 import { useCartStore } from "@/stores/cart";
 import { useToastStore } from "@/stores/toast";
+
 const productStore = useProductStore();
 const favorites = useFavoriteStore();
 const cart = useCartStore();
 const toast = useToastStore();
 const route = useRoute();
 const router = useRouter();
-const productId = route.params.id;
 const BASE = import.meta.env.BASE_URL || "/";
+
+// ─── 從 store 取得原始資料（隨 route.params.id 自動更新）─────────────────
 const storeProduct = computed(() => productStore.getProductById(route.params.id));
-function svgPlaceholder(n, bg = "#f0f0f0", fg = "#555"){
+
+// ─── SVG 佔位圖工具 ──────────────────────────────────────────────────────
+function svgPlaceholder(n, bg = "#f0f0f0", fg = "#555") {
   const svg = `
   <svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
     <defs>
@@ -133,129 +138,147 @@ function svgPlaceholder(n, bg = "#f0f0f0", fg = "#555"){
   `;
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
+
 const placeholderGallery = [
   svgPlaceholder(1, "#E3F2FD", "#0D47A1"),
   svgPlaceholder(2, "#E8F5E9", "#1B5E20"),
   svgPlaceholder(3, "#FFF3E0", "#E65100"),
   svgPlaceholder(4, "#F3E5F5", "#4A148C"),
 ];
-const product = reactive({
-  id: storeProduct.value?.id ?? "temp-1",
-  productTitle: storeProduct.value?.productTitle ?? "寶島甘露梨",
-  sellerName: storeProduct.value?.sellerName ?? "王建國果園",
-  price: storeProduct.value?.price ?? 420,
-  status: storeProduct.value?.status ?? "New",
-  category: storeProduct.value?.category ?? "all",
-  imageUrl: `${BASE}image/chinese-pear.png`,
-  gallery: [
-    `${BASE}image/chinese-pear.png`,
-    placeholderGallery[1],
-    placeholderGallery[2],
-    placeholderGallery[3],
-  ],
-  description:
-    storeProduct.value?.description ??
-    "以自然農法種植，果肉脆甜多汁，冷藏風味更佳。下單後新鮮採收直送。",
-  specs:
-    storeProduct.value?.specs ??
-    [
-      { label: "6 顆 / 盒", value: 6 },
-      { label: "10 顆 / 箱", value: 10 },
-      { label: "12 顆 / 箱", value: 12 },
-    ],
-  sellerAvatarUrl: storeProduct.value?.sellerAvatarUrl ?? "/morning-farm/image/sandPear.png",
-  farmerDescription:
-    storeProduct.value?.farmerDescription ??
-    "堅持產地直送、友善耕作超過二十年。",
+
+const defaultSpecs = [
+  { label: "6 顆 / 盒", value: 6 },
+  { label: "10 顆 / 箱", value: 10 },
+  { label: "12 顆 / 箱", value: 12 },
+];
+
+// ─── 解析圖片路徑工具 ────────────────────────────────────────────────────
+function resolveImg(url) {
+  if (!url) return `${BASE}image/chinese-pear.png`;
+  if (/^(https?:|data:|blob:)/.test(url)) return url;
+  const clean = String(url).replace(/^\/+/, "");
+  if (clean.startsWith("image/")) return `${BASE}${clean}`;
+  return `${BASE}image/${clean}`;
+}
+
+// ─── 主要商品資料：改用 computed，隨 route 自動重算 ──────────────────────
+// 修正重點：原本用 reactive({ ...storeProduct.value }) 只讀一次，
+// 切換商品時資料不更新，導致點卡片顯示錯誤商品。
+const product = computed(() => {
+  const s = storeProduct.value;
+  const mainImg = resolveImg(s?.imageUrl);
+  return {
+    id:               s?.id               ?? "temp-1",
+    productTitle:     s?.productTitle     ?? "寶島甘露梨",
+    sellerName:       s?.sellerName       ?? "王建國果園",
+    price:            s?.price            ?? 420,
+    status:           s?.status           ?? "New",
+    category:         s?.category         ?? "all",
+    imageUrl:         mainImg,
+    gallery:          s?.gallery          ?? [mainImg, placeholderGallery[1], placeholderGallery[2], placeholderGallery[3]],
+    description:      s?.description      ?? "以自然農法種植，果肉脆甜多汁，冷藏風味更佳。下單後新鮮採收直送。",
+    specs:            s?.specs            ?? defaultSpecs,
+    sellerAvatarUrl:  s?.sellerAvatarUrl  ?? "image/sandPear.png",
+    farmerDescription: s?.farmerDescription ?? `${s?.sellerName ?? ""} 使用自然農法栽培，堅持以友善方式種植。`,
+    stock:            s?.stock            ?? 500,
+  };
 });
-const isFavorited = computed(() => favorites.isFavorited(product.id));
-const isAnimating = ref(false);
-const heartIcon = computed(() =>
+
+// ─── 依賴 product computed 的衍生 ref（商品換掉時一起重置）────────────────
+const currentImage = ref(product.value.gallery[0]);
+const totalStock   = ref(product.value.stock);
+const selectedSpec = ref(product.value.specs?.[0]?.value ?? null);
+
+// 監聽 product 變化（route 切換時），重置所有頁面狀態
+watch(
+  () => product.value.id,
+  () => {
+    currentImage.value = product.value.gallery[0];
+    totalStock.value   = product.value.stock;
+    selectedSpec.value = product.value.specs?.[0]?.value ?? null;
+    quantity.value     = 1;
+    qtyInput.value     = "1";
+  }
+);
+
+// ─── 收藏 ────────────────────────────────────────────────────────────────
+const isFavorited = computed(() => favorites.isFavorited(product.value.id));
+const isAnimating  = ref(false);
+const heartIcon    = computed(() =>
   isFavorited.value ? "fa-solid fa-heart" : "fa-regular fa-heart"
 );
-function toggleHeart(){
+function toggleHeart() {
   isAnimating.value = true;
   setTimeout(() => (isAnimating.value = false), 300);
   const added = favorites.toggle({
-    id: product.id,
-    productTitle: product.productTitle,
-    sellerName: product.sellerName,
-    price: product.price,
-    imageUrl: product.imageUrl,
-    category: product.category,
+    id:           product.value.id,
+    productTitle: product.value.productTitle,
+    sellerName:   product.value.sellerName,
+    price:        product.value.price,
+    imageUrl:     product.value.imageUrl,
+    category:     product.value.category,
   });
   if (added) toast.success("已加入最愛");
   else toast.info("已取消最愛");
 }
-const currentImage = ref(product.gallery[0]);
-const totalStock = ref(storeProduct.value?.stock ?? 500);
-const selectedSpec = ref(product.specs?.[0]?.value ?? null);
-const unitPerGroup = computed(() => Number(selectedSpec.value) || 1);
-const maxGroupCount = computed(() =>
-  Math.floor(totalStock.value / unitPerGroup.value)
-);
-const quantity = ref(1);
-const qtyInput = ref("1");
-function normalize(n){
+
+// ─── 規格 & 數量 ─────────────────────────────────────────────────────────
+const unitPerGroup  = computed(() => Number(selectedSpec.value) || 1);
+const maxGroupCount = computed(() => Math.floor(totalStock.value / unitPerGroup.value));
+const quantity  = ref(1);
+const qtyInput  = ref("1");
+
+function normalize(n) {
   const num = Number.isFinite(Number(n)) ? Number(n) : 1;
   return Math.max(1, Math.min(maxGroupCount.value, Math.floor(num)));
 }
-function onQtyInput(){
-  qtyInput.value = qtyInput.value.replace(/[^\d]/g, "");
-}
-function onQtyBlur(){
-  quantity.value = normalize(qtyInput.value || "1");
-  qtyInput.value = String(quantity.value);
-}
-function incQty(){
-  quantity.value = Math.min(quantity.value + 1, maxGroupCount.value);
-  qtyInput.value = String(quantity.value);
-}
-function decQty(){
-  quantity.value = Math.max(quantity.value - 1, 1);
-  qtyInput.value = String(quantity.value);
-}
-function blockNonNumber(e){
+function onQtyInput()  { qtyInput.value = qtyInput.value.replace(/[^\d]/g, ""); }
+function onQtyBlur()   { quantity.value = normalize(qtyInput.value || "1"); qtyInput.value = String(quantity.value); }
+function incQty()      { quantity.value = Math.min(quantity.value + 1, maxGroupCount.value); qtyInput.value = String(quantity.value); }
+function decQty()      { quantity.value = Math.max(quantity.value - 1, 1); qtyInput.value = String(quantity.value); }
+function blockNonNumber(e) {
   const ok = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "Enter"];
   if (ok.includes(e.key) || /^\d$/.test(e.key)) return;
   e.preventDefault();
 }
 watch(quantity, () => (qtyInput.value = String(quantity.value)), { immediate: true });
+
 const canCheckout = computed(() => quantity.value >= 1 && quantity.value <= maxGroupCount.value);
-function addToCart(){
+
+// ─── 購物車 ──────────────────────────────────────────────────────────────
+function addToCart() {
   if (!canCheckout.value) return;
   cart.addItem({
-    id: product.id,
-    productTitle: product.productTitle,
-    price: product.price,
-    imageUrl: product.imageUrl,
-    sellerName: product.sellerName,
-    unit: `${unitPerGroup.value} 顆 / 組`,
-    category: product.category,
-    quantity: quantity.value,
-    pieces: quantity.value * unitPerGroup.value, 
+    id:           product.value.id,
+    productTitle: product.value.productTitle,
+    price:        product.value.price,
+    imageUrl:     product.value.imageUrl,
+    sellerName:   product.value.sellerName,
+    unit:         `${unitPerGroup.value} 顆 / 組`,
+    category:     product.value.category,
+    quantity:     quantity.value,
+    pieces:       quantity.value * unitPerGroup.value,
   });
   toast.success("成功加入購物車！");
 }
-function buyNow(){
+function buyNow() {
   toast.info("尚未開放直接購買");
 }
-function goFarmerAll(){
-  router.push({
-    name: "farmerDetail",
-    params: { id: product.sellerName },
-  });
-}
-const avatarSrc = computed(() => {
-  const raw = storeProduct.value?.sellerAvatarUrl || "image/sandPear.png"; 
-  // raw 可能是 "/image/xxx.png" 或 "image/xxx.png" 或 已經是 "https://..."
-  if (/^(https?:|data:|blob:)/.test(raw)) return raw;
-  const clean = String(raw).replace(/^\/+/, ""); // 去掉開頭 /
-  return `${BASE}${clean}`; // ✅ 變成 /morning-farm/image/xxx.png
-});
 
-const productTitle = computed(() => storeProduct.value?.productTitle || "商品");
+// ─── 農夫頁跳轉 ──────────────────────────────────────────────────────────
+function goFarmerAll() {
+  router.push({ name: "farmerDetail", params: { id: product.value.sellerName } });
+}
+
+// ─── 農夫頭像（computed，同步 storeProduct）──────────────────────────────
+const avatarSrc = computed(() => {
+  const raw = storeProduct.value?.sellerAvatarUrl || "image/sandPear.png";
+  if (/^(https?:|data:|blob:)/.test(raw)) return raw;
+  const clean = String(raw).replace(/^\/+/, "");
+  return `${BASE}${clean}`;
+});
 </script>
+
 <style scoped>
 .detailPage { width: min(1200px, 92%); margin: 0 auto; padding: 7.5em 1.5em 2em 1.5em; }
 .productSection { display: grid; grid-template-columns: 1fr; gap: 2em; margin-top: 1em; }
@@ -266,11 +289,11 @@ const productTitle = computed(() => storeProduct.value?.productTitle || "商品"
 .thumbBtn img { width: 100%; height: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
 .thumbBtn.active { outline: 2px solid var(--mainColor); }
 .info .titleRow { display: flex; align-items: center; gap: 0.75em; }
-.title { color: var(--secondColor);font-family:'Noto Serif TC';margin:1em }
+.title { color: var(--secondColor); font-family: 'Noto Serif TC'; margin: 1em; }
 .heart { margin-left: auto; border: none; background: transparent; cursor: pointer; font-size: 1.25em; color: var(--secondColor); }
 .heart.active { color: var(--firstColor); }
 .heart.animate { animation: pop 0.3s ease; }
-@keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.4)} 100%{transform:scale(1)} }
+@keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
 .meta { display: flex; gap: 0.75em; align-items: center; margin: 0.5em 0 1em; flex-wrap: wrap; }
 .tag { display: inline-flex; align-items: center; padding: 0.5em 0.8em; border-radius: var(--radiusNormal); font-size: 1em; background: var(--white); color: var(--mainColor); }
 .tag[data-type="Hot"] { background: var(--secondColor); color: var(--white); }
@@ -281,90 +304,37 @@ const productTitle = computed(() => storeProduct.value?.productTitle || "商品"
 .label { font-weight: 700; color: var(--firstColor); margin-right: 0.5em; }
 .specs { margin: 1em 0; }
 .specButtons { display: flex; flex-wrap: wrap; gap: 0.5em; }
-.specBtn { padding: 0.5em 1em; border: 1px solid var(--mainColor); border-radius: var(--radiusLarge); background: var(--backgroundColor);color: var(--mainColor);cursor: pointer; }
-.specBtn.selected { background: var(--mainColor); color:var(--white); }
+.specBtn { padding: 0.5em 1em; border: 1px solid var(--mainColor); border-radius: var(--radiusLarge); background: var(--backgroundColor); color: var(--mainColor); cursor: pointer; }
+.specBtn.selected { background: var(--mainColor); color: var(--white); }
 .quantityRow { display: flex; align-items: center; gap: 0.75em; margin: 1em 0; flex-wrap: wrap; }
 .qtyControl { display: inline-flex; border: 1px solid #ddd; border-radius: 10px; overflow: hidden; }
 .qtyBtn { width: 40px; height: 40px; border: none; background: #f7f7f7; cursor: pointer; font-size: 1.2em; }
 .qtyBtn:disabled { opacity: 0.4; cursor: not-allowed; }
 .qtyInput { width: 64px; height: 40px; text-align: center; border: none; outline: none; }
-.stock { color:var(--black); }
+.stock { color: var(--black); }
 .warn { color: var(--warning); font-weight: 700; }
 .desc { margin-top: 1em; }
 .desc h3 { margin: 0 0 0.5em; }
 .actions { display: flex; gap: 1em; margin-top: 1.25em; flex-wrap: wrap; }
-.buyNow, .addCart { padding: 1em 2.5em; border-radius: var(--radiusLarge); border:none; cursor: pointer; font-weight: 700; }
-.buyNow { background:var(--backgroundColor); color: var(--mainColor);transition: var(--transitionNormal); }
-.buyNow:hover{color: var(--black);background-color: var(--addColor);}
-.addCart { background: var(--mainColor); color:var(--white);transition: var(--transitionNormal); }
-.addCart:hover{color: var(--black);background-color: var(--addColor);}
+.buyNow, .addCart { padding: 1em 2.5em; border-radius: var(--radiusLarge); border: none; cursor: pointer; font-weight: 700; }
+.buyNow { background: var(--backgroundColor); color: var(--mainColor); transition: var(--transitionNormal); }
+.buyNow:hover { color: var(--black); background-color: var(--addColor); }
+.addCart { background: var(--mainColor); color: var(--white); transition: var(--transitionNormal); }
+.addCart:hover { color: var(--black); background-color: var(--addColor); }
 .buyNow:disabled, .addCart:disabled { opacity: 0.5; cursor: not-allowed; }
-section.farmerSection{
-  position: relative;
-  padding: 1em 0;
-}
-.farmerCard{
-  width: 90%;
-  position: relative;
-  margin: 2em 0;
-  display: flex;
-  flex-direction: column;
-  justify-self:center;
-  align-items: center;
-  gap: 2em;
-}
-.farmerName{
-  text-align: center;
-  color: var(--black);
-}
-.farmerInfo{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 2em;
-}
-.avatar{ 
-  width: 265px;
-  height: 295px;
-  border-radius: 2em;
-  overflow: hidden;
-  object-fit: cover;
-}
-.farmerDesc{
-  text-align: justify;
-}
-.viewAllButton{
-  cursor: pointer;
-  font-size: 1em;
-  padding: 0.5em 1em;
-  background-color: var(--mainColor);
-  border: 0;
-  color: var(--backgroundColor);
-  border-radius: var(--radiusLarge);
-  transition: var(--transitionNormal);
-  max-width: 500px;
-}
-@media (min-width:768px){
+section.farmerSection { position: relative; padding: 1em 0; }
+.farmerCard { width: 90%; position: relative; margin: 2em 0; display: flex; flex-direction: column; justify-self: center; align-items: center; gap: 2em; }
+.farmerName { text-align: center; color: var(--black); }
+.farmerInfo { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2em; }
+.avatar { width: 265px; height: 295px; border-radius: 2em; overflow: hidden; object-fit: cover; }
+.farmerDesc { text-align: justify; }
+.viewAllButton { cursor: pointer; font-size: 1em; padding: 0.5em 1em; background-color: var(--mainColor); border: 0; color: var(--backgroundColor); border-radius: var(--radiusLarge); transition: var(--transitionNormal); max-width: 500px; }
+@media (min-width: 768px) {
   .productSection { grid-template-columns: 1.1fr 1fr; align-items: start; }
-  .farmerCard{
-    max-width: 1200px;
-  }
-  .farmerInfo{
-    flex-flow: row nowrap;
-    gap: 2em;
-  }
-  .avatar{
-    width: 100%;
-    max-width: 500px;
-    height: 250px;
-  }
-  .farmerDesc{
-    width: 100%;
-  }
-  .viewAllButton:hover{
-    color: var(--mainColor);
-    background-color: var(--backgroundColor);
-  }
+  .farmerCard { max-width: 1200px; }
+  .farmerInfo { flex-flow: row nowrap; gap: 2em; }
+  .avatar { width: 100%; max-width: 500px; height: 250px; }
+  .farmerDesc { width: 100%; }
+  .viewAllButton:hover { color: var(--mainColor); background-color: var(--backgroundColor); }
 }
 </style>
