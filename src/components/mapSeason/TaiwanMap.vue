@@ -123,14 +123,19 @@ defineExpose({
 <style scoped>
 .tw-wrapper{
   width: auto;
-  height: calc(100vh -10%);
+  height: 100%;
+  max-height: 100vh;
   margin: 0 auto;
   overflow: hidden;
   padding: 0;
 }
 :deep(.tw-svg){
   display: block;
-  background:var(--white);
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  object-fit: contain;
+  background: var(--white);
   border: 1px solid var(--backgroundColor);
   border-radius: 16px;
 }
@@ -155,10 +160,10 @@ defineExpose({
 :deep(rect),:deep(line){
   display: none;
 }
-@media screen and (min-width: 768px){
+@media(width>768px){
   .tw-wrapper{
     max-width: 1200px;
-    height: calc(160vh - 15%);
+    height: calc(100vh - 15%); /* 改掉原本的 160vh */
   }
 }
 </style>
