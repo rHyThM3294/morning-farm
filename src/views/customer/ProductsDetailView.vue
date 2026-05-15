@@ -248,6 +248,8 @@ const canCheckout = computed(() => quantity.value >= 1 && quantity.value <= maxG
 // ─── 購物車 ──────────────────────────────────────────────────────────────
 function addToCart() {
   if (!canCheckout.value) return;
+  // stockLimit = 此規格下真正可購買的組數上限（庫存 ÷ 每組顆數）
+  // 購物車的 +/- 必須以此為上限，而非原始庫存數
   cart.addItem({
     id:           product.value.id,
     productTitle: product.value.productTitle,
@@ -256,7 +258,7 @@ function addToCart() {
     sellerName:   product.value.sellerName,
     unit:         `${unitPerGroup.value} 顆 / 組`,
     category:     product.value.category,
-    stock:        product.value.stock,   // ← 補上，購物車才能正確限制數量上限
+    stock:        maxGroupCount.value,   // ← 傳「組數上限」而非原始庫存
     quantity:     quantity.value,
     pieces:       quantity.value * unitPerGroup.value,
   });
@@ -330,7 +332,7 @@ section.farmerSection { position: relative; padding: 1em 0; }
 .avatar { width: 265px; height: 295px; border-radius: 2em; overflow: hidden; object-fit: cover; }
 .farmerDesc { text-align: justify; }
 .viewAllButton { cursor: pointer; font-size: 1em; padding: 0.5em 1em; background-color: var(--mainColor); border: 0; color: var(--backgroundColor); border-radius: var(--radiusLarge); transition: var(--transitionNormal); max-width: 500px; }
-@media (min-width: 768px) {
+@media(width>768px){
   .productSection { grid-template-columns: 1.1fr 1fr; align-items: start; }
   .farmerCard { max-width: 1200px; }
   .farmerInfo { flex-flow: row nowrap; gap: 2em; }
