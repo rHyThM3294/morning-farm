@@ -33,9 +33,9 @@ const records = ref([])
 }
 @media(width>=768px){
     .finance{
-        max-width: 1200px;
-        margin: 2em 0 0 0;
-        padding: 0 0 0 200px;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
     }
 }
 </style>

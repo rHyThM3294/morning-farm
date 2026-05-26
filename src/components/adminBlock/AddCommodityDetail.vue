@@ -455,10 +455,9 @@ textarea{
 }
 @media (width>=768px){
   .add-commodity{
-    width: calc(100% - 216px);
-    margin-left: 250px;
+    width: 100%;
     max-width: 600px;
-    padding: 2em;
+    padding: 0;
   }
   .storyButton:hover{
     background: var(--addColor);

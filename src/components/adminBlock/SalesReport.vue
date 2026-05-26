@@ -70,8 +70,8 @@
         <div class="chart-area" ref="lineChartRef">
           <svg
             class="line-svg"
-            :viewBox="`0 0 ${svgW} ${svgH}`"
-            preserveAspectRatio="none"
+            :viewBox="`0 0 ${dynamicSvgW} ${svgH}`"
+            
           >
             <!-- 格線 -->
             <line
@@ -79,7 +79,7 @@
               :key="n"
               :x1="padL"
               :y1="gridY(n - 1)"
-              :x2="svgW - padR"
+              :x2="dynamicSvgW - padR"
               :y2="gridY(n - 1)"
               stroke="#e0e0e0"
               stroke-width="1"
@@ -158,8 +158,8 @@
         <div class="chart-area" ref="barChartRef">
           <svg
             class="bar-svg"
-            :viewBox="`0 0 ${svgW} ${svgH}`"
-            preserveAspectRatio="none"
+            :viewBox="`0 0 ${dynamicSvgW} ${svgH}`"
+            
           >
             <!-- 格線 -->
             <line
@@ -167,7 +167,7 @@
               :key="n"
               :x1="padL"
               :y1="gridY(n - 1)"
-              :x2="svgW - padR"
+              :x2="dynamicSvgW - padR"
               :y2="gridY(n - 1)"
               stroke="#e0e0e0"
               stroke-width="1"
@@ -285,7 +285,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, nextTick } from "vue";
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from "vue";
 import { gsap } from "gsap";
 import { useSalesReportStore } from "@/stores/salesReport.js";
 
@@ -300,14 +300,27 @@ const tabs = [
 const activeTab = ref("table");
 
 // ── SVG 尺寸常數 ──────────────────────────────────────
-const svgW  = 700;
 const svgH  = 260;
 const padL  = 50;
 const padR  = 20;
 const padT  = 30;
 const padB  = 30;
-const chartW = computed(() => svgW - padL - padR);
 const chartH = computed(() => svgH - padT - padB);
+
+// ── 動態 SVG 寬度（ResizeObserver 偵測容器） ───────────
+const dynamicSvgW = ref(700);
+const chartW = computed(() => dynamicSvgW.value - padL - padR);
+
+let _roLine = null;
+let _roBar  = null;
+function makeRO() {
+  return new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      const w = entry.contentRect.width;
+      if (w > 0) dynamicSvgW.value = Math.max(w, 400);
+    }
+  });
+}
 
 // ── 數字計數動畫（頂部 4 張卡片） ───────────────────────
 const displayValues   = ref(store.summaryCards.map(() => 0));
@@ -448,14 +461,31 @@ async function animateLineChartPro() {
 async function switchTab(key) {
   activeTab.value = key;
   await nextTick();
-  if (key === "trend") animateLineChartPro();
-  if (key === "bar")   animateBarChart();
+  if (key === "trend") {
+    if (lineChartRef.value && !_roLine) {
+      _roLine = makeRO();
+      _roLine.observe(lineChartRef.value);
+    }
+    animateLineChartPro();
+  }
+  if (key === "bar") {
+    if (barChartRef.value && !_roBar) {
+      _roBar = makeRO();
+      _roBar.observe(barChartRef.value);
+    }
+    animateBarChart();
+  }
 }
 
 // ── 掛載後動畫 ────────────────────────────────────────
 onMounted(() => {
   animateCounters(store.summaryCards,   displayValues);
   animateCounters(store.customerCards,  customerDisplayValues);
+});
+
+onUnmounted(() => {
+  _roLine?.disconnect();
+  _roBar?.disconnect();
 });
 
 // ── 成長率欄位樣式 ────────────────────────────────────
@@ -627,7 +657,7 @@ function exportData() {
 .bar-svg {
   width: 100%;
   min-width: 400px;
-  height: 260px;
+  height: auto;
   display: block;
 }
 
@@ -675,8 +705,8 @@ function exportData() {
 /* ── RWD >=768px ───────────────────────── */
 @media (width >= 768px) {
   .sales-report {
-    padding: 2em 2em 3em calc(200px + 2em);
-    max-width: 1200px;
+    padding: 0;
+    max-width: 100%;
   }
   .summary-cards {
     grid-template-columns: repeat(4, 1fr);

@@ -161,5 +161,8 @@ input[type="radio"]{
     border: none;
     font-size: 15px;
   }
+  .admin-main {
+    padding: 2em 2em 2em calc(200px + 2em);
+  }
 }
 </style>

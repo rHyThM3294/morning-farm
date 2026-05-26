@@ -99,8 +99,8 @@ function handleOrderDetailMounted(el){
 }
 @media(width>=768px){
   .checkOrder{
-    max-width: 1250px;
-    padding: 1em 1em 1em 200px;
+    max-width: 100%;
+    padding: 0;
   }
 }
 </style>

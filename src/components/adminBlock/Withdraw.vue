@@ -61,8 +61,8 @@ function handleFinish() {
 @media(width>=768px){
   .withdraw{
     width: 100%;
-    max-width: 1200px;
-    padding: 2em 0 2em 200px;
+    max-width: 100%;
+    padding: 0;
   }
 }
 </style>

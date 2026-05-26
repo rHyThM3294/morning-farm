@@ -29,8 +29,8 @@ function handleEdit(id) {
 }
 @media(width>=768px){
   .commodityList{
-    padding: 2em 2em 2em 250px;
-    max-width: 1250px;
+    padding: 0;
+    max-width: 100%;
     flex-flow: row wrap;
   }
 }

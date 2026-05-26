@@ -470,12 +470,10 @@ function exportCSV() {
 .report-table tbody tr:hover {
   background: #fef9ef;
 }
-
-/* ── RWD >=768px ────────────────────────── */
-@media (width >= 768px) {
+@media(width >= 768px){
   .product-sales {
-    padding: 2em 2em 3em calc(200px + 2em);
-    max-width: 1200px;
+    padding: 0;
+    max-width: 100%;
   }
   .page-title {
     font-size: 2.2em;
