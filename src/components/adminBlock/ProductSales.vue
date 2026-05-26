@@ -57,8 +57,7 @@
       <div class="chart-area" ref="barChartRef">
         <svg
           class="bar-svg"
-          :viewBox="`0 0 ${svgW} ${svgH}`"
-          preserveAspectRatio="none"
+          :viewBox="`0 0 ${dynamicSvgW} ${svgH}`"
         >
           <!-- 格線 + Y 軸標籤 -->
           <line
@@ -66,7 +65,7 @@
             :key="'gl' + n"
             :x1="padL"
             :y1="gridY(n - 1)"
-            :x2="svgW - padR"
+            :x2="dynamicSvgW - padR"
             :y2="gridY(n - 1)"
             stroke="#d0d0d0"
             stroke-width="1"
@@ -207,9 +206,26 @@ const padT      = 30;
 const padB      = 34;
 const chartH    = svgH - padT - padB;
 
+// ── 動態 SVG 寬度 ──────────────────────────────────────
+const dynamicSvgW = ref(700);
+
+let ro;
+onMounted(() => {
+  ro = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      const w = entry.contentRect.width;
+      if (w > 0) dynamicSvgW.value = Math.max(w, 380);
+    }
+  });
+  if (barChartRef.value) ro.observe(barChartRef.value);
+});
+onUnmounted(() => {
+  ro?.disconnect();
+});
+
 // 每組長條（一個商品一組）
 const totalBars  = computed(() => store.topProducts.length);
-const slotW      = computed(() => (svgW - padL - padR) / totalBars.value);
+const slotW      = computed(() => (dynamicSvgW.value - padL - padR) / totalBars.value);
 const barGroupW  = computed(() => slotW.value * 0.65);
 
 function barGroupX(i) {
@@ -398,7 +414,7 @@ function exportCSV() {
 .bar-svg {
   width: 100%;
   min-width: 380px;
-  height: 340px;
+  height: auto;
   display: block;
 }
 
