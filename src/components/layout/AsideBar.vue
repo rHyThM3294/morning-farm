@@ -201,7 +201,7 @@ export default {
 <style scoped>
 .navButton{
   position: fixed;
-  top: 20px;
+  top: calc(44px + 12px);
   left: 20px;
   width: 34px;
   height: 34px;
@@ -243,10 +243,10 @@ export default {
 }
 .navBlock{
   position: fixed;
-  top: 0;
+  top: 44px;
   left: 0;
   width: 200px;
-  height: 100vh;                   
+  height: calc(100vh - 44px);
   background-color: var(--black);
   color: var(--mainColor);
   z-index: 9999;                   
@@ -254,7 +254,7 @@ export default {
   overflow-x: hidden;
   scrollbar-width: thin;           
   scrollbar-color: var(--mainColor) transparent;
-  padding-top: 4em;
+  padding-top: 1.5em;
   transform: translateX(-100%);
   transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
 }
@@ -491,11 +491,11 @@ export default {
   }
   .navBlock{
       position: fixed;
-      top: 0;
+      top: 44px;
       left: 0;
       transform: translateX(0);
       animation: none;
-      height: 100vh;
+      height: calc(100vh - 44px);
       width: 200px;  
       overflow-y: auto; 
       z-index: 9999;
