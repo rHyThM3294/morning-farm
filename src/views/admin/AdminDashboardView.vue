@@ -105,12 +105,13 @@ function handleLogout(){
 }
 .logout-bar{
   display: flex;
-  justify-content:flex-end;
+  justify-content: flex-end;
   align-items: center;
   gap: 1em;
-  padding: 0.7em 1em;
+  padding: 0 1.2em;
+  height: 44px;
   background-color: var(--backgroundColor);
-  border-bottom: 1px solid #e5e0d5;
+  border-bottom: 2px solid var(--mainColor);
   font-size: 12px;
   color: var(--gray);
   position: fixed;
@@ -118,7 +119,7 @@ function handleLogout(){
   left: 0;
   right: 0;
   z-index: 10000;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 .logout-btn{
   background: none;
@@ -127,6 +128,9 @@ function handleLogout(){
   font-weight: bold;
   cursor: pointer;
   padding: 0;
+}
+.logout-btn:hover{
+  text-decoration: underline;
 }
 label{
   display: inline-flex;
@@ -149,19 +153,15 @@ input[type="radio"]{
 .admin-main{
   flex: 1;
   background-color: var(--white);
-  padding: calc(2.6em + 36px) 2em 2em;
+  padding: calc(44px + 1.5em) 1.2em 2em;
   overflow-y: auto;
 }
-@media(width>=768px){
+@media (width>=768px){
   .logout-bar{
-    font-size: 1em;
-    padding: 0.75em 2em;
-  }
-  .logout-btn:hover{
-    text-decoration: underline;
+    font-size: 14px;
   }
   .admin-main {
-    padding: calc(2em + 44px) 2em 2em calc(200px + 2em);
+    padding: calc(44px + 2em) 2em 2em calc(200px + 2em);
   }
 }
 </style>
