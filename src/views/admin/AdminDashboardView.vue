@@ -31,7 +31,7 @@ import SalesReport from '@/components/adminBlock/SalesReport.vue'
 import ProductSales from '@/components/adminBlock/ProductSales.vue'
 const router = useRouter();
 const adminMainRef = ref(null);
-const farmerName = "小農"; //未來有吃後臺參數可以直接變成登入後的名字
+const farmerName = "小農";
 const currentView = shallowRef(Commodity);
 const editingProductId = ref(null);
 function switchView(viewName){
@@ -65,13 +65,14 @@ function switchView(viewName){
 }
 function scrollToElement(el){
   nextTick(() => {
-    if(!el || !adminMainRef.value)return;
+    if (!el || !adminMainRef.value) return;
     el.scrollIntoView({
-      behavior:"smooth",
-      block:"start",
+      behavior: "smooth",
+      block: "start",
     });
   });
 }
+
 function handleEditProduct(id){
   editingProductId.value = id;
   currentView.value = AddCommodityDetail;
@@ -82,16 +83,16 @@ function goList(){
 }
 function scrollToOrderDetail(el){
   nextTick(() => {
-    if(!el)return;
+    if (!el) return;
     el.scrollIntoView({
-      behavior:"smooth",
-      block:"start",
+      behavior: "smooth",
+      block: "start",
     });
   });
 }
 function handleLogout(){
   sessionStorage.removeItem('admin_logged_in')
-  sessionStorage.setItem('playHomeLoading','true')
+  sessionStorage.setItem('playHomeLoading', 'true')
   router.push('/admin/login')
 }
 </script>
@@ -155,11 +156,11 @@ input[type="radio"]{
   overflow-y: auto;
 }
 @media (width>=768px){
-  .logout-bar{
+  .logout-bar {
     font-size: 14px;
     padding: 0.75em 2em;
   }
-  .admin-main{
+  .admin-main {
     padding: calc(2em + 44px) 2em 2em calc(200px + 2em);
   }
 }
