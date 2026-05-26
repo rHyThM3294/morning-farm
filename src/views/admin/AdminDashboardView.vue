@@ -31,7 +31,7 @@ import SalesReport from '@/components/adminBlock/SalesReport.vue'
 import ProductSales from '@/components/adminBlock/ProductSales.vue'
 const router = useRouter();
 const adminMainRef = ref(null);
-const farmerName = "小農";
+const farmerName = "小農"; //未來有吃後臺參數可以直接變成登入後的名字
 const currentView = shallowRef(Commodity);
 const editingProductId = ref(null);
 function switchView(viewName){
@@ -65,14 +65,13 @@ function switchView(viewName){
 }
 function scrollToElement(el){
   nextTick(() => {
-    if (!el || !adminMainRef.value) return;
+    if(!el || !adminMainRef.value)return;
     el.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
+      behavior:"smooth",
+      block:"start",
     });
   });
 }
-
 function handleEditProduct(id){
   editingProductId.value = id;
   currentView.value = AddCommodityDetail;
@@ -83,16 +82,16 @@ function goList(){
 }
 function scrollToOrderDetail(el){
   nextTick(() => {
-    if (!el) return;
+    if(!el)return;
     el.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
+      behavior:"smooth",
+      block:"start",
     });
   });
 }
 function handleLogout(){
   sessionStorage.removeItem('admin_logged_in')
-  sessionStorage.setItem('playHomeLoading', 'true')
+  sessionStorage.setItem('playHomeLoading','true')
   router.push('/admin/login')
 }
 </script>
@@ -108,14 +107,17 @@ function handleLogout(){
   justify-content:flex-end;
   align-items: center;
   gap: 1em;
-  padding: 0.8em 1em;
-  background:var(--backgroundColor);
-  border-bottom: 1px solid var(--backgroundColor);
+  padding: 0.7em 1em;
+  background: var(--backgroundColor);
+  border-bottom: 1px solid #e5e0d5;
   font-size: 12px;
-  color:var(--gray);
-  position: sticky;
+  color: var(--gray);
+  position: fixed;
   top: 0;
-  z-index: 20;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
 .logout-btn{
   background: none;
@@ -149,20 +151,16 @@ input[type="radio"]{
 .admin-main{
   flex: 1;
   background-color: var(--white);
-  padding: 2em;
+  padding: calc(2.6em + 36px) 2em 2em;
   overflow-y: auto;
 }
 @media (width>=768px){
-  .logout-bar {
-    position: absolute;
-    top: 1em;
-    right: 2em;
-    background: transparent;
-    border: none;
-    font-size: 15px;
+  .logout-bar{
+    font-size: 14px;
+    padding: 0.75em 2em;
   }
-  .admin-main {
-    padding: 2em 2em 2em calc(200px + 2em);
+  .admin-main{
+    padding: calc(2em + 44px) 2em 2em calc(200px + 2em);
   }
 }
 </style>
