@@ -178,14 +178,11 @@
 
   </section>
 </template>
-
 <script setup>
-import { ref, computed, nextTick } from "vue";
+import { ref, computed, nextTick, onMounted, onUnmounted } from "vue";
 import { gsap } from "gsap";
 import { useProductSalesStore } from "@/stores/productSales.js";
-
 const store = useProductSalesStore();
-
 // ── 頁籤 ─────────────────────────────────────────────
 const activeTab = ref("gallery");
 
