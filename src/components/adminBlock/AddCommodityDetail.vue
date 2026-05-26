@@ -477,8 +477,7 @@ textarea{
 @media (width>=768px){
   .add-commodity{
     width: 100%;
-    max-width: 600px;
-    padding: 0;
+    max-width: 1000px;
   }
   .storyButton:hover{
     background: var(--addColor);

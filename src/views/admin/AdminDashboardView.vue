@@ -109,7 +109,7 @@ function handleLogout(){
   align-items: center;
   gap: 1em;
   padding: 0.7em 1em;
-  background: var(--backgroundColor);
+  background-color: var(--backgroundColor);
   border-bottom: 1px solid #e5e0d5;
   font-size: 12px;
   color: var(--gray);
@@ -127,9 +127,6 @@ function handleLogout(){
   font-weight: bold;
   cursor: pointer;
   padding: 0;
-}
-.logout-btn:hover{
-  text-decoration: underline;
 }
 label{
   display: inline-flex;
@@ -155,10 +152,13 @@ input[type="radio"]{
   padding: calc(2.6em + 36px) 2em 2em;
   overflow-y: auto;
 }
-@media (width>=768px){
-  .logout-bar {
-    font-size: 14px;
+@media(width>=768px){
+  .logout-bar{
+    font-size: 1em;
     padding: 0.75em 2em;
+  }
+  .logout-btn:hover{
+    text-decoration: underline;
   }
   .admin-main {
     padding: calc(2em + 44px) 2em 2em calc(200px + 2em);
