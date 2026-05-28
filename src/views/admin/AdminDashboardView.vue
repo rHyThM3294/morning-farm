@@ -118,7 +118,7 @@ function handleLogout(){
   top: 0;
   left: 0;
   right: 0;
-  z-index: 10000;
+  z-index: 1000;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 .logout-btn{
