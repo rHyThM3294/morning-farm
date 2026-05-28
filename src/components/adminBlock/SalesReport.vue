@@ -71,7 +71,8 @@
           <svg
             class="line-svg"
             :viewBox="`0 0 ${dynamicSvgW} ${svgH}`"
-            
+            preserveAspectRatio="xMidYMid meet"
+            :style="{ height: svgH + 'px', width: '100%' }"
           >
             <!-- 格線 -->
             <line
@@ -106,7 +107,7 @@
               font-size="10"
               fill="#888"
             >
-              {{ d.month.replace("月", "") }}月
+              {{ d.month.replace('月', '') }}月
             </text>
             <!-- 折線路徑 -->
             <path
@@ -159,7 +160,8 @@
           <svg
             class="bar-svg"
             :viewBox="`0 0 ${dynamicSvgW} ${svgH}`"
-            
+            preserveAspectRatio="xMidYMid meet"
+            :style="{ height: svgH + 'px', width: '100%' }"
           >
             <!-- 格線 -->
             <line
@@ -194,7 +196,7 @@
               font-size="10"
               fill="#888"
             >
-              {{ d.month.replace("月", "") }}月
+              {{ d.month.replace('月', '') }}月
             </text>
             <!-- 長條 -->
             <rect
@@ -285,222 +287,244 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch, nextTick } from "vue";
-import { gsap } from "gsap";
-import { useSalesReportStore } from "@/stores/salesReport.js";
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { gsap } from 'gsap'
+import { useSalesReportStore } from '@/stores/salesReport.js'
 
-const store = useSalesReportStore();
+const store = useSalesReportStore()
 
 // ── 頁籤 ─────────────────────────────────────────────
 const tabs = [
-  { key: "table", label: "銷售額表格" },
-  { key: "trend", label: "趨勢圖表"   },
-  { key: "bar",   label: "成長率圖表" },
-];
-const activeTab = ref("table");
+  { key: 'table', label: '銷售額表格' },
+  { key: 'trend', label: '趨勢圖表' },
+  { key: 'bar',   label: '成長率圖表' },
+]
+const activeTab = ref('table')
 
 // ── SVG 尺寸常數 ──────────────────────────────────────
-const svgH  = 260;
-const padL  = 50;
-const padR  = 20;
-const padT  = 30;
-const padB  = 30;
-const chartH = computed(() => svgH - padT - padB);
+const svgH  = 260
+const padL  = 50
+const padR  = 20
+const padT  = 30
+const padB  = 30
+const chartH = computed(() => svgH - padT - padB)
 
 // ── 動態 SVG 寬度（ResizeObserver 偵測容器） ───────────
-const dynamicSvgW = ref(700);
-const chartW = computed(() => dynamicSvgW.value - padL - padR);
+const dynamicSvgW = ref(700)
+const chartW = computed(() => dynamicSvgW.value - padL - padR)
 
-let _roLine = null;
-let _roBar  = null;
-function makeRO() {
+let _roLine = null
+let _roBar  = null
+
+function makeRO () {
   return new ResizeObserver((entries) => {
     for (const entry of entries) {
-      const w = entry.contentRect.width;
-      if (w > 0) dynamicSvgW.value = Math.max(w, 400);
+      const w = entry.contentRect.width
+      if (w > 0) dynamicSvgW.value = Math.max(w, 400)
     }
-  });
+  })
 }
 
 // ── 數字計數動畫（頂部 4 張卡片） ───────────────────────
-const displayValues   = ref(store.summaryCards.map(() => 0));
-const customerDisplayValues = ref(store.customerCards.map(() => 0));
+const displayValues = ref(store.summaryCards.map(() => 0))
+const customerDisplayValues = ref(store.customerCards.map(() => 0))
 
-function animateCounters(cards, displayRef) {
+function animateCounters (cards, displayRef) {
   cards.forEach((card, i) => {
-    const target = card.value;
-    const obj = { val: 0 };
+    const target = card.value
+    const obj = { val: 0 }
     gsap.to(obj, {
       val: target,
       duration: 1.5,
-      ease: "power2.out",
-      onUpdate() {
-        displayRef.value[i] = Math.round(obj.val).toLocaleString();
+      ease: 'power2.out',
+      onUpdate () {
+        displayRef.value[i] = Math.round(obj.val).toLocaleString()
       },
-      onComplete() {
-        displayRef.value[i] = target.toLocaleString();
+      onComplete () {
+        displayRef.value[i] = target.toLocaleString()
       },
-    });
-  });
+    })
+  })
 }
 
 // ── 折線圖 ────────────────────────────────────────────
-const dotsVisible = ref(false);
+const dotsVisible = ref(false)
+const maxSales = computed(() => store.maxSales)
 
-const maxSales = computed(() => store.maxSales);
-
-function pointX(i) {
-  const step = chartW.value / (store.monthlyData.length - 1);
-  return padL + i * step;
+function pointX (i) {
+  const step = chartW.value / (store.monthlyData.length - 1)
+  return padL + i * step
 }
-function pointY(sales) {
-  const ratio = sales / maxSales.value;
-  return padT + chartH.value * (1 - ratio);
+function pointY (sales) {
+  const ratio = sales / maxSales.value
+  return padT + chartH.value * (1 - ratio)
 }
-function gridY(n) {
-  return padT + (chartH.value / 5) * n;
+function gridY (n) {
+  return padT + (chartH.value / 5) * n
 }
-function yLabel(n) {
-  const max = maxSales.value;
-  const val = Math.round(max * (1 - n / 5) / 1000);
-  return val + "千";
+function yLabel (n) {
+  const max = maxSales.value
+  const val = Math.round(max * (1 - n / 5) / 1000)
+  return val + '千'
 }
 
 const linePath = computed(() => {
-  const pts = store.monthlyData.map((d, i) => `${pointX(i)},${pointY(d.sales)}`);
-  return "M" + pts.join("L");
-});
+  const pts = store.monthlyData.map((d, i) => `${pointX(i)},${pointY(d.sales)}`)
+  return 'M' + pts.join('L')
+})
 
 // ── 長條圖 ────────────────────────────────────────────
-const barHeights    = ref(store.monthlyData.map(() => 0));
-const barW = computed(() => chartW.value / store.monthlyData.length * 0.55);
+const barHeights = ref(store.monthlyData.map(() => 0))
+const barW = computed(() => chartW.value / store.monthlyData.length * 0.55)
 
-function barCenterX(i) {
-  const step = chartW.value / store.monthlyData.length;
-  return padL + step * i + step / 2;
+function barCenterX (i) {
+  const step = chartW.value / store.monthlyData.length
+  return padL + step * i + step / 2
 }
-function barX(i) {
-  return barCenterX(i) - barW.value / 2;
+function barX (i) {
+  return barCenterX(i) - barW.value / 2
 }
-function fullBarH(sales) {
-  return (sales / maxSales.value) * chartH.value;
+function fullBarH (sales) {
+  return (sales / maxSales.value) * chartH.value
 }
-function barH(sales, i) {
-  return barHeights.value[i];
+function barH (sales, i) {
+  return barHeights.value[i]
 }
-function barY(sales, i) {
-  return svgH - padB - barHeights.value[i];
+function barY (sales, i) {
+  return svgH - padB - barHeights.value[i]
 }
 
-function animateBarChart() {
-  barHeights.value = store.monthlyData.map(() => 0);
+function animateBarChart () {
+  barHeights.value = store.monthlyData.map(() => 0)
+  // 點擊完成後 0.5 秒再開始動畫，由左至右每根間隔 0.5 秒遞增
   store.monthlyData.forEach((d, i) => {
-    const target = fullBarH(d.sales);
-    const obj = { h: 0 };
+    const target = fullBarH(d.sales)
+    const obj = { h: 0 }
     gsap.to(obj, {
       h: target,
       duration: 0.9,
-      delay: i * 0.12,
-      ease: "power2.out",
-      onUpdate() {
-        barHeights.value[i] = obj.h;
+      delay: 0.5 + i * 0.5,
+      ease: 'power2.out',
+      onUpdate () {
+        barHeights.value[i] = obj.h
       },
-    });
-  });
+    })
+  })
 }
 
-// ── 折線圖動畫（用 GSAP 驅動 SVG path 的 stroke-dashoffset） ──
-const lineChartRef = ref(null);
-const startDotRef  = ref(null);
+// ── 折線圖動畫（GSAP 驅動 stroke-dashoffset） ──────────
+const lineChartRef = ref(null)
+const barChartRef  = ref(null)
+const startDotRef  = ref(null)
 
-async function animateLineChartPro() {
-  dotsVisible.value = false;
-  await nextTick();
+async function animateLineChartPro () {
+  dotsVisible.value = false
+  await nextTick()
 
-  const pathEl    = lineChartRef.value?.querySelector("path");
-  const startDot  = lineChartRef.value?.querySelector("circle[data-start]") ?? startDotRef.value;
-  if (!pathEl) return;
+  // 等待容器真正渲染完畢，強制同步寬度後再執行動畫
+  await new Promise((resolve) => {
+    const checkWidth = () => {
+      const el = lineChartRef.value
+      if (el && el.offsetWidth > 0) {
+        dynamicSvgW.value = Math.max(el.offsetWidth, 400)
+        resolve()
+      } else {
+        requestAnimationFrame(checkWidth)
+      }
+    }
+    requestAnimationFrame(checkWidth)
+  })
+  await nextTick()
 
-  const totalLen = pathEl.getTotalLength();
+  const pathEl   = lineChartRef.value?.querySelector('path')
+  const startDot = startDotRef.value
+  if (!pathEl) return
+
+  const totalLen = pathEl.getTotalLength()
 
   gsap.set(pathEl, {
     strokeDasharray: totalLen,
     strokeDashoffset: totalLen,
     opacity: 1,
-  });
+  })
 
-  const tl = gsap.timeline();
+  const tl = gsap.timeline()
 
-  // 階段 1：起始點閃爍 1 秒
+  // 階段 1：起始點閃爍
   if (startDot) {
-    gsap.set(startDot, { opacity: 0 });
+    gsap.set(startDot, { opacity: 0 })
     tl.to(startDot, {
       opacity: 1,
       duration: 0.25,
       repeat: 3,
       yoyo: true,
-      ease: "power1.inOut",
-    });
+      ease: 'power1.inOut',
+    })
   }
 
-  // 階段 2：折線從左往右展開 1.5 秒
+  // 階段 2：折線從左往右展開
   tl.to(pathEl, {
     strokeDashoffset: 0,
     duration: 1.5,
-    ease: "power2.inOut",
-  });
+    ease: 'power2.inOut',
+  })
 
-  // 階段 3：起始閃爍點淡出，資料點全部出現
+  // 階段 3：資料點出現
   tl.call(() => {
-    dotsVisible.value = true;
-    if (startDot) gsap.to(startDot, { opacity: 0, duration: 0.3 });
-  }, [], "+=0.1");
+    dotsVisible.value = true
+    if (startDot) gsap.to(startDot, { opacity: 0, duration: 0.3 })
+  }, [], '+=0.1')
 }
 
 // ── tab 切換 ─────────────────────────────────────────
-async function switchTab(key) {
-  activeTab.value = key;
-  await nextTick();
-  if (key === "trend") {
+async function switchTab (key) {
+  activeTab.value = key
+  await nextTick()
+
+  if (key === 'trend') {
     if (lineChartRef.value && !_roLine) {
-      _roLine = makeRO();
-      _roLine.observe(lineChartRef.value);
+      _roLine = makeRO()
+      _roLine.observe(lineChartRef.value)
     }
-    animateLineChartPro();
+    if (lineChartRef.value) {
+      const w = lineChartRef.value.offsetWidth
+      if (w > 0) dynamicSvgW.value = Math.max(w, 400)
+    }
+    animateLineChartPro()
   }
-  if (key === "bar") {
+
+  if (key === 'bar') {
     if (barChartRef.value && !_roBar) {
-      _roBar = makeRO();
-      _roBar.observe(barChartRef.value);
+      _roBar = makeRO()
+      _roBar.observe(barChartRef.value)
     }
-    animateBarChart();
+    if (barChartRef.value) {
+      const w = barChartRef.value.offsetWidth
+      if (w > 0) dynamicSvgW.value = Math.max(w, 400)
+    }
+    animateBarChart()
   }
 }
 
-// ── 掛載後動畫 ────────────────────────────────────────
+// ── 掛載 ──────────────────────────────────────────────
 onMounted(() => {
-  animateCounters(store.summaryCards,   displayValues);
-  animateCounters(store.customerCards,  customerDisplayValues);
-});
+  animateCounters(store.summaryCards, displayValues)
+  animateCounters(store.customerCards, customerDisplayValues)
+})
 
 onUnmounted(() => {
-  _roLine?.disconnect();
-  _roBar?.disconnect();
-});
+  _roLine?.disconnect()
+  _roBar?.disconnect()
+})
 
 // ── 成長率欄位樣式 ────────────────────────────────────
-function growthClass(g) {
-  if (g === null) return "";
-  return g > 0 ? "positive" : "negative";
+function growthClass (g) {
+  if (g === null) return ''
+  return g > 0 ? 'positive' : 'negative'
 }
-function formatGrowth(g) {
-  if (g === null) return "—";
-  return (g > 0 ? "+" : "") + g + "%";
-}
-
-// ── 匯出（模擬） ──────────────────────────────────────
-function exportData() {
-  alert("匯出功能開發中");
+function formatGrowth (g) {
+  if (g === null) return '—'
+  return (g > 0 ? '+' : '') + g + '%'
 }
 </script>
 
@@ -569,7 +593,7 @@ function exportData() {
   background: #fff;
   border-radius: var(--radiusNormal);
   padding: 1.2em;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 .section-title {
   font-size: 1.3em;
@@ -657,8 +681,8 @@ function exportData() {
 .bar-svg {
   width: 100%;
   min-width: 400px;
-  height: auto;
   display: block;
+  overflow: visible;
 }
 
 /* AI 備注 */
@@ -687,7 +711,7 @@ function exportData() {
   background: #fff;
   border-radius: var(--radiusNormal);
   padding: 1.2em;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
   gap: 0.8em;

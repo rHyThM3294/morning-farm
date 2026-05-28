@@ -159,6 +159,7 @@ input[type="radio"]{
 @media (width>=768px){
   .logout-bar{
     font-size: 14px;
+    background-color: var(--backgroundColor);
   }
   .admin-main {
     padding: calc(44px + 2em) 2em 2em calc(200px + 2em);
