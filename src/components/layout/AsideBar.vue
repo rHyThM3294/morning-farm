@@ -243,10 +243,10 @@ export default {
 }
 .navBlock{
   position: fixed;
-  top: 44px;
+  top: 0;
   left: 0;
   width: 200px;
-  height: calc(100vh - 44px);
+  height: 100vh;
   background-color: var(--black);
   color: var(--mainColor);
   z-index: 9999;                   
@@ -254,7 +254,7 @@ export default {
   overflow-x: hidden;
   scrollbar-width: thin;           
   scrollbar-color: var(--mainColor) transparent;
-  padding-top: 1.5em;
+  padding-top: calc(44px + 1.5em);
   transform: translateX(-100%);
   transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
 }
@@ -491,14 +491,15 @@ export default {
   }
   .navBlock{
       position: fixed;
-      top: 44px;
+      top: 0;
       left: 0;
       transform: translateX(0);
       animation: none;
-      height: calc(100vh - 44px);
+      height: 100vh;
       width: 200px;  
       overflow-y: auto; 
       z-index: 9999;
+      padding-top: calc(44px + 1.5em);
     }
   .nav-close{
     display: none;
