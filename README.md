@@ -28,9 +28,10 @@
 
 - [Vue 3](https://vuejs.org/)（Composition API）
 - [Vue Router 4](https://router.vuejs.org/)
-- [Pinia](https://pinia.vuejs.org/)（狀態管理，資料目前為前端模擬資料，未串接後端 API）
+- [Pinia](https://pinia.vuejs.org/)（狀態管理）
+- [MSW](https://mswjs.io/)（在瀏覽器端攔截 fetch，模擬商品 API：延遲、loading / error 狀態）
 - [GSAP](https://gsap.com/)（動畫效果）
-- [Vite](https://vitejs.dev/)（建置工具）
+- [Vite](https://vitejs.dev/) + [Vitest](https://vitest.dev/)（建置工具 / 單元測試）
 - GitHub Actions 自動建置並部署至 GitHub Pages
 
 ## 安裝與啟動
@@ -47,6 +48,9 @@ npm run build
 
 # 預覽建置結果（預設 http://localhost:5174）
 npm run preview
+
+# 執行單元測試
+npm run test
 ```
 
 ## 專案結構
@@ -57,12 +61,20 @@ src/
 ├── views/          # 頁面層級元件，分為 customer 與 admin
 ├── stores/         # Pinia 狀態管理（cart、product、order、finance...）
 ├── router/         # 路由設定與後台路由守衛
+├── mocks/          # MSW handler／假 API 資料，模擬 GET /api/products
 ├── composables/    # 可複用邏輯（如捲動顯現動畫）
 └── assets/         # 全域樣式
 ```
 
+## 資料流說明
+
+商品清單（`useProductStore`）在 App 啟動時透過 `fetchProducts()` 呼叫 `fetch('/api/products')`，
+這個請求會被 MSW 在瀏覽器端攔截、模擬延遲後回傳資料，元件端據此顯示 loading／error 狀態
+（見 [ProductsView.vue](src/views/customer/ProductsView.vue)）。其餘模組（購物車、會員、訂單、財務等）
+仍是單純的前端模擬資料，尚未串接真實後端。
+
 ## 已知限制
 
-- 目前資料多為前端模擬資料，尚未串接真實後端 API
+- 除商品清單外，其餘資料多為前端模擬資料，尚未串接真實後端 API
 - 後台登入為展示用途，未包含真實身分驗證
-- 尚未加入自動化測試
+- 目前只涵蓋 cart store 的單元測試，尚未涵蓋元件測試 / E2E 測試

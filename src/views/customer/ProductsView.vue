@@ -17,7 +17,12 @@
         <option value="price">依照價格</option>
       </select>
     </div>
-    <div class="containerCards">
+    <p v-if="productStore.isLoading" class="stateMsg">商品資料載入中…</p>
+    <div v-else-if="productStore.error" class="stateMsg error">
+      {{ productStore.error }}
+      <button class="retryBtn" @click="productStore.fetchProducts()">重試</button>
+    </div>
+    <div v-else class="containerCards">
       <Card
         v-for="item in paginatedItems"
         :key="item.id"
@@ -25,7 +30,7 @@
       />
     </div>
   </div>
-  <div class="paginationBlock">
+  <div v-if="!productStore.isLoading && !productStore.error" class="paginationBlock">
     <Page
       :totalPages="totalPages"
       v-model="currentPage"
@@ -167,6 +172,24 @@ watch(
 .paginationBlock{
   margin: 2em auto;
   text-align: center;
+}
+.stateMsg{
+  text-align: center;
+  padding: 4em 0;
+  color: var(--secondColor);
+}
+.stateMsg.error{
+  color: var(--warningColor, #c0392b);
+}
+.retryBtn{
+  display: block;
+  margin: 1em auto 0;
+  padding: 0.5em 1.5em;
+  border: 1px solid var(--mainColor);
+  border-radius: var(--radiusLarge);
+  background-color: var(--white);
+  color: var(--mainColor);
+  cursor: pointer;
 }
 @media screen and (min-width:768px){
     .containerCards{

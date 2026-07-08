@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { useProductStore } from '@/stores/product'
+import { generateProducts } from '@/mocks/data/products'
 export const useOrderStore = defineStore('order', () => {
-  const productStore = useProductStore()
-  const products = productStore.allProducts
+  // 訂單只需要「看起來合理」的商品資訊來組出假資料，
+  // 直接產生一份獨立資料即可，不需要等待 product store 的非同步請求
+  const products = generateProducts()
   const statusPool = [
     'unpaid',
     'toShip',

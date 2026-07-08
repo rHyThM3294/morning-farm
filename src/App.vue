@@ -16,13 +16,16 @@ import Loading from './views/customer/Loading.vue'
 import SiteHeader from '@/components/layout/SiteHeader.vue'
 import SiteFooter from '@/components/layout/SiteFooter.vue'
 import Toast from './components/common/Toast.vue'
+import { useProductStore } from '@/stores/product'
 const route = useRoute()
-const hideLayout = computed(() => 
+const hideLayout = computed(() =>
   route.path.startsWith('/admin') || route.path === 'loading'
 )
-const isLoadingPage = computed(() => 
+const isLoadingPage = computed(() =>
   route.path === '/admin/login' || route.path === 'loading'
 )
+// 商品資料在整個 app 只需要透過（MSW 模擬的）API 取得一次
+useProductStore().fetchProducts()
 </script>
 <style scoped>
 .app{

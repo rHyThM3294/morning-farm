@@ -61,10 +61,12 @@ import { useRoute, useRouter } from 'vue-router'
 import AsideButton from '@/components/common/AsideButton.vue'
 import Card from '@/components/common/Card.vue'
 import { useFarmerStore } from '@/stores/farmer'
+import { useProductStore } from '@/stores/product'
 
 const route  = useRoute()
 const router = useRouter()
 const farmerStore = useFarmerStore()
+const productStore = useProductStore()
 
 const isLoading     = ref(true)
 const farmer        = ref(null)
@@ -72,6 +74,7 @@ const farmerProducts = ref([])
 
 async function loadFarmer(idParam) {
   isLoading.value = true
+  await productStore.fetchProducts()
   await nextTick()
 
   const found = farmerStore.getFarmerByName(idParam)

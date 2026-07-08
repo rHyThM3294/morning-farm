@@ -14,7 +14,19 @@ document.addEventListener('wheel', (e) => {
   }
 }, { passive: true })
 
-const app = createApp(App)
-app.use(createPinia())
-app.use(router)
-app.mount('#app')
+// ── 這個專案沒有真實後端，用 MSW 在瀏覽器攔截 fetch 模擬 API ──────────────
+// dev / production（GitHub Pages）都會啟動，讓商品列表走真正的非同步請求
+async function enableMocking() {
+  const { worker } = await import('./mocks/browser')
+  return worker.start({
+    serviceWorker: { url: `${import.meta.env.BASE_URL}mockServiceWorker.js` },
+    onUnhandledRequest: 'bypass',
+  })
+}
+
+enableMocking().finally(() => {
+  const app = createApp(App)
+  app.use(createPinia())
+  app.use(router)
+  app.mount('#app')
+})
