@@ -84,5 +84,5 @@ src/
 ## 已知限制
 
 - 除商品清單與後台登入外，其餘資料多為前端模擬資料，尚未串接真實後端 API
-- 目前只涵蓋 cart store 的單元測試，尚未涵蓋元件測試 / E2E 測試
+- 單元測試涵蓋 10 個較具商業邏輯的 store（cart、order、product、favorite、finance、auth、toast、adminProduct、notification、knowledge），純靜態資料 store 與 `.vue` 元件測試 / E2E 測試尚未涵蓋
 - TypeScript 目前僅涵蓋資料層（stores / composables / router / mocks），`.vue` 元件層仍是 JS，尚未全面遷移
