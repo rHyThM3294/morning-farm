@@ -196,7 +196,7 @@ async function switchTab(key) {
 
 // ── SVG 尺寸 ──────────────────────────────────────────
 const svgW      = 700;
-const svgH      = 340;
+const svgH      = 202;
 const padL      = 46;
 const padR      = 20;
 const padT      = 30;
