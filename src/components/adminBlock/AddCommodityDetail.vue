@@ -22,7 +22,7 @@
             :key="index"
             class="preview-item"
           >
-            <img :src="img" alt="預覽圖片" />
+            <img :src="img" alt="預覽圖片" loading="lazy" />
             <button
               type="button"
               class="remove-img"

@@ -83,7 +83,7 @@ useScrollReveal(moreProductsRef,  { y: 20 })
 
 // ──────────────────────────────────────────────────────────────────────────
 const BASE = import.meta.env.BASE_URL || "/";
-const bannerImageUrl = `${BASE}image/bannerHero.png`
+const bannerImageUrl = `${BASE}image/bannerHero.webp`
 const bannerLoaded = ref(false)
 const runBannerAnimation = async () => {
   const words = bannerWordsRef.value

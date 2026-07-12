@@ -110,53 +110,53 @@ const allCities = [
 ]
 const allProducts = ref({
   臺北市: [
-    { id: 1, name: '東勢甘露梨', price: 599, image: 'chinese-pear.png' },
-    { id: 2, name: '淡水柿子', price: 450, image: 'chinese-pear.png' },
-    { id: 3, name: '內湖蜜蘋果', price: 320, image: 'chinese-pear.png' }
+    { id: 1, name: '東勢甘露梨', price: 599, image: 'chinese-pear.webp' },
+    { id: 2, name: '淡水柿子', price: 450, image: 'chinese-pear.webp' },
+    { id: 3, name: '內湖蜜蘋果', price: 320, image: 'chinese-pear.webp' }
   ],
   新北市: [
-    { id: 4, name: '活力小番茄', price: 180, image: 'chinese-pear.png' },
-    { id: 5, name: '三芝甜玉米', price: 120, image: 'chinese-pear.png' }
+    { id: 4, name: '活力小番茄', price: 180, image: 'chinese-pear.webp' },
+    { id: 5, name: '三芝甜玉米', price: 120, image: 'chinese-pear.webp' }
   ],
   桃園市: [
-    { id: 6, name: '大溪豆干', price: 150, image: 'chinese-pear.png' },
-    { id: 7, name: '復興水蜜桃', price: 350, image: 'chinese-pear.png' }
+    { id: 6, name: '大溪豆干', price: 150, image: 'chinese-pear.webp' },
+    { id: 7, name: '復興水蜜桃', price: 350, image: 'chinese-pear.webp' }
   ],
   新竹縣: [
-    { id: 8, name: '關西仙草凍', price: 199, image: 'chinese-pear.png' },
-    { id: 9, name: '北埔擂茶粉', price: 250, image: 'chinese-pear.png' }
+    { id: 8, name: '關西仙草凍', price: 199, image: 'chinese-pear.webp' },
+    { id: 9, name: '北埔擂茶粉', price: 250, image: 'chinese-pear.webp' }
   ],
   苗栗縣: [
-    { id: 10, name: '大湖草莓', price: 280, image: 'chinese-pear.png' },
-    { id: 11, name: '木雕香皂', price: 150, image: 'chinese-pear.png' }
+    { id: 10, name: '大湖草莓', price: 280, image: 'chinese-pear.webp' },
+    { id: 11, name: '木雕香皂', price: 150, image: 'chinese-pear.webp' }
   ],
   臺中市: [
-    { id: 12, name: '東勢甜柿', price: 320, image: 'chinese-pear.png' },
-    { id: 13, name: '霧峰米', price: 260, image: 'chinese-pear.png' }
+    { id: 12, name: '東勢甜柿', price: 320, image: 'chinese-pear.webp' },
+    { id: 13, name: '霧峰米', price: 260, image: 'chinese-pear.webp' }
   ],
   嘉義縣: [
-    { id: 14, name: '高山茶', price: 680, image: 'chinese-pear.png' },
-    { id: 15, name: '民雄鳳梨酥', price: 360, image: 'chinese-pear.png' }
+    { id: 14, name: '高山茶', price: 680, image: 'chinese-pear.webp' },
+    { id: 15, name: '民雄鳳梨酥', price: 360, image: 'chinese-pear.webp' }
   ],
   臺南市: [
-    { id: 16, name: '關廟鳳梨', price: 299, image: 'chinese-pear.png' },
-    { id: 17, name: '玉井芒果', price: 380, image: 'chinese-pear.png' }
+    { id: 16, name: '關廟鳳梨', price: 299, image: 'chinese-pear.webp' },
+    { id: 17, name: '玉井芒果', price: 380, image: 'chinese-pear.webp' }
   ],
   高雄市: [
-    { id: 18, name: '高雄金桔', price: 299, image: 'chinese-pear.png' },
-    { id: 19, name: '白玉蘿蔔', price: 220, image: 'chinese-pear.png' }
+    { id: 18, name: '高雄金桔', price: 299, image: 'chinese-pear.webp' },
+    { id: 19, name: '白玉蘿蔔', price: 220, image: 'chinese-pear.webp' }
   ],
   屏東縣: [
-    { id: 20, name: '黑鮪魚', price: 1200, image: 'chinese-pear.png' },
-    { id: 21, name: '愛文芒果', price: 400, image: 'chinese-pear.png' }
+    { id: 20, name: '黑鮪魚', price: 1200, image: 'chinese-pear.webp' },
+    { id: 21, name: '愛文芒果', price: 400, image: 'chinese-pear.webp' }
   ],
   花蓮縣: [
-    { id: 22, name: '壽豐金針花', price: 250, image: 'chinese-pear.png' },
-    { id: 23, name: '瑞穗鮮奶', price: 180, image: 'chinese-pear.png' }
+    { id: 22, name: '壽豐金針花', price: 250, image: 'chinese-pear.webp' },
+    { id: 23, name: '瑞穗鮮奶', price: 180, image: 'chinese-pear.webp' }
   ],
   臺東縣: [
-    { id: 24, name: '池上米', price: 280, image: 'chinese-pear.png' },
-    { id: 25, name: '鹿野紅烏龍', price: 350, image: 'chinese-pear.png' }
+    { id: 24, name: '池上米', price: 280, image: 'chinese-pear.webp' },
+    { id: 25, name: '鹿野紅烏龍', price: 350, image: 'chinese-pear.webp' }
   ]
 })
 const filteredProducts = computed(() =>

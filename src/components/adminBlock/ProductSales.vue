@@ -33,7 +33,7 @@
           :class="{ first: i === 0 }"
         >
           <div class="card-img-wrap">
-            <img :src="p.image" :alt="p.name" class="card-img" />
+            <img :src="p.image" :alt="p.name" class="card-img" loading="lazy" />
           </div>
           <p class="card-name">{{ i + 1 }}.{{ p.name }}{{ p.emoji }}</p>
         </div>

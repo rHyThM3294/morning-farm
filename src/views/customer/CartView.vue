@@ -9,7 +9,7 @@
       >
         <div class="productList">
           <div class="productPhoto">
-            <img :src="resolveImage(item.imageUrl)" />
+            <img :src="resolveImage(item.imageUrl)" :alt="item.productTitle" loading="lazy" />
           </div>
           <div class="productDetail">
             <div class="productText">
@@ -168,7 +168,7 @@ function goDetail(item) {
 }
 
 const BASE        = import.meta.env.BASE_URL || '/'
-const DEFAULT_IMG = `${BASE}image/chinese-pear.png`
+const DEFAULT_IMG = `${BASE}image/chinese-pear.webp`
 
 function resolveImage(u) {
   if (!u) return DEFAULT_IMG

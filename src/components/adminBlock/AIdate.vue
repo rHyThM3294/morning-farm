@@ -25,7 +25,11 @@
                   today: cell?.isToday,
                   past: cell?.isPast
                 }"
+                role="button"
+                tabindex="0"
                 @click="selectDate(cell)"
+                @keydown.enter="selectDate(cell)"
+                @keydown.space.prevent="selectDate(cell)"
               >
               <template v-if="cell">
                 <span class="dateNumber">{{ cell.date }}</span>

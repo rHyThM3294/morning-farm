@@ -6,7 +6,7 @@
         class="produceLink"
       >
         <div class="rice produceItem">
-          <img src="/image/rice.png" alt="米">
+          <img src="/image/rice.webp" alt="米" loading="lazy">
           <p>米</p>
         </div>
       </RouterLink>
@@ -15,7 +15,7 @@
         class="produceLink"
       >
         <div class="fruit produceItem">
-          <img src="/image/mango.png" alt="水果">
+          <img src="/image/mango.webp" alt="水果" loading="lazy">
           <p>水果</p>
         </div>
       </RouterLink>
@@ -24,7 +24,7 @@
         class="produceLink"
       >
         <div class="vegetable produceItem">
-          <img src="/image/pak-choi.png" alt="葉菜">
+          <img src="/image/pak-choi.webp" alt="葉菜" loading="lazy">
           <p>葉菜</p>
         </div>
       </RouterLink>
@@ -33,7 +33,7 @@
         class="produceLink"
       >
         <div class="dessert produceItem">
-          <img src="/image/cookies-2.png" alt="點心">
+          <img src="/image/cookies-2.webp" alt="點心" loading="lazy">
           <p>點心</p>
         </div>
       </RouterLink>
@@ -42,7 +42,7 @@
         class="produceLink"
       >
         <div class="drinks produceItem">
-          <img src="/image/juice-2.png" alt="飲料">
+          <img src="/image/juice-2.webp" alt="飲料" loading="lazy">
           <p>飲料</p>
         </div>
       </RouterLink>
@@ -51,7 +51,7 @@
         class="produceLink"
       >
         <div class="seasoning produceItem">
-          <img src="/image/soy-3.png" alt="調味料">
+          <img src="/image/soy-3.webp" alt="調味料" loading="lazy">
           <p>調味料</p>
         </div>
       </RouterLink>
@@ -60,7 +60,7 @@
         class="produceLink"
       >
         <div class="rhizome produceItem">
-          <img src="/image/potato.png" alt="根莖">
+          <img src="/image/potato.webp" alt="根莖" loading="lazy">
           <p>根莖</p>
         </div>
       </RouterLink>
@@ -69,7 +69,7 @@
         class="produceLink"
       >
         <div class="rice produceItem">
-          <img src="/image/rice.png" alt="米">
+          <img src="/image/rice.webp" alt="米" loading="lazy">
           <p>米</p>
         </div>
       </RouterLink>
@@ -78,7 +78,7 @@
         class="produceLink"
       >
         <div class="fruit produceItem">
-          <img src="/image/mango.png" alt="水果">
+          <img src="/image/mango.webp" alt="水果" loading="lazy">
           <p>水果</p>
         </div>
       </RouterLink>
@@ -87,7 +87,7 @@
         class="produceLink"
       >
         <div class="vegetable produceItem">
-          <img src="/image/pak-choi.png" alt="葉菜">
+          <img src="/image/pak-choi.webp" alt="葉菜" loading="lazy">
           <p>葉菜</p>
         </div>
       </RouterLink>
@@ -96,7 +96,7 @@
         class="produceLink"
       >
         <div class="dessert produceItem">
-          <img src="/image/cookies-2.png" alt="點心">
+          <img src="/image/cookies-2.webp" alt="點心" loading="lazy">
           <p>點心</p>
         </div>
       </RouterLink>
@@ -105,7 +105,7 @@
         class="produceLink"
       >
         <div class="drinks produceItem">
-          <img src="/image/juice-2.png" alt="飲料">
+          <img src="/image/juice-2.webp" alt="飲料" loading="lazy">
           <p>飲料</p>
         </div>
       </RouterLink>
@@ -114,7 +114,7 @@
         class="produceLink"
       >
         <div class="seasoning produceItem">
-          <img src="/image/soy-3.png" alt="調味料">
+          <img src="/image/soy-3.webp" alt="調味料" loading="lazy">
           <p>調味料</p>
         </div>
       </RouterLink>
@@ -123,7 +123,7 @@
         class="produceLink"
       >
         <div class="rhizome produceItem">
-          <img src="/image/potato.png" alt="根莖">
+          <img src="/image/potato.webp" alt="根莖" loading="lazy">
           <p>根莖</p>
         </div>
       </RouterLink>
@@ -132,7 +132,7 @@
         class="produceLink"
       >
         <div class="rice produceItem">
-          <img src="/image/rice.png" alt="米">
+          <img src="/image/rice.webp" alt="米" loading="lazy">
           <p>米</p>
         </div>
       </RouterLink>
@@ -141,7 +141,7 @@
         class="produceLink"
       >
         <div class="fruit produceItem">
-          <img src="/image/mango.png" alt="水果">
+          <img src="/image/mango.webp" alt="水果" loading="lazy">
           <p>水果</p>
         </div>
       </RouterLink>
@@ -150,7 +150,7 @@
         class="produceLink"
       >
         <div class="vegetable produceItem">
-          <img src="/image/pak-choi.png" alt="葉菜">
+          <img src="/image/pak-choi.webp" alt="葉菜" loading="lazy">
           <p>葉菜</p>
         </div>
       </RouterLink>
@@ -159,7 +159,7 @@
         class="produceLink"
       >
         <div class="dessert produceItem">
-          <img src="/image/cookies-2.png" alt="點心">
+          <img src="/image/cookies-2.webp" alt="點心" loading="lazy">
           <p>點心</p>
         </div>
       </RouterLink>
@@ -168,7 +168,7 @@
         class="produceLink"
       >
         <div class="drinks produceItem">
-          <img src="/image/juice-2.png" alt="飲料">
+          <img src="/image/juice-2.webp" alt="飲料" loading="lazy">
           <p>飲料</p>
         </div>
       </RouterLink>
@@ -177,7 +177,7 @@
         class="produceLink"
       >
         <div class="seasoning produceItem">
-          <img src="/image/soy-3.png" alt="調味料">
+          <img src="/image/soy-3.webp" alt="調味料" loading="lazy">
           <p>調味料</p>
         </div>
       </RouterLink>
@@ -186,7 +186,7 @@
         class="produceLink"
       >
         <div class="rhizome produceItem">
-          <img src="/image/potato.png" alt="根莖">
+          <img src="/image/potato.webp" alt="根莖" loading="lazy">
           <p>根莖</p>
         </div>
       </RouterLink>
@@ -195,7 +195,7 @@
         class="produceLink"
       >
         <div class="rice produceItem">
-          <img src="/image/rice.png" alt="米">
+          <img src="/image/rice.webp" alt="米" loading="lazy">
           <p>米</p>
         </div>
       </RouterLink>
@@ -204,7 +204,7 @@
         class="produceLink"
       >
         <div class="fruit produceItem">
-          <img src="/image/mango.png" alt="水果">
+          <img src="/image/mango.webp" alt="水果" loading="lazy">
           <p>水果</p>
         </div>
       </RouterLink>
@@ -213,7 +213,7 @@
         class="produceLink"
       >
         <div class="vegetable produceItem">
-          <img src="/image/pak-choi.png" alt="葉菜">
+          <img src="/image/pak-choi.webp" alt="葉菜" loading="lazy">
           <p>葉菜</p>
         </div>
       </RouterLink>
@@ -222,7 +222,7 @@
         class="produceLink"
       >
         <div class="dessert produceItem">
-          <img src="/image/cookies-2.png" alt="點心">
+          <img src="/image/cookies-2.webp" alt="點心" loading="lazy">
           <p>點心</p>
         </div>
       </RouterLink>
@@ -231,7 +231,7 @@
         class="produceLink"
       >
         <div class="drinks produceItem">
-          <img src="/image/juice-2.png" alt="飲料">
+          <img src="/image/juice-2.webp" alt="飲料" loading="lazy">
           <p>飲料</p>
         </div>
       </RouterLink>
@@ -240,7 +240,7 @@
         class="produceLink"
       >
         <div class="seasoning produceItem">
-          <img src="/image/soy-3.png" alt="調味料">
+          <img src="/image/soy-3.webp" alt="調味料" loading="lazy">
           <p>調味料</p>
         </div>
       </RouterLink>
@@ -249,7 +249,7 @@
         class="produceLink"
       >
         <div class="rhizome produceItem">
-          <img src="/image/potato.png" alt="根莖">
+          <img src="/image/potato.webp" alt="根莖" loading="lazy">
           <p>根莖</p>
         </div>
       </RouterLink>

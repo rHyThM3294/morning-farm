@@ -149,7 +149,7 @@ watch(
 .listPhoto {
   width: 100%;
   height: 378px;
-  background: url('/image/whitegrapes.png') no-repeat center/cover;
+  background: url('/image/whitegrapes.webp') no-repeat center/cover;
   border-radius: var(--radiusNormal);
 }
 .backAllFarmer {

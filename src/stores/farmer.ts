@@ -28,7 +28,7 @@ export const useFarmerStore = defineStore('farmer', () => {
   const allFarmers = computed(() =>
     FARMER_DATA.map(f => ({
       ...f,
-      imageUrl: `${base}image/farmers-are-working-chinese-cabbage-farm.png`,
+      imageUrl: `${base}image/farmers-are-working-chinese-cabbage-farm.webp`,
     }))
   )
 

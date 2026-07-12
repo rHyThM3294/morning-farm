@@ -17,7 +17,11 @@
       :key="item.orderId"
       class="rowCard"
       :class="{ active: item.orderId === activeId }"
+      role="button"
+      tabindex="0"
       @click="activeId = item.orderId"
+      @keydown.enter="activeId = item.orderId"
+      @keydown.space.prevent="activeId = item.orderId"
     >
         <div class="cell">{{ item.orderId }}</div>
         <div class="cell">${{ item.amount }}</div>

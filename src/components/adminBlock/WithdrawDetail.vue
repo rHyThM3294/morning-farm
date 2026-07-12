@@ -99,7 +99,7 @@ function goBack() {
   router.back()
 }
 const imageUrl = computed(() => {
-  return new URL('/image/chinese-pear.png', import.meta.url).href
+  return new URL('/image/chinese-pear.webp', import.meta.url).href
 })
 function handleDeal() {
   const ok = confirm('點擊確認後將由專人審核，確實退貨處理完畢方可結案。')

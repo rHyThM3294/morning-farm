@@ -35,9 +35,13 @@
                 selected: selectedProductId === item.id
               }"
               :style="computeBarStyle(segment)"
+              role="button"
+              tabindex="0"
               @mouseenter="hoveredProduct = item.id"
               @mouseleave="hoveredProduct = null"
               @click="selectProduct(item)"
+              @keydown.enter="selectProduct(item)"
+              @keydown.space.prevent="selectProduct(item)"
             >
               <span>{{ item.name }}</span>
             </div>
@@ -80,7 +84,11 @@
                 class="mobileRangeBar"
                 :class="{ selected: selectedProductId === item.id }"
                 :style="computeMobileBarStyle(segment)"
+                role="button"
+                tabindex="0"
                 @click="selectProduct(item)"
+                @keydown.enter="selectProduct(item)"
+                @keydown.space.prevent="selectProduct(item)"
               >
                 <span class="verticalText">{{ item.name }}</span>
               </div>

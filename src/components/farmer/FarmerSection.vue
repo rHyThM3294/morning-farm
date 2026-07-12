@@ -6,10 +6,14 @@
         class="cardFarmer"
         v-for="(farmer, index) in farmers"
         :key="index"
+        role="button"
+        tabindex="0"
         @click="goDetail(farmer)"
+        @keydown.enter="goDetail(farmer)"
+        @keydown.space.prevent="goDetail(farmer)"
       >
         <div class="farmerPhoto">
-          <img :src="farmer.imageUrl" :alt="farmer.farmerName" />
+          <img :src="farmer.imageUrl" :alt="farmer.farmerName" loading="lazy" />
         </div>
         <div class="goodNumbers">
           <i class="fa-regular fa-thumbs-up"></i>{{ farmer.likes }}
@@ -67,19 +71,19 @@ defineProps({
         farmerName: '張大成',
         crop: '高山萵苣',
         likes: 600,
-        imageUrl: `${import.meta.env.BASE_URL}image/farmers-are-working-chinese-cabbage-farm.png`
+        imageUrl: `${import.meta.env.BASE_URL}image/farmers-are-working-chinese-cabbage-farm.webp`
       },
       {
         farmerName: '林秀蘭',
         crop: '蜜香蓮霧',
         likes: 550,
-        imageUrl: `${import.meta.env.BASE_URL}image/farmers-are-working-chinese-cabbage-farm.png`
+        imageUrl: `${import.meta.env.BASE_URL}image/farmers-are-working-chinese-cabbage-farm.webp`
       },
       {
         farmerName: '陳建興',
         crop: '芭樂王',
         likes: 480,
-        imageUrl: `${import.meta.env.BASE_URL}image/farmers-are-working-chinese-cabbage-farm.png`
+        imageUrl: `${import.meta.env.BASE_URL}image/farmers-are-working-chinese-cabbage-farm.webp`
       },
     ]
   }

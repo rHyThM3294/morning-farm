@@ -3,7 +3,7 @@
     <h5>訂單詳細內容</h5>
     <div class="listBox">
         <div class="photo">
-            <img src="/image/chinese-pear.png" alt="寶島甘露梨"> 
+            <img src="/image/chinese-pear.webp" alt="寶島甘露梨" loading="lazy">
         </div>
         <div class="detail">
             <div class="productDetail">

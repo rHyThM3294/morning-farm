@@ -81,10 +81,10 @@ export function generateProducts(): Product[] {
       sellerName: farmer,
       unit: ["6 顆 / 盒", "10 顆 / 箱", "1 斤", "3 斤 / 袋", "1 份"][i % 5],
       price,
-      imageUrl: "chinese-pear.png",
+      imageUrl: "chinese-pear.webp",
       createdAt: daysAgo(i % 30),
       stock: 100,
-      sellerAvatarUrl: "/image/sandPear.png",
+      sellerAvatarUrl: "/image/sandPear.webp",
       farmerDescription: `${farmer} 使用自然農法栽培，堅持以友善方式種植。`
     }
   })

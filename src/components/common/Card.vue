@@ -1,13 +1,17 @@
 <template>
-  <div 
-    class="commodityCard" 
+  <div
+    class="commodityCard"
     :class="{ horizontal: useHorizontal }"
+    role="button"
+    tabindex="0"
     @click="goDetail"
+    @keydown.enter="goDetail"
+    @keydown.space.prevent="goDetail"
   >
     <div class="cardUp" :style="{ backgroundImage: `url(${bgUrl})` }">
       <p>{{ status }}</p>
       <div class="circlePicture">
-        <img :src="avatarUrl" :alt="sellerName" />
+        <img :src="avatarUrl" :alt="sellerName" loading="lazy" />
       </div>
     </div>
     <div class="cardBottom">
@@ -50,13 +54,13 @@ const props = defineProps({
   sellerName: { type: String, required: true },
   unit: { type: String, required: true },
   price: { type: [Number, String], required: true },
-  imageUrl: { type: String, default: "chinese-pear.png" },
+  imageUrl: { type: String, default: "chinese-pear.webp" },
   category: { type: String, default: "all" },
   stock: { type: Number, default: 100 },
   useHorizontal: { type: Boolean, default: false }
 });
 const BASE = import.meta.env.BASE_URL || "/";
-const DEFAULT_IMG = `${BASE}image/chinese-pear.png`;
+const DEFAULT_IMG = `${BASE}image/chinese-pear.webp`;
 const bgUrl = computed(() => {
   const u = props.imageUrl;
   if (!u) return DEFAULT_IMG;
@@ -67,7 +71,7 @@ const bgUrl = computed(() => {
   }
   return `${BASE}image/${u}`;
 });
-const avatarUrl = `${BASE}image/頭貼.png`;
+const avatarUrl = `${BASE}image/頭貼.webp`;
 const isAnimating = ref(false);
 const isFavorited = computed(() => favorites.isFavorited(props.id));
 const heartIcon = computed(() =>

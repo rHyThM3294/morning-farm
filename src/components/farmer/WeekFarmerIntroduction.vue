@@ -3,7 +3,7 @@
   <h2 ref="titleRef">本週小農介紹</h2>
   <div ref="containerRef" class="container">
     <div class="farmerPhoto">
-      <img src="/public/image/orange-1.png" alt="">
+      <img src="/public/image/orange-1.webp" alt="" loading="lazy">
     </div>
     <div class="farmerInformation">
       <h4>【阿月嬤的橘子園】</h4>

@@ -1,17 +1,17 @@
 <template>
   <div class="adminLogin">
     <div class="logo">
-      <img :src="`${BASE}image/Logo.png`" alt="清晨農鋪 Logo">
+      <img :src="`${BASE}image/Logo.webp`" alt="清晨農鋪 Logo">
     </div>
     <div class="container">
       <h4>後臺管理系統</h4>
       <div class="enterAccount">
-        <label>Email：</label>
-        <input type="email" v-model="email" />
+        <label for="admin-email">Email：</label>
+        <input id="admin-email" type="email" v-model="email" />
       </div>
       <div class="enterPassword">
-        <label>密碼：</label>
-        <input type="password" v-model="password" />
+        <label for="admin-password">密碼：</label>
+        <input id="admin-password" type="password" v-model="password" />
       </div>
       <button type="button" class="login" :disabled="loading" @click="login">{{ loading ? '登入中...' : '登入' }}</button>
       <button type="button" class="backHome" @click="goHome">忘記密碼</button>

@@ -3,6 +3,7 @@
     <Bread />
     <section class="productSection">
       <div class="gallery">
+        <!-- 主圖是這個頁面的首屏內容，不加 lazy -->
         <div class="mainImage">
           <img :src="currentImage" :alt="product.productTitle" />
         </div>
@@ -14,7 +15,7 @@
             :class="{ active: currentImage === img }"
             @click="currentImage = img"
           >
-            <img :src="img" :alt="`${product.productTitle}-image-${i+1}`" />
+            <img :src="img" :alt="`${product.productTitle}-image-${i+1}`" loading="lazy" />
           </button>
         </div>
       </div>
@@ -88,7 +89,7 @@
       <div class="farmerCard">
         <h4 class="farmerName">【{{ product.sellerName }}】</h4>
         <div class="farmerInfo">
-          <img class="avatar" :src="avatarSrc" :alt="product.productTitle" />
+          <img class="avatar" :src="avatarSrc" :alt="product.productTitle" loading="lazy" />
           <p class="farmerDesc">{{ product.farmerDescription }}</p>
         </div>
         <button class="viewAllButton" @click="goFarmerAll">
@@ -154,7 +155,7 @@ const defaultSpecs = [
 
 // ─── 解析圖片路徑工具 ────────────────────────────────────────────────────
 function resolveImg(url) {
-  if (!url) return `${BASE}image/chinese-pear.png`;
+  if (!url) return `${BASE}image/chinese-pear.webp`;
   if (/^(https?:|data:|blob:)/.test(url)) return url;
   const clean = String(url).replace(/^\/+/, "");
   if (clean.startsWith("image/")) return `${BASE}${clean}`;
@@ -178,7 +179,7 @@ const product = computed(() => {
     gallery:          s?.gallery          ?? [mainImg, placeholderGallery[1], placeholderGallery[2], placeholderGallery[3]],
     description:      s?.description      ?? "以自然農法種植，果肉脆甜多汁，冷藏風味更佳。下單後新鮮採收直送。",
     specs:            s?.specs            ?? defaultSpecs,
-    sellerAvatarUrl:  s?.sellerAvatarUrl  ?? "image/sandPear.png",
+    sellerAvatarUrl:  s?.sellerAvatarUrl  ?? "image/sandPear.webp",
     farmerDescription: s?.farmerDescription ?? `${s?.sellerName ?? ""} 使用自然農法栽培，堅持以友善方式種植。`,
     stock:            s?.stock            ?? 500,
   };
@@ -275,7 +276,7 @@ function goFarmerAll() {
 
 // ─── 農夫頭像（computed，同步 storeProduct）──────────────────────────────
 const avatarSrc = computed(() => {
-  const raw = storeProduct.value?.sellerAvatarUrl || "image/sandPear.png";
+  const raw = storeProduct.value?.sellerAvatarUrl || "image/sandPear.webp";
   if (/^(https?:|data:|blob:)/.test(raw)) return raw;
   const clean = String(raw).replace(/^\/+/, "");
   return `${BASE}${clean}`;

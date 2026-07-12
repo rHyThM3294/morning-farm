@@ -81,8 +81,17 @@ src/
 （見 [ProductsView.vue](src/views/customer/ProductsView.vue)）。其餘模組（購物車、會員、訂單、財務等）
 仍是單純的前端模擬資料，尚未串接真實後端。
 
+## 效能與無障礙
+
+- **圖片**：`public/image/` 底下的圖片全面轉為 WebP（原始 PNG/JPG 合計約 7.2MB，轉檔後約 3.4MB），並清掉幾對完全重複的檔案。轉檔腳本見 [scripts/convert-images.mjs](scripts/convert-images.mjs)（`npm install -D sharp` 後可重複執行，之後新增圖片也能用）
+- **Lazy loading**：所有非首屏的 `<img>` 都加上 `loading="lazy"`；Logo、首頁 Banner、商品/農夫詳情頁主圖等首屏內容維持立即載入
+- **無障礙**：補齊原本缺漏的 `alt` 文字、表單 `label` 加上 `for`/`id` 關聯、多處原本用 `<div>`/`<span>` 模擬按鈕的可互動元素補上 `role="button"`、`tabindex="0"` 與鍵盤（Enter / Space）觸發，後台商品圖片預覽 modal 補上 `role="dialog"`／`aria-modal`／Esc 鍵關閉
+- **GitHub Pages 深層連結**：build 時額外產生 `dist/404.html`（複製自 `index.html`），讓 history 模式路由在直接輸入或重新整理深層網址時仍能正確載入
+
 ## 已知限制
 
 - 除商品清單與後台登入外，其餘資料多為前端模擬資料，尚未串接真實後端 API
 - 單元測試涵蓋 10 個較具商業邏輯的 store（cart、order、product、favorite、finance、auth、toast、adminProduct、notification、knowledge），純靜態資料 store 與 `.vue` 元件測試 / E2E 測試尚未涵蓋
 - TypeScript 目前僅涵蓋資料層（stores / composables / router / mocks），`.vue` 元件層仍是 JS，尚未全面遷移
+- Modal／面板類元件（`AsideBar` 的手機選單與列印預覽、`AIdate`、`Communication`、`MemberView` 的抽屜選單）目前只有 `AdminCard` 的商品圖片預覽補上了 `role="dialog"` 與 Esc 鍵關閉，其餘尚未比照辦理，也都沒有完整 focus trap
+- 沒有自動化的 Lighthouse／效能監測 CI，分數需要自行用 Chrome DevTools 檢查

@@ -8,9 +8,17 @@
     >
       <i class="fa-solid fa-xmark"></i>
     </button>
-    <div class="cardUp" @click="openPreview">
+    <div
+      class="cardUp"
+      role="button"
+      tabindex="0"
+      aria-label="預覽商品圖片"
+      @click="openPreview"
+      @keydown.enter="openPreview"
+      @keydown.space.prevent="openPreview"
+    >
       <div v-if="status" class="state">{{ status }}</div>
-      <img :src="mainImage" alt="商品圖片" />
+      <img :src="mainImage" alt="商品圖片" loading="lazy" />
       <div class="hoverHint">點擊預覽圖片</div>
     </div>
     <div class="cardBottom" @click="emitEdit">
@@ -40,11 +48,12 @@
       class="previewOverlay"
       @click="closePreview"
     >
-      <div class="previewDialog" @click.stop>
+      <div class="previewDialog" role="dialog" aria-modal="true" aria-label="商品圖片預覽" @click.stop>
         <img
           class="previewImage"
           :src="currentPreviewImage"
           alt="預覽圖片"
+          loading="lazy"
           @touchstart="handleTouchStart"
           @touchend="handleTouchEnd"
         />
@@ -57,7 +66,7 @@
             :class="{ activeThumb: index === currentImageIndex }"
             @click="setCurrentImage(index)"
           >
-            <img :src="thumb" alt="商品縮圖" />
+            <img :src="thumb" alt="商品縮圖" loading="lazy" />
           </button>
         </div>
       </div>
@@ -66,7 +75,7 @@
 </template>
 <script setup>
 import { defineProps, defineEmits } from "vue";
-import { ref, computed } from "vue";
+import { ref, computed, watch, onUnmounted } from "vue";
 import { useAdminProductStore } from "@/stores/adminProduct";
 import { useToastStore } from "@/stores/toast";
 const adminProductStore = useAdminProductStore();
@@ -89,7 +98,7 @@ const props = defineProps({
 });
 const emit = defineEmits(["edit"]);
 const BASE = import.meta.env.BASE_URL
-const fallbackImage = `${BASE}image/chinese-pear.png`;
+const fallbackImage = `${BASE}image/chinese-pear.webp`;
 const mainImage = computed(() => {
   return props.imageList && props.imageList.length > 0
     ? props.imageList[0]
@@ -113,6 +122,20 @@ const openPreview = () => {
 const closePreview = () => {
   isPreviewOpen.value = false;
 };
+// Esc 鍵關閉預覽 modal
+const handleEscKey = (e) => {
+  if (e.key === "Escape") closePreview();
+};
+watch(isPreviewOpen, (open) => {
+  if (open) {
+    window.addEventListener("keydown", handleEscKey);
+  } else {
+    window.removeEventListener("keydown", handleEscKey);
+  }
+});
+onUnmounted(() => {
+  window.removeEventListener("keydown", handleEscKey);
+});
 const setCurrentImage = (index) => {
   currentImageIndex.value = index;
 };

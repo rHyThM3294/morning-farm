@@ -5,7 +5,7 @@
       <h5>大頭貼</h5>
       <div class="photoEdit">
         <div class="photo">
-          <img src="/image/頭貼.png" alt="頭貼" />
+          <img src="/image/頭貼.webp" alt="頭貼" loading="lazy" />
         </div>
         <div class="photoButton">
           <button type="button" class="delete">刪除</button>

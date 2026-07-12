@@ -13,10 +13,10 @@ function makeProduct(overrides: Partial<Product> = {}): Product {
     sellerName: '王大哥',
     unit: '1 份',
     price: 100,
-    imageUrl: 'chinese-pear.png',
+    imageUrl: 'chinese-pear.webp',
     createdAt: new Date().toISOString(),
     stock: 10,
-    sellerAvatarUrl: '/image/sandPear.png',
+    sellerAvatarUrl: '/image/sandPear.webp',
     farmerDescription: '',
     ...overrides,
   }

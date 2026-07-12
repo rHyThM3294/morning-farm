@@ -9,7 +9,7 @@
 import { computed } from 'vue'
 const BASE = import.meta.env.BASE_URL || '/'
 const partitionStyle = computed(() => ({
-  backgroundImage: `url(${BASE}image/banner.png)`
+  backgroundImage: `url(${BASE}image/banner.webp)`
 }))
 </script>
 <style scoped>

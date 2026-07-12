@@ -5,7 +5,7 @@
         <RouterLink
           to="/"
           class="logo"
-          :style="{ backgroundImage: `url(${BASE}image/Logo.png)` }"
+          :style="{ backgroundImage: `url(${BASE}image/Logo.webp)` }"
           @click="handleLogoClick"
         ></RouterLink>
         <div class="searchBox webSearch">
@@ -42,7 +42,16 @@
           </div>
 
           <!-- 通知鈴鐺 -->
-          <div class="bell" @click.stop="toggleNotification" ref="bellRef">
+          <div
+            class="bell"
+            role="button"
+            tabindex="0"
+            aria-label="通知"
+            ref="bellRef"
+            @click.stop="toggleNotification"
+            @keydown.enter="toggleNotification"
+            @keydown.space.prevent="toggleNotification"
+          >
             <span class="iconChangeBell">
               <i class="fa-regular fa-bell defultBell"></i>
               <i class="fa-solid fa-bell hoverBell"></i>

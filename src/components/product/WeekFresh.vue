@@ -8,7 +8,7 @@
           <div class="cardUp">
             <p>New</p>
             <div class="circlePicture">
-              <img src="/public/image/頭貼.png" alt="">
+              <img src="/public/image/頭貼.webp" alt="" loading="lazy">
             </div>
           </div>
           <div class="cardBottom">
@@ -32,7 +32,7 @@
           <div class="cardUp">
             <p>New</p>
             <div class="circlePicture">
-              <img src="/public/image/頭貼.png" alt="">
+              <img src="/public/image/頭貼.webp" alt="" loading="lazy">
             </div>
           </div>
           <div class="cardBottom">
@@ -56,7 +56,7 @@
           <div class="cardUp">
             <p>New</p>
             <div class="circlePicture">
-              <img src="/public/image/頭貼.png" alt="">
+              <img src="/public/image/頭貼.webp" alt="" loading="lazy">
             </div>
           </div>
           <div class="cardBottom">

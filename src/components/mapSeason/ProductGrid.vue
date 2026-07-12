@@ -11,7 +11,7 @@
           <div class="cardUp" :style="{ backgroundImage: `url(${p.image})` }">
             <p>New</p>
             <div class="circlePicture">
-              <img src="/public/image/頭貼.png" alt="農民頭貼" />
+              <img src="/public/image/頭貼.webp" alt="農民頭貼" loading="lazy" />
             </div>
           </div>
           <div class="cardBottom">

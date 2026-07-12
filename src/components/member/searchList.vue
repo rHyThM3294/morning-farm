@@ -6,10 +6,14 @@
         class="listBox"
         v-for="order in orders"
         :key="order.number"
+        role="button"
+        tabindex="0"
         @click="$emit('openOrderDetail', order)"
+        @keydown.enter="$emit('openOrderDetail', order)"
+        @keydown.space.prevent="$emit('openOrderDetail', order)"
       >
         <div class="listState"><p>{{ order.state }}</p></div>
-        <div class="photo"><img src="/image/chinese-pear.png" /></div>
+        <div class="photo"><img src="/image/chinese-pear.webp" alt="訂單商品圖片" loading="lazy" /></div>
         <div class="buyTime"><p>購買時間</p><p>{{ order.time }}</p></div>
         <div class="listNumber"><p>訂單編號</p><p>{{ order.number }}</p></div>
         <div class="price"><p>訂單金額</p><p>NT${{ order.price }}</p></div>

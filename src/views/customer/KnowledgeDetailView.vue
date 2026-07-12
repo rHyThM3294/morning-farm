@@ -13,7 +13,7 @@
       <div class="detailContainer">
         <div class="detailBox">
           <div class="pictureBox">
-            <img :src="base + article.image" :alt="article.title" />
+            <img :src="base + article.image" :alt="article.title" loading="lazy" />
           </div>
           <div class="textBox">
             <p>{{ article.content.intro }}</p>

@@ -25,7 +25,7 @@ export const useProductSalesStore = defineStore("productSales", () => {
       soldQty: 68,
       salesAmount: 13600,
       stock: 500,
-      image: baseImg("orange-1.png"),
+      image: baseImg("orange-1.webp"),
     },
     {
       id: 2,
@@ -35,7 +35,7 @@ export const useProductSalesStore = defineStore("productSales", () => {
       soldQty: 42,
       salesAmount: 6300,
       stock: 200,
-      image: baseImg("orange.png"),
+      image: baseImg("orange.webp"),
     },
     {
       id: 3,
@@ -45,7 +45,7 @@ export const useProductSalesStore = defineStore("productSales", () => {
       soldQty: 19,
       salesAmount: 7030,
       stock: 100,
-      image: baseImg("mango.png"),
+      image: baseImg("mango.webp"),
     },
     {
       id: 4,

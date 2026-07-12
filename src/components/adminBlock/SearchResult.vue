@@ -13,7 +13,7 @@
         <div class="listDetail">
             <div
             class="productPicture"
-            :style="{ backgroundImage: `url(${baseUrl}image/chinese-pear.png)` }"
+            :style="{ backgroundImage: `url(${baseUrl}image/chinese-pear.webp)` }"
             ></div>
             <div class="listDetailBox">
               <div class="firstBox">

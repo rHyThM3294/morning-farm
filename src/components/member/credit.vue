@@ -13,7 +13,11 @@
         :key="card.id"
         class="cardItem"
         :class="{ selected: card.id === defaultCardId }"
+        role="button"
+        tabindex="0"
         @click="setDefault(card.id)"
+        @keydown.enter="setDefault(card.id)"
+        @keydown.space.prevent="setDefault(card.id)"
       >
         <div class="cardLeft">
           <div class="cardChip">

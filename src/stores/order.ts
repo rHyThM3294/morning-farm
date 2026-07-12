@@ -141,7 +141,7 @@ function cancelOrder(orderId: string){
         total: itemsTotal + freight,
         returnInfo,
         remark: i % 4 === 0 ? '請下午再送' : '',
-        productImage: '/image/chinese-pear.png',
+        productImage: '/image/chinese-pear.webp',
       }
     })
   }
