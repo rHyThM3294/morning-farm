@@ -1,3 +1,5 @@
+import type { Product } from '@/types'
+
 const farmers = [
   "陳阿明",
   "李春花",
@@ -57,7 +59,7 @@ const productTemplates = [
   { title: "蘿蔔汁", category: "process", series: "carrot" }
 ]
 
-const daysAgo = (n) => {
+const daysAgo = (n: number) => {
   const d = new Date()
   d.setDate(d.getDate() - n)
   return d.toISOString()
@@ -65,7 +67,7 @@ const daysAgo = (n) => {
 
 const PRODUCT_COUNT = 150
 
-export function generateProducts() {
+export function generateProducts(): Product[] {
   return Array.from({ length: PRODUCT_COUNT }).map((_, i) => {
     const t = productTemplates[i % productTemplates.length]
     const farmer = farmers[i % farmers.length]

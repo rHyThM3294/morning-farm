@@ -1,7 +1,18 @@
 import { defineStore } from "pinia";
 import { ref, computed } from 'vue';
+
+interface Notification {
+  id: number
+  type: string
+  icon: string
+  title: string
+  body: string
+  time: string
+  read: boolean
+}
+
 export const useNotificationStore = defineStore('notification', () => {
-    const notifications = ref([
+    const notifications = ref<Notification[]>([
         {
             id:1,
             type:'order',
@@ -57,10 +68,10 @@ export const useNotificationStore = defineStore('notification', () => {
             read:false,
         }
     ])
-    const unreadCount = computed(() => 
+    const unreadCount = computed(() =>
         notifications.value.filter(n => !n.read).length
     )
-    function markAsRead(id){
+    function markAsRead(id: number){
         const n = notifications.value.find(n => n.id === id)
         if (n) n.read = true
     }

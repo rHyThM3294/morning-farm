@@ -33,13 +33,13 @@ export const useFarmerStore = defineStore('farmer', () => {
   )
 
   // 依名字查農夫
-  function getFarmerByName(name) {
+  function getFarmerByName(name: string) {
     const decoded = decodeURIComponent(name || '').trim()
     return allFarmers.value.find(f => f.farmerName === decoded) ?? null
   }
 
   // 取得某農夫的所有商品（直接從 product store 撈真實資料）
-  function getProductsByFarmer(farmerName) {
+  function getProductsByFarmer(farmerName: string) {
     const decoded = decodeURIComponent(farmerName || '').trim()
     return productStore.allProducts.filter(p => p.sellerName === decoded)
   }

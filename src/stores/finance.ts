@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import type { FinanceApiPayload } from '@/types'
 
 // ── 模擬資料 helper（模組層級，不需要響應式） ──────────────────────────
-function randomInt(min, max) {
+function randomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 function randomOrderId() {
@@ -63,7 +64,7 @@ export const useFinanceStore = defineStore('finance', () => {
   const totalIncome  = computed(() => donut.value.net)
   const refundAmount = computed(() => donut.value.fee)
 
-  function setFinanceFromApi(payload) {
+  function setFinanceFromApi(payload: FinanceApiPayload) {
     if (payload.stats) {
       statsBase.value = payload.stats.filter(s => s.id !== 5)
     }

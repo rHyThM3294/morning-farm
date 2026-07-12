@@ -289,7 +289,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
-import { useSalesReportStore } from '@/stores/salesReport.js'
+import { useSalesReportStore } from '@/stores/salesReport'
 
 const store = useSalesReportStore()
 

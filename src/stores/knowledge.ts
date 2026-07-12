@@ -1,12 +1,45 @@
-// src/stores/knowledge.js
+// src/stores/knowledge.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+
+interface KnowledgeTag {
+  label: string
+  to: string
+}
+
+interface KnowledgeParagraph {
+  question: string
+  answer: string
+}
+
+interface KnowledgeRelatedProduct {
+  status: string
+  productTitle: string
+  sellerName: string
+  unit: string
+  price: string
+  imageUrl: string
+}
+
+interface KnowledgeArticle {
+  id: number
+  category: string
+  title: string
+  image: string
+  tags: KnowledgeTag[]
+  content: {
+    intro: string
+    paragraphs: KnowledgeParagraph[]
+    relatedProducts: { title: string; keyword: string }
+  }
+  relatedCardItems: KnowledgeRelatedProduct[]
+}
 
 export const useKnowledgeStore = defineStore('knowledge', () => {
   const activeCategory = ref('all')
   const searchKeyword = ref('')
 
-  const knowledgeList = [
+  const knowledgeList: KnowledgeArticle[] = [
     // ── 蔬果處理 ──────────────────────────────────────────────
     {
       id: 1,
@@ -567,10 +600,10 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
   })
 
   // 依 ID 取得單篇文章
-  const getById = (id) => knowledgeList.find(item => item.id === Number(id))
+  const getById = (id: number | string) => knowledgeList.find(item => item.id === Number(id))
 
-  const setCategory = (value) => { activeCategory.value = value }
-  const setSearch = (keyword) => { searchKeyword.value = keyword }
+  const setCategory = (value: string) => { activeCategory.value = value }
+  const setSearch = (keyword: string) => { searchKeyword.value = keyword }
 
   return {
     knowledgeList,

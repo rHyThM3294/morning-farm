@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
+import type { Product } from '@/types'
 
 const FAVORITE_KEY = 'morning_farm_favorites'
 
 export const useFavoriteStore = defineStore('favorite', () => {
   // 從 localStorage 還原收藏清單
-  const savedFavorites = (() => {
+  const savedFavorites: Product[] = (() => {
     try {
       const raw = localStorage.getItem(FAVORITE_KEY)
       return raw ? JSON.parse(raw) : []
@@ -14,7 +15,7 @@ export const useFavoriteStore = defineStore('favorite', () => {
     }
   })()
 
-  const items = ref(savedFavorites)
+  const items = ref<Product[]>(savedFavorites)
 
   // 變動時同步寫入 localStorage
   watch(items, (val) => {
@@ -25,7 +26,7 @@ export const useFavoriteStore = defineStore('favorite', () => {
     }
   }, { deep: true })
 
-  function toggle(product) {
+  function toggle(product: Product) {
     const index = items.value.findIndex(p => p.id === product.id)
     if (index > -1) {
       items.value.splice(index, 1)
@@ -36,7 +37,7 @@ export const useFavoriteStore = defineStore('favorite', () => {
     }
   }
 
-  function isFavorited(id) {
+  function isFavorited(id: string) {
     return items.value.some(p => p.id === id)
   }
 

@@ -181,7 +181,7 @@
 <script setup>
 import { ref, computed, nextTick, onMounted, onUnmounted } from "vue";
 import { gsap } from "gsap";
-import { useProductSalesStore } from "@/stores/productSales.js";
+import { useProductSalesStore } from "@/stores/productSales";
 const store = useProductSalesStore();
 // ── 頁籤 ─────────────────────────────────────────────
 const activeTab = ref("gallery");

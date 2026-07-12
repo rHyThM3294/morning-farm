@@ -5,20 +5,15 @@
     </div>
     <div class="container">
       <h4>後臺管理系統</h4>
-      <!-- 求職展示提示 -->
-      <div class="demo-notice">
-        <p>這是作品集展示用的後臺系統</p>
-        <p>無需帳號密碼，直接點擊下方｢登入｣按鈕即可進入，點擊｢忘記密碼｣可返回前臺</p>
-      </div>
       <div class="enterAccount">
-        <label>帳號/代號：</label>
-        <input type="text" placeholder="（展示模式，可不填）" v-model="account" />
+        <label>Email：</label>
+        <input type="email" v-model="email" />
       </div>
       <div class="enterPassword">
         <label>密碼：</label>
-        <input type="password" placeholder="（展示模式，可不填）" v-model="password" />
+        <input type="password" v-model="password" />
       </div>
-      <button type="button" class="login" @click="login">登入</button>
+      <button type="button" class="login" :disabled="loading" @click="login">{{ loading ? '登入中...' : '登入' }}</button>
       <button type="button" class="backHome" @click="goHome">忘記密碼</button>
     </div>
   </div>
@@ -26,14 +21,25 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-const router   = useRouter()
-const BASE     = import.meta.env.BASE_URL
-const account  = ref('')
-const password = ref('')
-// 求職展示模式：不驗證帳密，直接進入後臺
-const login = () => {
-  sessionStorage.setItem('admin_logged_in', 'true')
-  router.push('/admin/dashboard')
+import { useAuthStore } from '@/stores/auth'
+import { useToastStore } from '@/stores/toast'
+const router     = useRouter()
+const authStore  = useAuthStore()
+const toastStore = useToastStore()
+const BASE       = import.meta.env.BASE_URL
+const email      = ref('')
+const password   = ref('')
+const loading    = ref(false)
+const login = async () => {
+  loading.value = true
+  try {
+    await authStore.login(email.value, password.value)
+    router.push('/admin/dashboard')
+  } catch {
+    toastStore.error('帳號或密碼錯誤')
+  } finally {
+    loading.value = false
+  }
 }
 const goHome = () => {
   router.push({ name: 'home' })
@@ -69,23 +75,6 @@ h4{
   font-size: 1.2em;
   color: var(--black);
   margin: 0;
-}
-/* 求職展示提示框 */
-.demo-notice{
-  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
-  border: 1px solid #86efac;
-  border-radius: 10px;
-  padding: 1em 1.2em;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3em;
-}
-.demo-notice p{
-  margin: 0;
-  font-size: 0.85em;
-  color: #166534;
-  line-height: 1.6;
 }
 .enterAccount,.enterPassword{
   display: flex;

@@ -28,6 +28,9 @@ jobs:
       - name: 📥 安裝套件
         run: npm ci
 
+      - name: 🔍 型別檢查
+        run: npm run typecheck
+
       - name: 🔨 試建置（確認 PR 不會讓 build 壞掉）
         run: npm run build
         env:

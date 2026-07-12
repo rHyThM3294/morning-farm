@@ -1,8 +1,16 @@
-// src/composables/useScrollReveal.js
-import { onMounted, onUnmounted } from 'vue'
+// src/composables/useScrollReveal.ts
+import { onMounted, onUnmounted, type Ref } from 'vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
+
+interface ScrollRevealOptions {
+  childSelector?: string
+  y?: number
+  duration?: number
+  stagger?: number
+  start?: string
+}
 
 /**
  * Scroll 進場動畫 composable（fade-in + slide-up）
@@ -15,7 +23,7 @@ gsap.registerPlugin(ScrollTrigger)
  *   const gridRef = ref(null)
  *   useScrollReveal(gridRef, { childSelector: ':scope > *' })
  */
-export function useScrollReveal(target, options = {}) {
+export function useScrollReveal(target: Ref<HTMLElement | null>, options: ScrollRevealOptions = {}) {
   const {
     childSelector,
     y = 40,
@@ -24,7 +32,7 @@ export function useScrollReveal(target, options = {}) {
     start = 'top 88%',
   } = options
 
-  let triggers = []
+  let triggers: ScrollTrigger[] = []
 
   onMounted(() => {
     if (!target.value) return

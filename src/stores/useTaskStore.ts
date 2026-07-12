@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 export const useTaskStore = defineStore('task', () => {
-  const tasks = ref({
+  const tasks = ref<Record<string, string[]>>({
     '2026-01-01': ['新年快樂', '冷藏包裝', '回覆客戶詢問'],
     '2026-01-05': ['寄送訂單', '補貨盤點'],
     '2026-01-06': ['農產品上架', '更新價格'],
@@ -55,7 +55,7 @@ export const useTaskStore = defineStore('task', () => {
     '2026-09-22': ['檢查產品效期'],
     '2026-09-26': ['庫存盤點','回訪老客戶'],
   })
-  function getTasksByDate(dateKey){
+  function getTasksByDate(dateKey: string){
     return tasks.value[dateKey] || []
   }
   return { tasks, getTasksByDate }

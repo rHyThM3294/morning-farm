@@ -12,7 +12,7 @@ export const useSalesReportStore = defineStore("salesReport", () => {
 
   // ── 月度銷售資料 ──────────────────────────────────────
   const monthlyData = ref([
-    { month: "01月", sales: 94300, units: 52, avgPrice: 1813, growth: null },
+    { month: "01月", sales: 94300, units: 52, avgPrice: 1813, growth: null as number | null },
     { month: "02月", sales: 98000, units: 56, avgPrice: 1750, growth: 4    },
     { month: "03月", sales: 78450, units: 48, avgPrice: 1634, growth: -19  },
     { month: "04月", sales: 28450, units: 17, avgPrice: 1673, growth: -63  },

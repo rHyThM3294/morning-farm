@@ -1,5 +1,32 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+
+interface CityProduct {
+  id: number
+  name: string
+  price: number
+  image: string
+}
+
+interface SeasonChartItem {
+  id: string
+  name: string
+  months: number[]
+  image: string
+  price: number
+  seller: string
+}
+
+interface SeasonProductItem {
+  id: number
+  name: string
+  price: number
+  image: string
+  seller: string
+}
+
+type Season = 'spring' | 'summer' | 'autumn' | 'winter'
+
 export const useMapSeasonStore = defineStore('mapSeason', () => {
   const activeTab = ref('map')
   const selectedCity = ref('新北市')
@@ -10,7 +37,7 @@ export const useMapSeasonStore = defineStore('mapSeason', () => {
     '臺南市', '高雄市', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣',
     '澎湖縣', '金門縣', '連江縣'
   ]
-  const allProducts = ref({
+  const allProducts = ref<Record<string, CityProduct[]>>({
     臺北市: [
       { id: 1, name: '東勢甘露梨', price: 599, image: 'chinese-pear.png' },
       { id: 2, name: '淡水柿子', price: 450, image: 'chinese-pear.png' },
@@ -64,13 +91,13 @@ export const useMapSeasonStore = defineStore('mapSeason', () => {
   const filteredProducts = computed(() =>
     allProducts.value[selectedCity.value] || []
   )
-  function switchTab(tab){
+  function switchTab(tab: string){
     activeTab.value = tab
   }
-  function setSelectedCity(city){
+  function setSelectedCity(city: string){
     selectedCity.value = city
   }
-  function setMapReady(ready){
+  function setMapReady(ready: boolean){
     isMapReady.value = ready
   }
   const seasonList = [
@@ -79,8 +106,8 @@ export const useMapSeasonStore = defineStore('mapSeason', () => {
     { label: '秋', value: 'autumn' },
     { label: '冬', value: 'winter' }
   ]
-  const currentSeason = ref('spring')
-  const seasonChartData = [
+  const currentSeason = ref<Season>('spring')
+  const seasonChartData: SeasonChartItem[] = [
     {
       id: 'pear',
       name: '水梨',
@@ -162,7 +189,7 @@ export const useMapSeasonStore = defineStore('mapSeason', () => {
       seller: '彰化阿誠'
     }
   ]
-  const seasonProducts = {
+  const seasonProducts: Record<Season, SeasonProductItem[]> = {
     spring: [
       { id: 101, name: '春季竹筍', price: 120, image: 'bamboo-shoots.png', seller: '阿明農場' },
       { id: 102, name: '春季烏龍茶', price: 680, image: 'chinese-pear.png', seller: '阿里山茶農' },
@@ -190,7 +217,7 @@ export const useMapSeasonStore = defineStore('mapSeason', () => {
   const filteredSeasonProducts = computed(() =>
     seasonProducts[currentSeason.value] || []
   )
-  function setSeason(season) {
+  function setSeason(season: Season) {
     currentSeason.value = season
   }
   return{

@@ -20,6 +20,7 @@
 <script setup>
 import { ref, shallowRef, nextTick } from "vue";
 import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
 import AsideBar from "@/components/layout/AsideBar.vue";
 import AddCommodityDetail from "@/components/adminBlock/AddCommodityDetail.vue";
 import Commodity from "@/components/adminBlock/Commodity.vue";
@@ -30,6 +31,7 @@ import Finance from '@/components/adminBlock/Finance.vue'
 import SalesReport from '@/components/adminBlock/SalesReport.vue'
 import ProductSales from '@/components/adminBlock/ProductSales.vue'
 const router = useRouter();
+const authStore = useAuthStore();
 const adminMainRef = ref(null);
 const farmerName = "小農";
 const currentView = shallowRef(Commodity);
@@ -90,8 +92,8 @@ function scrollToOrderDetail(el){
     });
   });
 }
-function handleLogout(){
-  sessionStorage.removeItem('admin_logged_in')
+async function handleLogout(){
+  await authStore.logout()
   sessionStorage.setItem('playHomeLoading', 'true')
   router.push('/admin/login')
 }

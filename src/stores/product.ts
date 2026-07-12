@@ -1,10 +1,25 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import type { Product } from '@/types'
+
+interface SeasonProduct {
+  id: string
+  productTitle: string
+  price: number
+  imageUrl: string
+  sellerName: string
+  unit: string
+  category: string
+  stock: number
+}
+
+type Season = 'spring' | 'summer' | 'autumn' | 'winter'
+
 export const useProductStore = defineStore('product', () => {
-  const allProducts = ref([])
+  const allProducts = ref<Product[]>([])
   const isLoading = ref(false)
-  const error = ref(null)
-  let fetchPromise = null
+  const error = ref<string | null>(null)
+  let fetchPromise: Promise<void> | null = null
 
   // 商品資料透過 fetch 向（MSW 模擬的）API 取得，避免重複發送請求
   function fetchProducts() {
@@ -17,7 +32,7 @@ export const useProductStore = defineStore('product', () => {
         if (!res.ok) throw new Error(`取得商品資料失敗（${res.status}）`)
         return res.json()
       })
-      .then((data) => {
+      .then((data: Product[]) => {
         allProducts.value = data
       })
       .catch((e) => {
@@ -29,17 +44,17 @@ export const useProductStore = defineStore('product', () => {
       })
     return fetchPromise
   }
-  function getProductById(id) {
+  function getProductById(id: string) {
     return allProducts.value.find(p => p.id === id)
   }
-  function getProductsByCategory(category) {
+  function getProductsByCategory(category: string) {
     if (category === "all") return allProducts.value
     return allProducts.value.filter(p => p.category === category)
   }
-  function getProductsBySeries(series) {
+  function getProductsBySeries(series: string) {
     return allProducts.value.filter(p => p.series === series)
   }
-  const seasonProducts = {
+  const seasonProducts: Record<Season, SeasonProduct[]> = {
     spring: [
       { id: "s101", productTitle: "春季玉米筍", price: 80, imageUrl: "chinese-pear.png", sellerName: "林大哥", unit: "1 份", category: "season", stock: 100 },
       { id: "s102", productTitle: "春季青茶", price: 150, imageUrl: "chinese-pear.png", sellerName: "王阿姨", unit: "1 份", category: "season", stock: 100 },
@@ -61,7 +76,7 @@ export const useProductStore = defineStore('product', () => {
       { id: "s403", productTitle: "冬季蘿蔔", price: 55, imageUrl: "chinese-pear.png", sellerName: "茶山小農", unit: "1 斤", category: "season", stock: 90 }
     ]
   }
-  function getProductsBySeason(season) {
+  function getProductsBySeason(season: Season) {
     return seasonProducts[season] || []
   }
   return{

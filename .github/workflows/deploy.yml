@@ -53,6 +53,8 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
 
       # 5. 將 dist/ 上傳為 Pages artifact，供下一個 job 使用
       - name: ⬆️ 上傳 Pages artifact

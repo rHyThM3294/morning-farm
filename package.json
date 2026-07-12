@@ -8,9 +8,11 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.110.2",
     "gsap": "^3.12.5",
     "pinia": "^3.0.4",
     "vue": "^3.4.38",
@@ -21,8 +23,10 @@
     "@vue/test-utils": "^2.4.11",
     "jsdom": "^29.1.1",
     "msw": "^2.14.7",
+    "typescript": "^6.0.3",
     "vite": "^5.4.6",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "vue-tsc": "^3.3.7"
   },
   "msw": {
     "workerDirectory": [

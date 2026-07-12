@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { generateProducts } from '@/mocks/data/products'
+import type { Order, OrderSearchParams, ReturnInfo } from '@/types'
+
 export const useOrderStore = defineStore('order', () => {
   // 訂單只需要「看起來合理」的商品資訊來組出假資料，
   // 直接產生一份獨立資料即可，不需要等待 product store 的非同步請求
@@ -19,27 +21,27 @@ export const useOrderStore = defineStore('order', () => {
     '商品瑕疵',
     '商品有誤'
   ]
-const returnMethodMap = {
+const returnMethodMap: Record<string, string[]> = {
   '商品短少': ['補商品', '退款', '換貨'],
   '包裝破損': ['退款', '換貨'],
   '商品瑕疵': ['退款', '換貨'],
   '商品有誤': ['退款', '換貨']
 }
-const orders = ref(generateOrders())
-const searchResult = ref([])
-function cancelOrder(orderId){
+const orders = ref<Order[]>(generateOrders())
+const searchResult = ref<Order[]>([])
+function cancelOrder(orderId: string){
     const target = orders.value.find(o => o.orderId === orderId)
     if (!target) return false
     target.status = 'cancelled'
     return true
   }
-  function finishReturn(orderId){
+  function finishReturn(orderId: string){
     const target = orders.value.find(o => o.orderId === orderId)
     if (!target || !target.returnInfo) return
     target.returnInfo.status = 'done'
     target.returnInfo.finishedTime = localDateTimeString()
   }
-  function searchOrders(params){
+  function searchOrders(params: OrderSearchParams){
     if (params.type === 'orderId'){
       searchResult.value = orders.value.filter(o =>
         o.orderId.includes(params.keyword)
@@ -55,11 +57,11 @@ function cancelOrder(orderId){
       )
     }
   }
-  function formatDate(d){
+  function formatDate(d?: string){
     if (!d) return ''
-    return localDateKey(d)
+    return localDateKey(new Date(d))
   }
-  function generateOrders() {
+  function generateOrders(): Order[] {
     if (!products.length) return []
 
     return Array.from({ length: 50 }, (_, i) => {
@@ -90,7 +92,7 @@ function cancelOrder(orderId){
       let freight = 0
       if(payMethod === '現場自取'){
         shippingMethod = '現場自取'
-        freight = 0 
+        freight = 0
       } else{
         const shippingPool = ['宅配到府', '超商取貨']
         shippingMethod = shippingPool[i % shippingPool.length]
@@ -98,7 +100,7 @@ function cancelOrder(orderId){
       }
       const hasReturn = i % 4 === 0
       const isPendingReturn = hasReturn && i % 2 === 0
-      let returnInfo = null
+      let returnInfo: ReturnInfo | null = null
       if (hasReturn){
         const randomReason = returnReasonPool[Math.floor(Math.random() * returnReasonPool.length)]
         const availableMethods = returnMethodMap[randomReason]
@@ -151,12 +153,12 @@ function cancelOrder(orderId){
     finishReturn,
   }
 })
-function recentDate(i){
+function recentDate(i: number){
   const d = new Date()
   d.setDate(d.getDate() - i)
   return localDateKey(d)
 }
-function generateOrderNumber(index){
+function generateOrderNumber(index: number){
   const d = new Date()
   const yyyy = d.getFullYear()
   const mm = String(d.getMonth() + 1).padStart(2, '0')

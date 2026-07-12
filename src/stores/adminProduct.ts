@@ -1,9 +1,11 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import type { AdminProduct } from '@/types'
+
 // 動態組合圖片路徑，確保 dev 和 GitHub Pages (base: '/morning-farm/') 都正確
-const baseImg = (name) => `${import.meta.env.BASE_URL}image/${name}`;
+const baseImg = (name: string) => `${import.meta.env.BASE_URL}image/${name}`;
 export const useAdminProductStore = defineStore("adminProduct", () => {
-  const products = ref([
+  const products = ref<AdminProduct[]>([
     {
       id: 1001,
       productTitle: "有機香蕉",
@@ -43,16 +45,16 @@ export const useAdminProductStore = defineStore("adminProduct", () => {
     },
   ]);
 
-  const addProduct = (product) => {
+  const addProduct = (product: AdminProduct) => {
     products.value.push(product);
   };
-  const updateProduct = (id, updatedData) => {
+  const updateProduct = (id: number, updatedData: Partial<AdminProduct>) => {
     const index = products.value.findIndex((p) => p.id === id);
     if (index !== -1) {
       products.value[index] = { ...products.value[index], ...updatedData };
     }
   };
-  const deleteProduct = (id) => {
+  const deleteProduct = (id: number) => {
     products.value = products.value.filter((p) => p.id !== id);
   };
 

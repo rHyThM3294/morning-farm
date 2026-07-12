@@ -1,11 +1,22 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 
-const baseImg = (name) => `${import.meta.env.BASE_URL}image/${name}`;
+interface TopProduct {
+  id: number
+  name: string
+  emoji: string
+  unitPrice: string
+  soldQty: number
+  salesAmount: number
+  stock: number
+  image: string | null
+}
+
+const baseImg = (name: string) => `${import.meta.env.BASE_URL}image/${name}`;
 
 export const useProductSalesStore = defineStore("productSales", () => {
   // ── 暢銷商品資料（含圖片、銷售統計）────────────────────
-  const topProducts = ref([
+  const topProducts = ref<TopProduct[]>([
     {
       id: 1,
       name: "砂糖橘",
