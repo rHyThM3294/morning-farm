@@ -33,6 +33,10 @@ export const useAuthStore = defineStore('auth', {
         // Supabase 未設定、無法連線或逾時，視為未登入，讓路由守衛照常導向登入頁
         console.warn('[auth] 無法取得登入狀態', e)
         this.user = null
+        // 換發 token 失敗後，本機殘留的過期 session 不會自動清除，
+        // 會導致之後每次進站都重複觸發同樣的換發嘗試、在 console 洗版。
+        // 這裡主動清掉本機 session，之後進站就不會再嘗試連線。
+        Promise.resolve(supabase.auth.signOut({ scope: 'local' })).catch(() => {})
       } finally {
         this.initialized = true
       }

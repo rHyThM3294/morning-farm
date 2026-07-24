@@ -49,6 +49,13 @@ describe('auth store', () => {
     expect(store.initialized).toBe(true)
   })
 
+  it('init clears any stale local session after a failed session lookup, so future loads stop retrying', async () => {
+    vi.mocked(supabase.auth.getSession).mockRejectedValue(new Error('network down'))
+    const store = useAuthStore()
+    await store.init()
+    expect(supabase.auth.signOut).toHaveBeenCalledWith({ scope: 'local' })
+  })
+
   it('login sets the user on success', async () => {
     vi.mocked(supabase.auth.signInWithPassword).mockResolvedValue({ data: { user: mockUser }, error: null } as any)
     const store = useAuthStore()
