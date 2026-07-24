@@ -60,10 +60,16 @@ export default router
 // 登入狀態由 Supabase Auth 管理（見 src/stores/auth.ts），首次導航時還原 session
 router.beforeEach(async (to) => {
   const authStore = useAuthStore()
-  await authStore.init()
+  const isAdminRoute = to.path.startsWith('/admin')
+  // 只有後臺路由需要知道登入狀態才能決定導向，顧客端頁面不該被 Supabase 網路請求卡住
+  if (isAdminRoute) {
+    await authStore.init()
+  } else {
+    authStore.init()
+  }
   const isLoggedIn = authStore.isLoggedIn
   // 要進後臺但未登入 → 導回登入頁
-  if (to.path.startsWith('/admin') && to.name !== 'adminLogin' && !isLoggedIn) {
+  if (isAdminRoute && to.name !== 'adminLogin' && !isLoggedIn) {
     return { name: 'adminLogin' }
   }
   // 已登入卻訪問登入頁 → 直接進後臺
