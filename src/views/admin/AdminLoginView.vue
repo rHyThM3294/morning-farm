@@ -21,6 +21,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { isAuthApiError } from '@supabase/supabase-js'
 import { useAuthStore } from '@/stores/auth'
 import { useToastStore } from '@/stores/toast'
 const router     = useRouter()
@@ -35,8 +36,14 @@ const login = async () => {
   try {
     await authStore.login(email.value, password.value)
     router.push('/admin/dashboard')
-  } catch {
-    toastStore.error('帳號或密碼錯誤')
+  } catch (e) {
+    // 只有伺服器真的回應「帳密錯誤」時才顯示這個訊息；
+    // 連不上 Supabase（斷網、專案被暫停等）是完全不同的問題，混在一起會誤導使用者以為自己打錯帳密
+    if (isAuthApiError(e)) {
+      toastStore.error('帳號或密碼錯誤')
+    } else {
+      toastStore.error('無法連線到伺服器，請確認網路連線或稍後再試')
+    }
   } finally {
     loading.value = false
   }
